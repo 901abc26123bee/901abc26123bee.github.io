@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="從零搭建Blog part1： Hexo+GitHub Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。  For Mac — strongly recommandMac終端機 (Terminal)設定： iTerm 2 —&gt; change your terminal  安裝 Node.js + g">
+  <meta name="description" content="從零搭建Blog part1： Hexo+GitHub Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。  # For Mac — strongly recommandMac終端機 (Terminal)設定： iTerm 2 —&gt; change your terminal  # 安裝 Node.js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="從零搭建Blog part1： Hexo+GitHub">
 <meta property="og:url" content="http://example.com/2020/10/09/Blog1/index.html">
 <meta property="og:site_name" content="挖坑中">
-<meta property="og:description" content="從零搭建Blog part1： Hexo+GitHub Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。  For Mac — strongly recommandMac終端機 (Terminal)設定： iTerm 2 —&gt; change your terminal  安裝 Node.js + g">
+<meta property="og:description" content="從零搭建Blog part1： Hexo+GitHub Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。  # For Mac — strongly recommandMac終端機 (Terminal)設定： iTerm 2 —&gt; change your terminal  # 安裝 Node.js">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://example.com/2020/10/09/Blog1/1.png">
 <meta property="og:image" content="http://example.com/2020/10/09/Blog1/2.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="http://example.com/2020/10/09/Blog1/10.png">
 <meta property="og:image" content="http://example.com/2020/10/09/Blog1/11.png">
 <meta property="article:published_time" content="2020-10-09T12:26:57.000Z">
-<meta property="article:modified_time" content="2020-10-09T15:22:45.222Z">
+<meta property="article:modified_time" content="2020-10-10T15:30:30.532Z">
 <meta property="article:author" content="WongJY">
 <meta property="article:tag" content="Blog">
 <meta property="article:tag" content="git">
@@ -197,10 +197,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-10-09 20:26:57 / Modified: 23:22:45" itemprop="dateCreated datePublished" datetime="2020-10-09T20:26:57+08:00">2020-10-09</time>
+              <time title="Created: 2020-10-09 20:26:57" itemprop="dateCreated datePublished" datetime="2020-10-09T20:26:57+08:00">2020-10-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-10 23:30:30" itemprop="dateModified" datetime="2020-10-10T23:30:30+08:00">2020-10-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -225,14 +231,14 @@
         <h1 id="從零搭建Blog-part1：-Hexo-GitHub"><a href="#從零搭建Blog-part1：-Hexo-GitHub" class="headerlink" title="從零搭建Blog part1： Hexo+GitHub"></a>從零搭建Blog part1： Hexo+GitHub</h1><blockquote>
 <p>Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。</p>
 </blockquote>
-<h3 id="For-Mac-—-strongly-recommand"><a href="#For-Mac-—-strongly-recommand" class="headerlink" title="For Mac — strongly recommand"></a>For Mac — strongly recommand</h3><p><a target="_blank" rel="noopener" href="https://medium.com/nitas-learning-journey/mac%E7%B5%82%E7%AB%AF%E6%A9%9F-terminal-%E8%A8%AD%E5%AE%9A-iterm2-ba63efd0df6a">Mac終端機 (Terminal)設定： iTerm 2</a> —&gt; change your terminal </p>
-<h3 id="安裝-Node-js-git"><a href="#安裝-Node-js-git" class="headerlink" title="安裝 Node.js + git"></a>安裝 Node.js + git</h3><p>Mac –&gt; homebrew</p>
+<h2 id="For-Mac-—-strongly-recommand"><a href="#For-Mac-—-strongly-recommand" class="headerlink" title="# For Mac — strongly recommand"></a># For Mac — strongly recommand</h2><p><a target="_blank" rel="noopener" href="https://medium.com/nitas-learning-journey/mac%E7%B5%82%E7%AB%AF%E6%A9%9F-terminal-%E8%A8%AD%E5%AE%9A-iterm2-ba63efd0df6a">Mac終端機 (Terminal)設定： iTerm 2</a> —&gt; change your terminal </p>
+<h2 id="安裝-Node-js-git"><a href="#安裝-Node-js-git" class="headerlink" title="# 安裝 Node.js + git"></a># 安裝 Node.js + git</h2><p>Mac –&gt; homebrew</p>
 <p>去 <a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a> 官網下載安裝</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a> (Node.js 版本需不低於 8.6，建議使用 Node.js 10.0 及以上版本)</li>
 <li><a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a></li>
 </ul>
-<h3 id="github新建一個項目"><a href="#github新建一個項目" class="headerlink" title="github新建一個項目"></a>github新建一個項目</h3><p>新建一個項目，如下所示：<br><img src="/2020/10/09/Blog1/1.png" width="100%" height="100%" title="1" alt="1"></p>
+<h2 id="github新建一個項目"><a href="#github新建一個項目" class="headerlink" title="# github新建一個項目"></a># github新建一個項目</h2><p>新建一個項目，如下所示：<br><img src="/2020/10/09/Blog1/1.png" width="100%" height="100%" title="1" alt="1"></p>
 <p>然後如下圖所示，輸入自己的項目名字，後面一定要加.github.io後綴</p>
 <p>===作為Github Page的倉庫，一定要為<code>你Github的用戶名.github.io</code> ===</p>
 <img src="/2020/10/09/Blog1/2.png" title="2" alt="2">
@@ -244,7 +250,7 @@
 <p>選擇主題，此時不能訪問，需要選擇一個主題，才可以訪問</p>
 </blockquote>
 <p>點擊那個鏈接，就會出現自己的網頁</p>
-<h3 id="Hexo-–-gt-Blog"><a href="#Hexo-–-gt-Blog" class="headerlink" title="Hexo –&gt; Blog"></a>Hexo –&gt; Blog</h3><h4 id="創造一個資料夾專門放-Blog-檔案"><a href="#創造一個資料夾專門放-Blog-檔案" class="headerlink" title="創造一個資料夾專門放 Blog 檔案"></a>創造一個資料夾專門放 Blog 檔案</h4><p>創造一個資料夾專門放 Blog 檔案，以下操作都在這資料夾中。</p>
+<h2 id="Hexo-–-gt-Blog"><a href="#Hexo-–-gt-Blog" class="headerlink" title="# Hexo –&gt; Blog"></a># Hexo –&gt; Blog</h2><h3 id="創造一個資料夾專門放-Blog-檔案"><a href="#創造一個資料夾專門放-Blog-檔案" class="headerlink" title="# 創造一個資料夾專門放 Blog 檔案"></a># 創造一個資料夾專門放 Blog 檔案</h3><p>創造一個資料夾專門放 Blog 檔案，以下操作都在這資料夾中。</p>
 <p>安裝 Hexo Git，Hexo 提供了快速方便的一鍵佈署功能，只需一個指令就能將網站佈署到伺服器上 <a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/one-command-deployment.html">佈署</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
@@ -271,29 +277,29 @@
 <p>設定中的 “:” 後一定要有一個空格</p>
 <p>將上面的 yourname 改成 GitHub 帳號名稱</p>
 </blockquote>
-<h4 id="1-localhost"><a href="#1-localhost" class="headerlink" title="1. localhost"></a>1. localhost</h4><p>接著執行下方兩行指令，就可以在 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 查看Blog 。</p>
+<h3 id="1-localhost"><a href="#1-localhost" class="headerlink" title="# 1. localhost"></a># 1. localhost</h3><p>接著執行下方兩行指令，就可以在 <a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 查看Blog 。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br><span class="line">#or</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
 <p>Ctrl + c –&gt; stop</p>
-<h4 id="2-部署上-GitHub"><a href="#2-部署上-GitHub" class="headerlink" title="2. 部署上 GitHub"></a>2. 部署上 GitHub</h4><p>產生靜態文件後，部署上 GitHub</p>
+<h3 id="2-部署上-GitHub"><a href="#2-部署上-GitHub" class="headerlink" title="# 2. 部署上 GitHub"></a># 2. 部署上 GitHub</h3><p>產生靜態文件後，部署上 GitHub</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
 
 <p>等一段時間後就能到<code>https://yourname.github.io/</code>查看有沒有成功部署，接下來就可以開始寫文章哩。</p>
-<h5 id="—Problem-Solution—"><a href="#—Problem-Solution—" class="headerlink" title="—Problem+Solution—"></a>—Problem+Solution—</h5><p>執行<code>hexo d</code>報錯：</p>
+<h4 id="—Problem-Solution—"><a href="#—Problem-Solution—" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p>執行<code>hexo d</code>報錯：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
 
 <p>解決方案<br>這是因為沒安裝 hexo-deployer-git 插件，在<code>站點目錄</code>下輸入下面的插件安裝就好了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
 <p>(如果不成功—&gt;連接Github與本地)</p>
-<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/commands.html">指令</a></p>
+<h2 id="常用指令"><a href="#常用指令" class="headerlink" title="# 常用指令"></a># 常用指令</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/commands.html">指令</a></p>
 <ol>
 <li><code>hexo generate (hexo g)</code> 產生靜態檔案，會在目錄下產生public 資料夾。</li>
 <li><code>hexo server (hexo s)</code> 啟動伺服器，預設是 <code>http://localhost:4000/</code>。</li>
 <li><code>hexo deploy (hexo d)</code> 部署網站。（ 比如 github, heroku 等平台 ）</li>
 <li><code>hexo clean (hexo cl)</code> 清除快取檔案 (db.json) 和已產生的靜態檔案 (public)，如過修改檔案沒有響應到頁面，使用這個指令再啟動伺服器</li>
 </ol>
-<h3 id="更換hexo主題"><a href="#更換hexo主題" class="headerlink" title="更換hexo主題"></a>更換hexo主題</h3><h4 id="NexT"><a href="#NexT" class="headerlink" title="NexT"></a>NexT</h4><p>Hexo 預設的主題是<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-theme-landscape">landscape</a>，而我們可以到 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">這裡</a> 來挑選我們想要的主題，而其中最多人用的應該就屬 <a target="_blank" rel="noopener" href="https://theme-next.org/">NexT</a> 了。</p>
+<h2 id="更換hexo主題"><a href="#更換hexo主題" class="headerlink" title="# 更換hexo主題"></a># 更換hexo主題</h2><h3 id="NexT"><a href="#NexT" class="headerlink" title="# NexT"></a># NexT</h3><p>Hexo 預設的主題是<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo-theme-landscape">landscape</a>，而我們可以到 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">這裡</a> 來挑選我們想要的主題，而其中最多人用的應該就屬 <a target="_blank" rel="noopener" href="https://theme-next.org/">NexT</a> 了。</p>
 <p>安裝NexT</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next.git themes&#x2F;next</span><br></pre></td></tr></table></figure>
 
@@ -303,23 +309,23 @@
 <p>重新啟動server</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<h5 id="—Problem-Solution—-1"><a href="#—Problem-Solution—-1" class="headerlink" title="—Problem+Solution—"></a>—Problem+Solution—</h5><p>如果不成功，試著清除先前已生成的檔案</p>
+<h4 id="—Problem-Solution—-1"><a href="#—Problem-Solution—-1" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p>如果不成功，試著清除先前已生成的檔案</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
 
 <p>到<code>https://yourname.github.io/</code>查看有沒有成功部署</p>
-<h4 id="語言設定"><a href="#語言設定" class="headerlink" title="語言設定"></a>語言設定</h4><p>在<code>_config.yml</code>中找到language，設定為zh-tw</p>
+<h3 id="語言設定"><a href="#語言設定" class="headerlink" title="# 語言設定"></a># 語言設定</h3><p>在<code>_config.yml</code>中找到language，設定為zh-tw</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-tw</span><br></pre></td></tr></table></figure>
 
 <p>這樣就可已支援繁體中文。</p>
-<h4 id="Scheme-設定"><a href="#Scheme-設定" class="headerlink" title="Scheme 設定"></a>Scheme 設定</h4><p>在NexT 中有多種Scheme 可選擇，其中的預設主題為Muse。大部份看到蠻多人選擇使用Pisces當主題。</p>
+<h3 id="Scheme-設定"><a href="#Scheme-設定" class="headerlink" title="# Scheme 設定"></a># Scheme 設定</h3><p>在NexT 中有多種Scheme 可選擇，其中的預設主題為Muse。大部份看到蠻多人選擇使用Pisces當主題。</p>
 <p>在主題設定<code>theme/next/_config.yml</code>裡找到schema，把註解去掉即可開啟。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">scheme: Pisces</span><br><span class="line">#scheme: Gemini</span><br></pre></td></tr></table></figure>
 
-<h4 id="代碼高亮"><a href="#代碼高亮" class="headerlink" title="代碼高亮"></a>代碼高亮</h4><p>NexT 使用 Tomorrow Theme 當作代碼高亮，共有5款主題可以選擇。 NexT 預設使用的是 normal，可選的值有 normal、night、 night blue、 night bright、 night eighties</p>
+<h3 id="代碼高亮"><a href="#代碼高亮" class="headerlink" title="# 代碼高亮"></a># 代碼高亮</h3><p>NexT 使用 Tomorrow Theme 當作代碼高亮，共有5款主題可以選擇。 NexT 預設使用的是 normal，可選的值有 normal、night、 night blue、 night bright、 night eighties</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_theme: normal</span><br></pre></td></tr></table></figure>
 
-<h4 id="背景特效"><a href="#背景特效" class="headerlink" title="背景特效"></a>背景特效</h4><p>在主題設定<code>themes/next/_config.yml</code>裡還有另外的動畫效果，要打開就把值設定為true。</p>
-<h3 id="連接Github與本地倉庫"><a href="#連接Github與本地倉庫" class="headerlink" title="連接Github與本地倉庫"></a>連接Github與本地倉庫</h3><h4 id="Git-setting"><a href="#Git-setting" class="headerlink" title="Git setting"></a>Git setting</h4><p>在每一次的 Git commit (提交，我們稍後會提到) 都會記錄作者的訊息像是 name 及 email ，因此我們使用下面的指令來設定：</p>
+<h3 id="背景特效"><a href="#背景特效" class="headerlink" title="# 背景特效"></a># 背景特效</h3><p>在主題設定<code>themes/next/_config.yml</code>裡還有另外的動畫效果，要打開就把值設定為true。</p>
+<h2 id="連接Github與本地倉庫"><a href="#連接Github與本地倉庫" class="headerlink" title="# 連接Github與本地倉庫"></a># 連接Github與本地倉庫</h2><h3 id="Git-setting"><a href="#Git-setting" class="headerlink" title="# Git setting"></a># Git setting</h3><p>在每一次的 Git commit (提交，我們稍後會提到) 都會記錄作者的訊息像是 name 及 email ，因此我們使用下面的指令來設定：</p>
 <p>加上 <code>--global</code> 表示是全域的設定。你可以使用 <code>git config --list</code> 這個指令來看你的 Git 設定內容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;username&quot;</span><br><span class="line">$ git config --global user.email &quot;GitHub 邮箱&quot;</span><br></pre></td></tr></table></figure>
 
@@ -332,7 +338,7 @@
 <p>或是其實 Git 的設定檔是儲存在你的家目錄的.gitconfig 隱藏檔中，你可以使用編輯器將他打開</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~&#x2F;.gitconfig</span><br><span class="line">    [user]</span><br><span class="line">        name &#x3D; Jimmy Kuo</span><br><span class="line">        email &#x3D; jimmy@gogojimmy.net</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h4 id="生成密鑰SSH-key"><a href="#生成密鑰SSH-key" class="headerlink" title="生成密鑰SSH key"></a>生成密鑰SSH key</h4><p>為了讓GitHub可以識別文件是由GitHub用戶上傳的，我們需要創建ssh密鑰</p>
+<h3 id="生成密鑰SSH-key"><a href="#生成密鑰SSH-key" class="headerlink" title="# 生成密鑰SSH key"></a># 生成密鑰SSH key</h3><p>為了讓GitHub可以識別文件是由GitHub用戶上傳的，我們需要創建ssh密鑰</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#生成密鑰SSH key：</span><br><span class="line">$ ssh-keygen -t rsa -C &quot;GitHub 邮箱&quot;</span><br></pre></td></tr></table></figure>
 
 <p>然後一路回車鍵</p>
@@ -345,7 +351,7 @@
 <p>接下來就會產生key到指定位置了</p>
 <p>會有兩個key 一個有副檔名 .pub 為公鑰，而沒有副檔名的為私鑰</p>
 <p><mark>注意私鑰要保存好 絕對不能被竊取</mark></p>
-<h4 id="Add-public-ssh-key-on-github"><a href="#Add-public-ssh-key-on-github" class="headerlink" title="Add public ssh key on github"></a>Add public ssh key on github</h4><p>打開github，在頭像下麵點擊settings，再點擊SSH and GPG keys，新建一個SSH，名字隨便。</p>
+<h3 id="Add-public-ssh-key-on-github"><a href="#Add-public-ssh-key-on-github" class="headerlink" title="# Add public ssh key on github"></a># Add public ssh key on github</h3><p>打開github，在頭像下麵點擊settings，再點擊SSH and GPG keys，新建一個SSH，名字隨便。</p>
 <img src="/2020/10/09/Blog1/6.png" alt="6" width="40%" height="40%">
 
 <img src="/2020/10/09/Blog1/7.png" alt="7">
@@ -358,10 +364,10 @@
 <p>輸入<code>ssh -T git@github.com</code>，如果如下圖所示，出現你的用戶名，那就成功了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi github用戶名! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
 
-<h4 id="把檔案交給-Git-控管"><a href="#把檔案交給-Git-控管" class="headerlink" title="把檔案交給 Git 控管"></a>把檔案交給 Git 控管</h4><p><a target="_blank" rel="noopener" href="https://gitbook.tw/chapters/using-git/add-to-git.html">把檔案交給 Git 控管</a></p>
+<h3 id="把檔案交給-Git-控管"><a href="#把檔案交給-Git-控管" class="headerlink" title="# 把檔案交給 Git 控管"></a># 把檔案交給 Git 控管</h3><p><a target="_blank" rel="noopener" href="https://gitbook.tw/chapters/using-git/add-to-git.html">把檔案交給 Git 控管</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;change Theme to nexT&quot;</span><br></pre></td></tr></table></figure>
 
-<h5 id="—Problem-Solution—-2"><a href="#—Problem-Solution—-2" class="headerlink" title="—Problem+Solution—"></a>—Problem+Solution—</h5><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/reboot777/p/11164193.html">Hexo + Github page博客 themes/next 文件夹因存在.git而无法提交到git的解决办法</a></p>
+<h4 id="—Problem-Solution—-2"><a href="#—Problem-Solution—-2" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/reboot777/p/11164193.html">Hexo + Github page博客 themes/next 文件夹因存在.git而无法提交到git的解决办法</a></p>
 <img src="/2020/10/09/Blog1/8.png" title="8" alt="8">
 
 <p>解決方法：</p>
@@ -378,7 +384,7 @@
 
 
 
-<h4 id="推上遠端的-Git-伺服器"><a href="#推上遠端的-Git-伺服器" class="headerlink" title="推上遠端的 Git 伺服器"></a>推上遠端的 Git 伺服器</h4><p>在這之前，我們所有的操作都是在自己電腦上，接下來就是要準備把東西推上遠端的 Git 伺服器了。首先，需要設定一個端節的節點</p>
+<h3 id="推上遠端的-Git-伺服器"><a href="#推上遠端的-Git-伺服器" class="headerlink" title="# 推上遠端的 Git 伺服器"></a># 推上遠端的 Git 伺服器</h3><p>在這之前，我們所有的操作都是在自己電腦上，接下來就是要準備把東西推上遠端的 Git 伺服器了。首先，需要設定一個端節的節點</p>
 <img src="/2020/10/09/Blog1/10.png" title="10" alt="10">
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#加入遠端節點：</span><br><span class="line">$ git remote add origin repositpry-link</span><br></pre></td></tr></table></figure>
@@ -388,7 +394,7 @@
 
 <p>定好每次要 Push 時就不用再次輸入「上游」的名稱，Git 就會知道要推往哪個遠端節點，反之如果沒設定，就要每次都輸入遠端節點的名稱。</p>
 <p><img src="/2020/10/09/Blog1/11.png" alt="11"></p>
-<h5 id="—Problem-Solution—-3"><a href="#—Problem-Solution—-3" class="headerlink" title="—Problem+Solution—"></a>—Problem+Solution—</h5><p><a target="_blank" rel="noopener" href="https://gitbook.tw/chapters/github/fail-to-push.html">【狀況題】怎麼有時候推不上去…</a></p>
+<h4 id="—Problem-Solution—-3"><a href="#—Problem-Solution—-3" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p><a target="_blank" rel="noopener" href="https://gitbook.tw/chapters/github/fail-to-push.html">【狀況題】怎麼有時候推不上去…</a></p>
 <p><a target="_blank" rel="noopener" href="https://exfast.me/2016/05/git-instructions-instructions/">Git 指令 – 常用指令</a></p>
 <p>Push</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin https:*&#x2F;&#x2F;[github.com&#x2F;XXX(username)&#x2F;YYYY(projectname).git]</span><br></pre></td></tr></table></figure>
@@ -410,7 +416,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br></pre></td></tr></table></figure>
 
 <p>如果還是不行push，砍掉重新來過</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://medium.com/@bebebobohaha/%E4%BD%BF%E7%94%A8-hexo-gitpage-%E6%90%AD%E5%BB%BA%E5%80%8B%E4%BA%BA-blog-5c6ed52f23db">如何搭建個人 Blog 使用 Hexo + Gitpage</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="# Reference"></a># Reference</h2><p><a target="_blank" rel="noopener" href="https://medium.com/@bebebobohaha/%E4%BD%BF%E7%94%A8-hexo-gitpage-%E6%90%AD%E5%BB%BA%E5%80%8B%E4%BA%BA-blog-5c6ed52f23db">如何搭建個人 Blog 使用 Hexo + Gitpage</a></p>
 <p><a target="_blank" rel="noopener" href="https://blackmaple.me/hexo-tutorial/">Hexo+GitHub，新手也可以快速建立部落格</a></p>
 <p><a target="_blank" rel="noopener" href="https://musoucrow.github.io/2017/02/26/build_bolg/">在Mac平台使用GitHub和Hexo搭建博客</a></p>
 <p><a target="_blank" rel="noopener" href="https://xenby.com/b/220-%E6%95%99%E5%AD%B8-%E7%94%A2%E7%94%9Fssh-key%E4%B8%A6%E4%B8%94%E9%80%8F%E9%81%8Ekey%E9%80%B2%E8%A1%8C%E5%85%8D%E5%AF%86%E7%A2%BC%E7%99%BB%E5%85%A5">[教學] 產生SSH Key並且透過KEY進行免密碼登入</a></p>
@@ -503,7 +509,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%9E%E9%9B%B6%E6%90%AD%E5%BB%BABlog-part1%EF%BC%9A-Hexo-GitHub"><span class="nav-number">1.</span> <span class="nav-text">從零搭建Blog part1： Hexo+GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#For-Mac-%E2%80%94-strongly-recommand"><span class="nav-number">1.0.1.</span> <span class="nav-text">For Mac — strongly recommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Node-js-git"><span class="nav-number">1.0.2.</span> <span class="nav-text">安裝 Node.js + git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#github%E6%96%B0%E5%BB%BA%E4%B8%80%E5%80%8B%E9%A0%85%E7%9B%AE"><span class="nav-number">1.0.3.</span> <span class="nav-text">github新建一個項目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo-%E2%80%93-gt-Blog"><span class="nav-number">1.0.4.</span> <span class="nav-text">Hexo –&gt; Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%B5%E9%80%A0%E4%B8%80%E5%80%8B%E8%B3%87%E6%96%99%E5%A4%BE%E5%B0%88%E9%96%80%E6%94%BE-Blog-%E6%AA%94%E6%A1%88"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">創造一個資料夾專門放 Blog 檔案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-localhost"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">1. localhost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E9%83%A8%E7%BD%B2%E4%B8%8A-GitHub"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">2. 部署上 GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94"><span class="nav-number">1.0.4.3.1.</span> <span class="nav-text">—Problem+Solution—</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.0.5.</span> <span class="nav-text">常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%8F%9Bhexo%E4%B8%BB%E9%A1%8C"><span class="nav-number">1.0.6.</span> <span class="nav-text">更換hexo主題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NexT"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">NexT</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-1"><span class="nav-number">1.0.6.1.1.</span> <span class="nav-text">—Problem+Solution—</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AA%9E%E8%A8%80%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">語言設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scheme-%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.0.6.3.</span> <span class="nav-text">Scheme 設定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A2%BC%E9%AB%98%E4%BA%AE"><span class="nav-number">1.0.6.4.</span> <span class="nav-text">代碼高亮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%89%B9%E6%95%88"><span class="nav-number">1.0.6.5.</span> <span class="nav-text">背景特效</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5Github%E8%88%87%E6%9C%AC%E5%9C%B0%E5%80%89%E5%BA%AB"><span class="nav-number">1.0.7.</span> <span class="nav-text">連接Github與本地倉庫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-setting"><span class="nav-number">1.0.7.1.</span> <span class="nav-text">Git setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%AF%86%E9%91%B0SSH-key"><span class="nav-number">1.0.7.2.</span> <span class="nav-text">生成密鑰SSH key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Add-public-ssh-key-on-github"><span class="nav-number">1.0.7.3.</span> <span class="nav-text">Add public ssh key on github</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%8A%E6%AA%94%E6%A1%88%E4%BA%A4%E7%B5%A6-Git-%E6%8E%A7%E7%AE%A1"><span class="nav-number">1.0.7.4.</span> <span class="nav-text">把檔案交給 Git 控管</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-2"><span class="nav-number">1.0.7.4.1.</span> <span class="nav-text">—Problem+Solution—</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A8%E4%B8%8A%E9%81%A0%E7%AB%AF%E7%9A%84-Git-%E4%BC%BA%E6%9C%8D%E5%99%A8"><span class="nav-number">1.0.7.5.</span> <span class="nav-text">推上遠端的 Git 伺服器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-3"><span class="nav-number">1.0.7.5.1.</span> <span class="nav-text">—Problem+Solution—</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">1.0.8.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%9E%E9%9B%B6%E6%90%AD%E5%BB%BABlog-part1%EF%BC%9A-Hexo-GitHub"><span class="nav-number">1.</span> <span class="nav-text">從零搭建Blog part1： Hexo+GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#For-Mac-%E2%80%94-strongly-recommand"><span class="nav-number">1.1.</span> <span class="nav-text"># For Mac — strongly recommand</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Node-js-git"><span class="nav-number">1.2.</span> <span class="nav-text"># 安裝 Node.js + git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#github%E6%96%B0%E5%BB%BA%E4%B8%80%E5%80%8B%E9%A0%85%E7%9B%AE"><span class="nav-number">1.3.</span> <span class="nav-text"># github新建一個項目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo-%E2%80%93-gt-Blog"><span class="nav-number">1.4.</span> <span class="nav-text"># Hexo –&gt; Blog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%B5%E9%80%A0%E4%B8%80%E5%80%8B%E8%B3%87%E6%96%99%E5%A4%BE%E5%B0%88%E9%96%80%E6%94%BE-Blog-%E6%AA%94%E6%A1%88"><span class="nav-number">1.4.1.</span> <span class="nav-text"># 創造一個資料夾專門放 Blog 檔案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-localhost"><span class="nav-number">1.4.2.</span> <span class="nav-text"># 1. localhost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%83%A8%E7%BD%B2%E4%B8%8A-GitHub"><span class="nav-number">1.4.3.</span> <span class="nav-text"># 2. 部署上 GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94"><span class="nav-number">1.4.3.1.</span> <span class="nav-text"># —Problem+Solution—</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text"># 常用指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%8F%9Bhexo%E4%B8%BB%E9%A1%8C"><span class="nav-number">1.6.</span> <span class="nav-text"># 更換hexo主題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NexT"><span class="nav-number">1.6.1.</span> <span class="nav-text"># NexT</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-1"><span class="nav-number">1.6.1.1.</span> <span class="nav-text"># —Problem+Solution—</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%9E%E8%A8%80%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.6.2.</span> <span class="nav-text"># 語言設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scheme-%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.6.3.</span> <span class="nav-text"># Scheme 設定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A2%BC%E9%AB%98%E4%BA%AE"><span class="nav-number">1.6.4.</span> <span class="nav-text"># 代碼高亮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E7%89%B9%E6%95%88"><span class="nav-number">1.6.5.</span> <span class="nav-text"># 背景特效</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%A3%E6%8E%A5Github%E8%88%87%E6%9C%AC%E5%9C%B0%E5%80%89%E5%BA%AB"><span class="nav-number">1.7.</span> <span class="nav-text"># 連接Github與本地倉庫</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-setting"><span class="nav-number">1.7.1.</span> <span class="nav-text"># Git setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%AF%86%E9%91%B0SSH-key"><span class="nav-number">1.7.2.</span> <span class="nav-text"># 生成密鑰SSH key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-public-ssh-key-on-github"><span class="nav-number">1.7.3.</span> <span class="nav-text"># Add public ssh key on github</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%8A%E6%AA%94%E6%A1%88%E4%BA%A4%E7%B5%A6-Git-%E6%8E%A7%E7%AE%A1"><span class="nav-number">1.7.4.</span> <span class="nav-text"># 把檔案交給 Git 控管</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-2"><span class="nav-number">1.7.4.1.</span> <span class="nav-text"># —Problem+Solution—</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E4%B8%8A%E9%81%A0%E7%AB%AF%E7%9A%84-Git-%E4%BC%BA%E6%9C%8D%E5%99%A8"><span class="nav-number">1.7.5.</span> <span class="nav-text"># 推上遠端的 Git 伺服器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E2%80%94Problem-Solution%E2%80%94-3"><span class="nav-number">1.7.5.1.</span> <span class="nav-text"># —Problem+Solution—</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.8.</span> <span class="nav-text"># Reference</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
