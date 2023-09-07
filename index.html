@@ -21,9 +21,9 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Digging">
+<meta property="og:title" content="Fat Cat Clubs">
 <meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Digging">
+<meta property="og:site_name" content="Fat Cat Clubs">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:author" content="WongJY">
 <meta name="twitter:card" content="summary">
@@ -41,7 +41,7 @@
   };
 </script>
 
-  <title>Digging</title>
+  <title>Fat Cat Clubs</title>
   
 
 
@@ -92,7 +92,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Digging</h1>
+      <h1 class="site-title">Fat Cat Clubs</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -155,6 +155,483 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fat Cat Clubs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/" class="post-title-link" itemprop="url">How to deploy a Kubernate Job by client-go in cluster</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-07 23:47:47 / Modified: 23:53:05" itemprop="dateCreated datePublished" datetime="2023-09-07T23:47:47+08:00">2023-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernate/" itemprop="url" rel="index"><span itemprop="name">Kubernate</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Kubernets-API-Server"><a href="#Kubernets-API-Server" class="headerlink" title="Kubernets API Server"></a><strong>Kubernets API Server</strong></h1><p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.</p>
+<h1 id="Role-Based-Access-Control"><a href="#Role-Based-Access-Control" class="headerlink" title="Role-Based Access Control"></a><strong>Role-Based Access Control</strong></h1><p>In the Kubernetes cluster , the mechanism responsible for completing the authorization work is RBAC (Role-Based Access Control). RBAC defines policies for restricting and controlling user access to resources of a system by using roles attached to users. However, RBAC policies can also govern the behavior of software resources. A <em>service account</em> provides an identity for processes that run in a Pod, and maps to a ServiceAccount object. A secret with access token is generated when ServiceAccount object is deployed. After specify <code>serviceAccountName</code> with in a pod, the secret will mount into pod at <code>/var/run/secrets/kubernetes.io/serviceaccount</code> . The pod can access API Server with permissions defined in <code>serviceAccountName</code> .</p>
+<p>RBAC authorizations can define permissions/policies that can be limited within a namespace(Role) or the entire cluster(ClusterRule).</p>
+<img src="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/1.png" width="100%" height="100%" alt="1">
+
+<h1 id="ServiceAccountToken"><a href="#ServiceAccountToken" class="headerlink" title="ServiceAccountToken"></a><strong>ServiceAccountToken</strong></h1><p>Kubelet automatically mount a default ServiceAccount’s API credentials (ServiceAccountToken) in the same namespace as the pod is create without specifying a ServiceAccount. This allow pod to access API server incluster by ServiceAccountToken. You can opt out of automounting API credentials on <code>/var/run/secrets/kubernetes.io/serviceaccount/token</code> for a service account by setting <code>automountServiceAccountToken: false</code> on the ServiceAccount.</p>
+<p>serviceAccount, Role, RoleBinding</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: service-account-jobs</span><br><span class="line">  namespace: default</span><br><span class="line">---</span><br><span class="line">apiVersion: rbac.authorization.k8s.io&#x2F;v1</span><br><span class="line">kind: Role</span><br><span class="line">metadata:</span><br><span class="line">  name: job-operation</span><br><span class="line">  namespace: default</span><br><span class="line">rules:</span><br><span class="line">  - apiGroups: [&quot;&quot;, &quot;batch&quot;]</span><br><span class="line">    resources: [&quot;jobs&quot;]</span><br><span class="line">    verbs: [&quot;get&quot;, &quot;list&quot;, &quot;watch&quot;, &quot;create&quot;, &quot;delete&quot;]</span><br><span class="line">---</span><br><span class="line">apiVersion: rbac.authorization.k8s.io&#x2F;v1</span><br><span class="line">kind: RoleBinding</span><br><span class="line">metadata:</span><br><span class="line">  name: job-operation</span><br><span class="line">  namespace: default</span><br><span class="line">subjects:</span><br><span class="line">  - kind: ServiceAccount</span><br><span class="line">    name: service-account-jobs</span><br><span class="line">roleRef:</span><br><span class="line">  kind: Role</span><br><span class="line">  name: job-operation</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br></pre></td></tr></table></figure>
+
+<p>deployment.yaml (program running in pod which want to access Kubernate API Server within cluster to deploy a Job)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps&#x2F;v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: program</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: program</span><br><span class="line">  strategy:</span><br><span class="line">    type: RollingUpdate</span><br><span class="line">    rollingUpdate:</span><br><span class="line">      maxSurge: 1</span><br><span class="line">      maxUnavailable: 1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: program</span><br><span class="line">    spec:</span><br><span class="line">      serviceAccountName: service-account-jobs</span><br><span class="line">      containers:</span><br><span class="line">      - name: program</span><br><span class="line">        image: &#123;&#123; .Values.program.image &#125;&#125;</span><br><span class="line">        command:</span><br><span class="line">          - &quot;bin&#x2F;sh&quot;</span><br><span class="line">          - &quot;-c&quot;</span><br><span class="line">          - &quot;&#x2F;go&#x2F;bin&#x2F;server -sql&#x3D;&#x2F;etc&#x2F;sql&#x2F;postgres.txt -worker-job&#x3D;&#x2F;etc&#x2F;jobs&#x2F;worker-job.yaml&quot;</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8081</span><br><span class="line">        volumeMounts:</span><br><span class="line">          - name: postgre-sql</span><br><span class="line">            mountPath: &#x2F;etc&#x2F;sql</span><br><span class="line">          - name: worker-job</span><br><span class="line">            mountPath: &#x2F;etc&#x2F;jobs</span><br><span class="line">      volumes:</span><br><span class="line">        - name: postgre-sql</span><br><span class="line">          configMap:</span><br><span class="line">            name: configs</span><br><span class="line">            items:</span><br><span class="line">              - key: postgres.txt</span><br><span class="line">                path: postgres.txt</span><br><span class="line">        - name: worker-job</span><br><span class="line">          configMap:</span><br><span class="line">            name: configs</span><br><span class="line">            items:</span><br><span class="line">              - key: worker-job.yaml</span><br><span class="line">                path: worker-job.yaml</span><br></pre></td></tr></table></figure>
+
+<p>configmap.yaml (render by helm, place to store Job template)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ConfigMap</span><br><span class="line">metadata:</span><br><span class="line">  name: configs</span><br><span class="line">data:</span><br><span class="line">  &#123;&#123;- .Files.Get .Values.configmapStrings | nindent 2 &#125;&#125;</span><br><span class="line">  &#123;&#123;- (.Files.Glob .Values.configmapFiles).AsConfig | nindent 2 &#125;&#125;</span><br><span class="line">  &#123;&#123;- (.Files.Glob .Values.configmapJobsFiles).AsConfig | nindent 2 &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>local-values.yaml (render by helm)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">configmapFiles: &quot;configmaps&#x2F;files&#x2F;local&#x2F;**&quot;</span><br><span class="line">configmapStrings: &quot;configmaps&#x2F;strings&#x2F;local.yaml&quot;</span><br><span class="line">configmapJobsFiles: &quot;configmaps&#x2F;jobs&#x2F;local&#x2F;**&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Job template</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: batch&#x2F;v1</span><br><span class="line">kind: Job</span><br><span class="line">metadata:</span><br><span class="line">  name: worker</span><br><span class="line">  namespace: default</span><br><span class="line">  labels:</span><br><span class="line">    app: worker</span><br><span class="line">spec:</span><br><span class="line">  ttlSecondsAfterFinished: 100</span><br><span class="line">  template:</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: worker</span><br><span class="line">        image: worker:target</span><br><span class="line">        imagePullPolicy: Never</span><br><span class="line">        command:</span><br><span class="line">          - &quot;bin&#x2F;sh&quot;</span><br><span class="line">          - &quot;-c&quot;</span><br><span class="line">          - &quot;&#x2F;go&#x2F;bin&#x2F;image_worker -sql&#x3D;&#x2F;etc&#x2F;sql&#x2F;postgres.txt -custom&#x3D;$&#123;CUSTOM_ID&#125;&quot;</span><br><span class="line">        volumeMounts:</span><br><span class="line">          - name: postgre-sql</span><br><span class="line">            mountPath: &#x2F;etc&#x2F;sql</span><br><span class="line">      restartPolicy: Never</span><br><span class="line">      volumes:</span><br><span class="line">        - name: postgre-sql</span><br><span class="line">          configMap:</span><br><span class="line">            name: configs</span><br><span class="line">            items:</span><br><span class="line">              - key: postgres.txt</span><br><span class="line">                path: postgres.txt</span><br><span class="line">  backoffLimit: 0</span><br></pre></td></tr></table></figure>
+
+<p>Golang program read in Job template YAML as an parameter by golang flag and parse YAML to client-go Job spec. You can then customize Job setting. Beware that the InClusterConfig only work when running program within cluster.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">package k8sutil</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"> &quot;context&quot;</span><br><span class="line"> &quot;fmt&quot;</span><br><span class="line"> &quot;os&quot;</span><br><span class="line"> &quot;strings&quot;</span><br><span class="line"></span><br><span class="line"> batchv1 &quot;k8s.io&#x2F;api&#x2F;batch&#x2F;v1&quot;</span><br><span class="line"> metav1 &quot;k8s.io&#x2F;apimachinery&#x2F;pkg&#x2F;apis&#x2F;meta&#x2F;v1&quot;</span><br><span class="line"> &quot;k8s.io&#x2F;client-go&#x2F;kubernetes&quot;</span><br><span class="line"> &quot;k8s.io&#x2F;client-go&#x2F;kubernetes&#x2F;scheme&quot;</span><br><span class="line"> &quot;k8s.io&#x2F;client-go&#x2F;rest&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func connectToK8s() (*kubernetes.Clientset, error) &#123;</span><br><span class="line"> &#x2F;&#x2F; creates the in-cluster config</span><br><span class="line"> config, err :&#x3D; rest.InClusterConfig()</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;failed to create in-cluster cofig: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; creates the clientset</span><br><span class="line"> clientset, err :&#x3D; kubernetes.NewForConfig(config)</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;failed to create k8s client set: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> return clientset, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func resolveJobTemplate(imageWorkerJobYamlPath string) (*batchv1.Job, error) &#123;</span><br><span class="line"> &#x2F;&#x2F; read in k8s yaml file</span><br><span class="line"> b, err :&#x3D; os.ReadFile(imageWorkerJobYamlPath)</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;failed to read job yaml file: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; deserialize k8s yaml to k8s object</span><br><span class="line"> decode :&#x3D; scheme.Codecs.UniversalDeserializer().Decode</span><br><span class="line"> obj, groupVersionKind, err :&#x3D; decode([]byte(b), nil, nil)</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return nil, fmt.Errorf(&quot;failed to decode yaml file to object: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> var job *batchv1.Job</span><br><span class="line"> if groupVersionKind.Kind &#x3D;&#x3D; &quot;Job&quot; &#123;</span><br><span class="line">  job &#x3D; obj.(*batchv1.Job)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> return job, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; LaunchImageWorkerK8sJob luach a worker job with specific job name and customID</span><br><span class="line">func LaunchImageWorkerK8sJob(ctx context.Context, jobName string, customID string, imageWorkerJobYamlPath string) error &#123;</span><br><span class="line"> &#x2F;&#x2F; resolve kubernate job template</span><br><span class="line"> jobSpec, err :&#x3D; resolveJobTemplate(imageWorkerJobYamlPath)</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return fmt.Errorf(&quot;failed to resolve kubernate job template: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; connect to k8s</span><br><span class="line"> clientset, err :&#x3D; connectToK8s()</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return fmt.Errorf(&quot;failed to connect to kubernate: %v&quot;, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; customize Job setting</span><br><span class="line"> &#x2F;&#x2F; job name setting</span><br><span class="line"> jobSpec.ObjectMeta.Name &#x3D; jobName</span><br><span class="line"> &#x2F;&#x2F; replace customiD flag with target customID</span><br><span class="line"> commandWithFlag :&#x3D; jobSpec.Spec.Template.Spec.Containers[0].Command[2]</span><br><span class="line"> replaceCustomIDFlag :&#x3D; strings.Replace(commandWithFlag, &quot;$&#123;CUSTOM_ID&#125;&quot;, customID, 1)</span><br><span class="line"> jobSpec.Spec.Template.Spec.Containers[0].Command[2] &#x3D; replaceCustomIDFlag</span><br><span class="line"></span><br><span class="line"> namespace :&#x3D; jobSpec.Namespace</span><br><span class="line"></span><br><span class="line"> &#x2F;&#x2F; apply k8s job</span><br><span class="line"> jobs :&#x3D; clientset.BatchV1().Jobs(namespace)</span><br><span class="line"> jobDetail, err :&#x3D; jobs.Create(ctx, jobSpec, metav1.CreateOptions&#123;&#125;)</span><br><span class="line"> if err !&#x3D; nil &#123;</span><br><span class="line">  return fmt.Errorf(&quot;failed to create kubernete job: %v \n Job detail: %v&quot;, err, jobDetail)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Reference</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/50510381/creating-a-job-with-kubernetes-client-go">Creating a Job with Kubernetes client-go</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/client-go/blob/master/examples/in-cluster-client-configuration/main.go">client-go/examples/in-cluster-client-configuration/main.go</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/60885448/how-to-run-kubectl-within-a-job-in-a-namespace">How to run kubectl within a job in a namespace?</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/client-go/issues/193">Support for parsing K8s yaml spec into client-go data structures #193</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Authenticating</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/34388593/how-to-enter-an-optional-flag-with-no-parameters-in-go-cli-program">How to enter an optional flag with no parameters in Go CLI program</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Using RBAC Authorization</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">Configure Service Accounts for Pods</a></li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/rahasak/kubernetes-http-api-with-authentication-and-authorization-c0cb7051114f">Kubernetes HTTP API with Authentication and Authorization</a></li>
+<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/">Kubelet authentication/authorization</a></li>
+<li><a target="_blank" rel="noopener" href="https://iximiuz.com/en/posts/kubernetes-api-call-simple-http-client/">How To Call Kubernetes API using Simple HTTP Client</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fat Cat Clubs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/Database-Cache-Consistency-Strategies/" class="post-title-link" itemprop="url">Database Cache Consistency Strategies</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-07 23:28:11 / Modified: 23:47:11" itemprop="dateCreated datePublished" datetime="2023-09-07T23:28:11+08:00">2023-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/System-Design/" itemprop="url" rel="index"><span itemprop="name">System Design</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Database-Cache-Consistency-Strategies"><a href="#Database-Cache-Consistency-Strategies" class="headerlink" title="Database Cache Consistency* Strategies**"></a>Database Cache Consistency* Strategies**</h1><ul>
+<li>Cache Aside</li>
+<li>Read/Write Through</li>
+<li>Write Behind Caching</li>
+</ul>
+<h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
+<ul>
+<li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
+<li>Cache hit: The application retrieves data from the cache and returns.</li>
+<li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
+<p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
+<p>Consider the following situation.</p>
+<img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
+
+<p>inconsistency between the cache and the database</p>
+<p>However, the probability of occurrence may be very low in practice, because the write operation of the database is slower than the read operation. To avoid inconsistency of data, you can set a timeout on data in cache and it will automatically be deleted in a time period.</p>
+<h1 id="Read-Write-Through-Pattern"><a href="#Read-Write-Through-Pattern" class="headerlink" title="Read/Write Through Pattern"></a><strong>Read/Write Through Pattern</strong></h1><p><em>Strong Database Cache Consistency</em></p>
+<p>Application views the backend as a single storage, and the storage maintains its own Cache.</p>
+<p><strong>Read Through</strong></p>
+<p>The application doesn’t orchestrate where to read the data from (cache or database). Instead, it always reads data through the cache. When the cache is invalid (expired or LRU swapped out) during query operation(request), the cache service itself loads data from database.</p>
+<p><strong>Write Through</strong></p>
+<p>The Write Through is similar to Read Through, but happens when data is updated. When there is data updated,</p>
+<ul>
+<li>if the cache is not hit, update the database directly, and then return.</li>
+<li>If the cache is hit, the cache is updated, and updates the data in database. Both operations happen in a single transaction(this is a synchronous operation)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
+<p>It does create some extra latency on writes but at least it improves the data inconsistency problem greatly as the data in the cache and data storage is the same. Another advantage is, because application only talks to the cache, the code is much cleaner and simpler.</p>
+<h1 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a><strong>Write Behind Caching Pattern</strong></h1><p><em>Eventually Database Cache Consistency</em></p>
+<p>Write-behind(also call Write Back) caching Pattern is similar to the write-through cache in a way that application only communicates with the cache. The difference is that the data gets written to the cache first. And then, written to the underlying database asynchronously. The advantage of this design is that the I/O operation of the data is extremely fast. Also, due to asynchronous update in database, the writes can be collected and then does a batch write to the database.</p>
+<p>However, the problem with this is that the data is not strongly consistent and may be lost. To tackle the data inconsistency problem a system could combine the write-behind strategy with the read-through strategy. In this way up to date data is always to be read from the cache. In addition, the implementation logic of Write Back is more complicated, because it needs to track which data has been updated and needs to be stored in database.</p>
+<p>When we compare it to the write-through strategy, it fits more for systems with large write and read volume that tolerate some data inconsistency. Another useful case is that when execution order of data updated doesn’t matter, like the number of page views, every time the user clicks, this field in the database is incremented by one. Execution order of SQL/request would not cause thread safety problem in concurrently write and read, since each SQL/request does the same(page views field incremented by one).</p>
+<h1 id="Final"><a href="#Final" class="headerlink" title="Final"></a><strong>Final</strong></h1><p>We do not consider the transaction of the cache and under layer storage. For example, the cache is updated successfully, but the update of the database fails. Or the other way reverse. If you need strong consistency, you need to consider Transaction Processing in a Distributed System, like “two-phase commit protocol” — — prepare, commit/rollback.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><p><a target="_blank" rel="noopener" href="https://danielw.cn/cache-consistency-with-database#concepts">Cache Consistency with Database</a></p>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Caching Strategies Overview</a></p>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">缓存更新的套路</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">Cache (computing)</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cache-aside">Cache-Aside pattern</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fat Cat Clubs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/" class="post-title-link" itemprop="url">Index Locking In MySQL8 with InnoDB</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-07 23:26:30 / Modified: 23:39:05" itemprop="dateCreated datePublished" datetime="2023-09-07T23:26:30+08:00">2023-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MySQL-data-structures-for-Index"><a href="#MySQL-data-structures-for-Index" class="headerlink" title="MySQL data structures for Index"></a><strong>MySQL data structures for Index</strong></h1><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/index-btree-hash.html">8.3.9 Comparison of B-Tree and Hash Indexes</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7306316/b-tree-vs-hash-table">B-Tree vs Hash Table</a></p>
+<ul>
+<li>Hash Table: You can only access elements by their primary key <code>O(1)</code>. When you select ranges (<em>everything in between <code>x</code> and <code>y</code></em>) can result in a full table scan <code>O(n)</code> . There may be a point where your index exceeds a tolerable size compared to your hash sizes and your entire index needs to be re-built.</li>
+<li>Tree algorithms support ranges selecting in <em><code>log(n)</code></em> , elements accessing and inserting by their primary key in <em><code>log(n)</code></em> .</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Page Splitting: Create a new table with<code>NOT NULL PRIMARY KEY AUTO_INCREMENT</code> to avoid vacancy in page(higher memory usage) and to ensure orderly insertion(higher performance).</li>
+<li>Primary key type: The smaller the length of the primary key, result in smaller occupied space by the ordinary index(leaf nodes in Indexes other than the primary key → primary key).</li>
+</ul>
+<h1 id="MySQL-Clustered-and-Secondary-Indexes"><a href="#MySQL-Clustered-and-Secondary-Indexes" class="headerlink" title="MySQL Clustered and Secondary Indexes"></a><strong>MySQL Clustered and Secondary Indexes</strong></h1><blockquote>
+<p>15.6.2.1 Clustered and Secondary Indexes</p>
+<p><em>Each <code>InnoDB</code> table has a special index called the clustered index that stores row data. Typically, the clustered index is synonymous with the primary key.</em></p>
+</blockquote>
+<ul>
+<li>Select by primary key → find in clustered index B+ tree → get the required data(row).</li>
+<li>Select by Indexes other than the primary key → find in secondary index B+ tree→ get the primary key for data → find in clustered index B+ tree → get the required data(row).</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.red-gate.com/simple-talk/databases/sql-server/learn/using-covering-indexes-to-improve-query-performance/">Using Covering Indexes to Improve Query Performance</a></p>
+<ul>
+<li>Covering index: The covering index contains the data to be searched through include, so that the SQL query can get the required data without reaching the basic table.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.mysqltutorial.org/mysql-index/mysql-prefix-index/">MySQL Prefix Index</a></p>
+<ul>
+<li>Prefix index: MySQL allows you to create an index for the leading part of the column values of the string columns using the following syntax: <code>column_name(length)</code> . Create a prefix index can save space, but may increase the number of query scans and make the Covering index useless.</li>
+</ul>
+<h1 id="MySQL-multiversion-concurrency-control-MVCC"><a href="#MySQL-multiversion-concurrency-control-MVCC" class="headerlink" title="MySQL multiversion concurrency control (MVCC)"></a><strong>MySQL multiversion concurrency control (MVCC)</strong></h1><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html">15.7.2.4 Locking Reads</a></p>
+<ul>
+<li>SELECT … FOR SHARE: Sets a shared mode lock on any rows that are read. Other sessions can read the rows, but cannot modify them until your transaction commits.</li>
+<li>SELECT … FOR UPDATE: For index records the search encounters, locks the rows and any associated index entries, the same as if you issued an <code>UPDATE</code> statement for those rows.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/commit.html">13.3.1 START TRANSACTION, COMMIT, and ROLLBACK Statements</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-consistent-read.html">15.7.2.3 Consistent Nonlocking Reads</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-multi-versioning.html">15.3 InnoDB Multi-Versioning</a></p>
+<ul>
+<li>The snapshot of the database state applies to <code>[SELECT](https://dev.mysql.com/doc/refman/8.0/en/select.html)</code> statements within a transaction, not necessarily to <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_dml">DML</a> statements.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># suppose command below are in each transaction, REPEATABLE READ# Snapshot&#x2F;Consistent read, no lock (MVCC, redo log), each consistent read within a transaction sets and reads its own fresh snapshot.</span><br><span class="line">select * from table where id &#x3D; ?;</span><br><span class="line">-----------------------------------------------------------------# See the “freshest” state of the database, A SELECT blocks until the transaction containing the freshest rows ends.# set S lock</span><br><span class="line">select * from table where id &#x3D; ? for share;# set X lock</span><br><span class="line">select * from table where id &#x3D; ? for update;show engine innodb status;</span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL-Lock"><a href="#MySQL-Lock" class="headerlink" title="MySQL Lock"></a><strong>MySQL Lock</strong></h1><h2 id="Lock-types-for-MySQL-server"><a href="#Lock-types-for-MySQL-server" class="headerlink" title="Lock types for MySQL server:"></a><strong>Lock types for MySQL server:</strong></h2><p><strong><em>1.Table Lock (</em></strong><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/lock-tables.html">13.3.6 LOCK TABLES and UNLOCK TABLES Statements</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLES</span><br><span class="line">    tbl_name [[AS] alias] lock_type</span><br><span class="line">    [, tbl_name [[AS] alias] lock_type] ...lock_type: &#123;</span><br><span class="line">    READ [LOCAL]</span><br><span class="line">  | [LOW_PRIORITY] WRITE</span><br><span class="line">&#125;UNLOCK TABLES</span><br></pre></td></tr></table></figure>
+
+<p>A session can release its table locks explicitly with <code>UNLOCK TABLES</code>. If the connection for a client session terminates, whether normally or abnormally, the server implicitly releases all table locks held by the session (transactional and nontransactional). Since InnoDB supports row-level locking, we rarely use LOCK TABLES command.</p>
+<p><strong><em>2. MDL(Meta data lock) (</em></strong><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/metadata-locking.html">8.11.4 Metadata Locking</a>)</p>
+<p>MDL is added automatically when accesses a table. MySQL uses metadata locking to manage concurrent access to database objects and to ensure data consistency. The server achieves this by acquiring metadata locks on tables used within a transaction and deferring release of those locks until the transaction ends. MDL read lock is added when you manipulate data in a table(DML — Data Manipulation Language). MDL read lock is added when you perform a Data Definition Language(DDL) operation or <code>LOCK TABLES</code> on a table.</p>
+<ul>
+<li>Meta data Read lock: Read locks are not mutually exclusive, so you can have multiple threads adding, deleting, modifying, and querying a table at the same time.</li>
+<li>Meta data Write lock: Read-write locks and write locks are mutually exclusive to ensure the security of operations that change the table structure. Therefore, if two threads want to add fields to a table at the same time, one of them will not start executing until the other is finished.</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Long transaction:</li>
+</ul>
+<ol>
+<li>DML(<strong><em>MDL read</em></strong>) block DDL(<strong><em>MDL write</em></strong>): If session A operate a DML on table Z, the fellowing DDL operation on table Z will be blocked until transaction in session A completes. To solve this problem, check <code>innodb_trx</code> table in <code>information_schema</code> before DDL operation. Another solution is to set wait time in the DDL statement to avoid blocking fellow operation when fail in MDL acquirement. (<code>ALTER TABLE tbl_name WAIT N add column …</code>). The Performance Schema <code>[metadata_locks](https://dev.mysql.com/doc/refman/8.0/en/performance-schema-metadata-locks-table.html)</code> table exposes metadata lock information, which can be useful for seeing which sessions hold locks, are blocked waiting for locks, and so forth.</li>
+<li>DDL(<strong><em>MDL write</em></strong>) block DML(<strong><em>MDL read</em></strong>)</li>
+<li>DDL(<strong><em>MDL write</em></strong>) block DDL(<strong><em>MDL write</em></strong>)</li>
+</ol>
+<h2 id="Lock-type-for-MySQL-engine-InnoDB"><a href="#Lock-type-for-MySQL-engine-InnoDB" class="headerlink" title="Lock type for MySQL engine(InnoDB):"></a><strong>Lock type for MySQL engine(<code>InnoDB</code>):</strong></h2><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html#innodb-gap-locks">15.7.1 InnoDB Locking</a></p>
+<p><strong><em>Shared and Exclusive Locks</em></strong></p>
+<p><code>InnoDB</code> implements standard row-level locking where there are two types of locks, shared (<code>S</code>) locks and exclusive (<code>X</code>) locks.</p>
+<p><strong><em>Intention Locks</em></strong></p>
+<p>Intention locks are table-level locks that indicate which type of lock (shared or exclusive) a transaction requires later for a row in a table. There are two types of intention locks:</p>
+<ul>
+<li>An intention shared lock (<code>IS</code>) indicates that a transaction intends to set a <em>shared</em> lock on individual rows in a table.</li>
+<li>An intention exclusive lock (<code>IX</code>) indicates that a transaction intends to set an exclusive lock on individual rows in a table.</li>
+</ul>
+<p>The main purpose of intention locks is to directly determine whether there is a lock conflict based on whether the intention lock exists.</p>
+<ul>
+<li>Before a transaction can acquire a shared lock on a row in a table, it must first acquire an <code>IS</code> lock or stronger on the table.</li>
+<li>Before a transaction can acquire an exclusive lock on a row in a table, it must first acquire an <code>IX</code> lock on the table.</li>
+</ul>
+<p><strong><em>1.Record Locks</em></strong></p>
+<p>Record locks always lock index records, even if a table is defined with no indexes. For such cases, <code>InnoDB</code> creates a hidden clustered index and uses this index for record locking.</p>
+<p><strong><em>2.Gap Locks</em></strong></p>
+<p>A gap lock is a lock on a gap between index records, or a lock on the gap before the first or after the last index record. For example, <code>SELECT c1 FROM t WHERE c1 BETWEEN 10 and 20 FOR UPDATE;</code> prevents other transactions from inserting a value of <code>15</code> into column <code>t.c1</code>, whether or not there was already any such value in the column, because the gaps between all existing values in the range are locked.</p>
+<ul>
+<li>Gap locking is not needed for statements that lock rows using a unique index to search for a unique row. (This does not include the case that the search condition includes only some columns of a multiple-column unique index; in that case, gap locking does occur.).</li>
+<li>Gap locks can co-exist. A gap lock taken by one transaction does not prevent another transaction from taking a gap lock on the same gap. There is no difference between shared and exclusive gap locks. They do not conflict with each other, and they perform the same function.</li>
+<li>Gap locking can be disabled explicitly. This occurs if you change the transaction isolation level to <code>READ COMMITTED</code>(MySQL default transaction isolation level:<code>REPEATABLE READ</code> ) .Gap locks exist when the isolation level is <code>REPEATABLE READ</code> and <code>SERIALIZABLE.</code></li>
+</ul>
+<p><strong><em>3. Next-Key Locks</em></strong></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/56828411/why-next-key-lock-is-called-this-way">Why Next-Key lock is called this way?</a></p>
+<p>A next-key lock is a combination of a record lock on the index record and a gap lock on the <strong><em>gap</em> <em>before the index record</em></strong>.</p>
+<p>By default, <code>InnoDB</code> operates in <code>REPEATABLE READ</code> transaction isolation level. In this case, <code>InnoDB</code> uses next-key locks for searches and index scans, which prevents phantom rows (see <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-next-key-locking.html">Section 15.7.4, “Phantom Rows”</a>).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;t&#96; (</span><br><span class="line">  &#96;pId&#96; int(10) NOT NULL,</span><br><span class="line">  &#96;name&#96; varchar(10) DEFAULT NULL,</span><br><span class="line">  &#96;num&#96; int(10) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;pId&#96;),</span><br><span class="line">  KEY &#96;num&#96; (&#96;num&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB;covering index: num</span><br><span class="line">primary index: pId------------------------------------</span><br><span class="line">pId(int) | name(varchar) | num(int)</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 2       |      Atom     |   55</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 5       |      Bom      |   22</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 9       |     Cindy     |   33</span><br><span class="line">------------------------------------select * from table where name &#x3D; &#96;Bom&#96; for update;</span><br><span class="line"> --&gt; scan all clustered index(pid) in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 2, 5, 9</span><br><span class="line"> --&gt; addGap Lockson clustered index (-∞,2)(2,5)(5,9)(9,+∞)select * from table where pid &#x3D; 2 for update;</span><br><span class="line"> --&gt; scan pid &#x3D; 2 on clustered index(pid) in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 2select * from table where pid &#x3D; 7 for update;</span><br><span class="line"> --&gt; scan pid &#x3D; 7 on clustered index(pid) in table, not exist</span><br><span class="line"> --&gt; addGap Lockson clustered index (5, 9)select * from table where num &#x3D; 33 for share;</span><br><span class="line"> --&gt; scan secondary index(num) in table</span><br><span class="line"> --&gt; addRecord Lockson secondary index 33</span><br><span class="line"> --&gt; addGap Lockson secondary index (22,33)(33,55)select * from table where num &#x3D; 33 for update;</span><br><span class="line"> --&gt; scan secondary index(num) in table</span><br><span class="line"> --&gt; addRecord Lockson secondary index 33</span><br><span class="line"> --&gt; addGap Lockson secondary index (22,33)(33,55)</span><br><span class="line"> --&gt; scan clustered index(pid) by secondary index 33 in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 9</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Long transaction.</li>
+<li>Dead lock:</li>
+</ul>
+<ol>
+<li>set <code>innodb_lock_wait_timeout</code> to avoid long blocking.</li>
+<li><code>innodb_deadlock_detect = on</code> If a deadlock is found, roll back a transaction in the deadlock chain to let other transactions continue to execute.</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fat Cat Clubs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/" class="post-title-link" itemprop="url">Encoding: Character Encoding, URL Encoding and Base64 Encoding</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-07 23:11:43 / Modified: 23:16:26" itemprop="dateCreated datePublished" datetime="2023-09-07T23:11:43+08:00">2023-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/encoding/" itemprop="url" rel="index"><span itemprop="name">encoding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding"><a href="#Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding" class="headerlink" title="Encoding: Character Encoding, URL Encoding and Base64 Encoding"></a>Encoding: Character Encoding, URL Encoding and Base64 Encoding</h1><h1 id="Character-Encoding"><a href="#Character-Encoding" class="headerlink" title="Character Encoding"></a><strong>Character Encoding</strong></h1><p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
+<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a><strong>ASCII</strong></h2><p>In the early days of the internet, we didn’t need to worry about any characters other than english. We use <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/ASCII">American Standard Code for Information Interchange (ASCII)</a> , one byte (eight bits), to map a-z, A-Z , 0–9 and some control characters.</p>
+<p>As you can imagine, there are hundreds of languages in the world. one byte is not enough for some language like Chinese or Japanese. Each country has its own standards, result in garbled characters displayed in multi-language mixed text.</p>
+<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a><strong>Unicode</strong></h2><p>Unicode is sometimes called the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Universal_Coded_Character_Set">Universal Coded Character Set</a> (UCS), or even ISO/IEC 10646. Unicode is made up of lots of code points (mapping lots of characters from around the world to a key that all computers can reference.) A collection of code points is called a character set, which is what Unicode is. Unicode unifies all languages into one set of codes, so that there will be no more garbled characters.</p>
+<h2 id="Unicode-Transform-Protocol-UTF"><a href="#Unicode-Transform-Protocol-UTF" class="headerlink" title="Unicode Transform Protocol (UTF)"></a><strong>Unicode Transform Protocol (UTF)</strong></h2><p>UTF is a way we encode Unicode code points. The UTF encodings are defined by the Unicode standard, and are able to encode every single Unicode code point we need.</p>
+<p>There are different types of UTF standards. They differ depending on the amount of bytes used to encode one code point. It also depends on whether you’re using UTF-8 (one byte per code point), UTF-16 (two bytes per code point) or UTF-32 (four bytes per code point).</p>
+<p>To signal which Unicode character encoding (UTF-8, UTF-16, UTF-32) is used, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Byte_order_mark">Byte order mark (BOM)</a> is a two-byte marker at the beginning of a text that indicate what encoding is used.</p>
+<h2 id="UTF-8"><a href="#UTF-8" class="headerlink" title="UTF-8"></a><strong>UTF-8</strong></h2><p>UTF-8 encodes all the Unicode code points from 0–127 in 1 byte (the same as ASCII). UTF encoding that converts Unicode encoding into “variable length character encoding” depend on the character you want to display. English letters are encoded into 1 byte ( 8 bits, the minimum number of bits that a UTF-8 code point will be) . Chinese and Japanese characters are are represented with 3 bytes. Some very rare characters will be encoded into 4–6 bytes. UTF-8 encoding can save space when transmitting and saving.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  character   |     ASCII     |    Unicode(UCS-16)  |      UTF-8</span><br><span class="line">--------------|---------------|---------------------|-------------------</span><br><span class="line">      A       |    01000001   |   00000000 01000001 |     01000001</span><br></pre></td></tr></table></figure>
+
+<h2 id="HTML-charset-Attribute"><a href="#HTML-charset-Attribute" class="headerlink" title="HTML charset Attribute"></a><strong>HTML charset Attribute</strong></h2><p>To display an HTML page correctly, a web browser must know the character set used in the page. This is specified in the <code>&lt;meta&gt;</code> tag:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset&#x3D;&quot;utf-8&quot;&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Text-Storage"><a href="#Text-Storage" class="headerlink" title="Text Storage"></a><strong>Text Storage</strong></h2><p>Unicode encoding is uniformly used in computer memory. When we need to store text on disk or transmitted over internet, text is converted to UTF-8 encoding (may be other encoding, depend on your Operating System or encoding method) for space saving. When open file , the encoding text are converted to Unicode characters in memory.</p>
+<blockquote>
+<p>How can I see which encoding is used in a file</p>
+<p><em>You can not really automatically find out whether a file was written with encoding X originally.</em></p>
+<p><em>What you can easily do though is to verify whether the complete file can be successfully decoded somehow (but not necessarily correctly) using a specific codec. If you find any bytes that are not valid for a given encoding, it must be something else.</em></p>
+<p><em>The problem is that many codecs are similar and have the same “valid byte patterns”, just interpreting them as different characters.</em></p>
+</blockquote>
+<h1 id="URL-Encoding"><a href="#URL-Encoding" class="headerlink" title="URL Encoding"></a><strong>URL Encoding</strong></h1><p>A URL (Uniform Resource Locator) is the address of a resource in the world wide web. URLs have a well-defined structure which was formulated in <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc1738">RFC 1738</a> . A URL is composed from characters including digits (0–9), letters(A-Z, a-z), and a few special characters ( “-”, “.”, “_”, “~”). If we want to transmit any character which is not a member of the above mentioned (unsafe characters like space, , &lt;, &gt;, {, } , reserved characters like ?, /, #, :), we need to encode them so that web browsers can accept and understand. URL encoding is also called percent encoding since it uses percent sign (<code>%</code>) as an escape character.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;www.example.com?name&#x3D;@Test&amp;phone&#x3D;88888888</span><br><span class="line"></span><br><span class="line">          encode value part in params       |</span><br><span class="line">                                           \|?</span><br><span class="line"></span><br><span class="line">http:&#x2F;&#x2F;www.example.com?name&#x3D;%40Test&amp;phone&#x3D;%2B919999999999</span><br></pre></td></tr></table></figure>
+
+<h1 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a><strong>Base64</strong></h1><p>Base64 is a group of similar binary-to-text encoding schemes that represent binary data in an ASCII string format by translating it into a radix-64 representation. Base64 encoding schemes are commonly used when there is a need to encode binary data that needs to be stored and transferred over media that are designed to deal with ASCII. This is to ensure that the data remain intact without modification during transport. The resultant string of base 64 encoded data is always larger than the original. Another important distinction is that base 64 does not encrypt any information.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.freecodecamp.org/news/everything-you-need-to-know-about-encoding/">Unicode Characters — What Every Developer Must Know About Encoding</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2021/08/05/Character-Encoding-Problems-for-Windows-and-Linux">分享幾個在 Windows 與 Linux 常見的編碼問題與解決方案</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2152738/why-do-you-need-to-encode-urls">Why do you need to encode URLs?</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.urlencoder.io/learn/">What is URL Encoding and How does it work?</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/3538021/why-do-we-use-base64">Why do we use Base64?</a></li>
+<li><a target="_blank" rel="noopener" href="https://bunny.net/academy/http/what-is-base64-encoding-and-decoding/">What is Base 64 Encoding?</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/Base64">Base64</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/09/Blog3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -164,7 +641,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Digging">
+      <meta itemprop="name" content="Fat Cat Clubs">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -297,7 +774,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Digging">
+      <meta itemprop="name" content="Fat Cat Clubs">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -452,7 +929,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Digging">
+      <meta itemprop="name" content="Fat Cat Clubs">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -721,7 +1198,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Digging">
+      <meta itemprop="name" content="Fat Cat Clubs">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -904,20 +1381,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
