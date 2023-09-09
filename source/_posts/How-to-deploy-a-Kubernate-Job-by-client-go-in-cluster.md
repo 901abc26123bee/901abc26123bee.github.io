@@ -1,9 +1,9 @@
 ---
 title: How to deploy a Kubernate Job by client-go in cluster
 date: 2023-09-07 23:47:47
-categories: Kubernate
+categories: Kubernete
 tags:
-- Kubernate
+- Kubernete
 - ServiceAccount
 ---
 
