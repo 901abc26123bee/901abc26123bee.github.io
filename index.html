@@ -155,6 +155,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/25/Debouncing-mechanism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/12/25/Debouncing-mechanism/" class="post-title-link" itemprop="url">Debouncing mechanism</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-12-25 12:38:26 / Modified: 17:08:15" itemprop="dateCreated datePublished" datetime="2023-12-25T12:38:26+08:00">2023-12-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Debounce/" itemprop="url" rel="index"><span itemprop="name">Debounce</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window.</p>
+<ul>
+<li>Button Clicks</li>
+<li>Event Handling</li>
+<li>Throttling</li>
+</ul>
+<h2 id="Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails"><a href="#Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails" class="headerlink" title="Debouncing to ensure that only the final input registers or prevails"></a>Debouncing to ensure that only the final input registers or prevails</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">--|--|--|--|--|--|--|--|-------------------|--|--|--|--|</span><br><span class="line">                       trigger                         trigger</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/bep/debounce/blob/master/debounce.go">reference code</a><br>This code snippet provides a simpler and more lightweight debouncing mechanism. The debouncer function takes a callback function and ensures that it is called only after a specified time duration has passed since the last invocation.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debounceDelay = <span class="number">1</span> * time.Second</span><br><span class="line"><span class="keyword">const</span> eventTriggerInterval = <span class="number">500</span> * time.Millisecond</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// Create a debouncer with a 500ms delay</span></span><br><span class="line">	debounce := New(debounceDelay)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a channel to receive events</span></span><br><span class="line">	eventChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Goroutine to listen to the channel and debounce events</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="comment">// Wait for an event to be received on the channel</span></span><br><span class="line">			&lt;-eventChannel</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Trigger the debouncer with the function you want to execute</span></span><br><span class="line">			debounce(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				<span class="comment">// Your code to be executed after the debounce delay</span></span><br><span class="line">				<span class="built_in">println</span>(<span class="string">&quot;Event debounced&quot;</span>)</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Simulate events by sending to the channel</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;event %d at time %v\n&quot;</span>, i, time.Now())</span><br><span class="line">		<span class="comment">// Simulate an event by sending to the channel</span></span><br><span class="line">		eventChannel &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Sleep for a short duration to simulate time passing between events</span></span><br><span class="line">		time.Sleep(eventTriggerInterval)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Wait for some time to allow debouncer to process the last event</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// The debounced function can be invoked with different functions, if needed,</span></span><br><span class="line"><span class="comment">// the last one will win.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">(after time.Duration)</span> <span class="title">func</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">	d := &amp;debouncer&#123;after: after&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">		d.add(f)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> debouncer <span class="keyword">struct</span> &#123;</span><br><span class="line">	mu    sync.Mutex</span><br><span class="line">	after time.Duration</span><br><span class="line">	timer *time.Timer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *debouncer)</span> <span class="title">add</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">	d.mu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> d.mu.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> d.timer != <span class="literal">nil</span> &#123;</span><br><span class="line">		d.timer.Stop()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a new timer and start it</span></span><br><span class="line">	d.timer = time.AfterFunc(d.after, f)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Debouncing-for-fine-grained-control-over-frequent-events-achieving-precise-timing-control"><a href="#Debouncing-for-fine-grained-control-over-frequent-events-achieving-precise-timing-control" class="headerlink" title="Debouncing for fine-grained control over frequent events, achieving precise timing control"></a>Debouncing for fine-grained control over frequent events, achieving precise timing control</h2><p>This code provides a more comprehensive implementation to handle frequent events with precise timing control. The triggers are collected in a channel, and the debouncing logic ensures that only the last trigger within a specified interval is processed.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-----|-----|-----|-----|-----|-----|-----|-----|-----=-----------|----- ----- -----=-----</span><br><span class="line">              trigger           trigger           trigger                      trigger</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;runtime&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">	<span class="string">&quot;sync/atomic&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> debounceInterval time.Duration = <span class="number">3</span> * time.Second</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// Set the time interval for the ticker</span></span><br><span class="line">	interval := <span class="number">1</span> * time.Second</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Set the total duration to listen to the ticker</span></span><br><span class="line">	totalDuration := <span class="number">10</span> * time.Second</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a ticker that ticks at the specified interval</span></span><br><span class="line">	ticker := time.NewTicker(interval)</span><br><span class="line">	<span class="keyword">defer</span> ticker.Stop()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a channel to signal the end of the program after the specified duration</span></span><br><span class="line">	done := time.After(totalDuration)</span><br><span class="line"></span><br><span class="line">	manager := &amp;ResourceManager&#123;</span><br><span class="line">		TriggerTimes: <span class="built_in">make</span>(<span class="keyword">chan</span> time.Time, <span class="number">100</span>),</span><br><span class="line">		Done:         <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;, <span class="number">1</span>),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">		manager.DebounceTrigger()</span><br><span class="line"></span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Start a loop to listen to ticker events</span></span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> &lt;-ticker.C:</span><br><span class="line">			<span class="comment">// Do something on each tick</span></span><br><span class="line">			fmt.Println(<span class="string">&quot;Tick&quot;</span>)</span><br><span class="line">			manager.TriggerTimes &lt;- time.Now()</span><br><span class="line">		<span class="keyword">case</span> &lt;-done:</span><br><span class="line">			<span class="comment">// Break out of the loop after the specified duration</span></span><br><span class="line">			fmt.Println(<span class="string">&quot;Time&#x27;s up!&quot;</span>)</span><br><span class="line">			manager.Done &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">			numGoroutines := runtime.NumGoroutine()</span><br><span class="line">			fmt.Println(numGoroutines)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> ResourceManager <span class="keyword">struct</span> &#123;</span><br><span class="line">	mutex sync.Mutex</span><br><span class="line">	<span class="comment">// TriggerTimes define a channel that collects the receiving time of each message from the callback channel.</span></span><br><span class="line">	TriggerTimes <span class="keyword">chan</span> time.Time</span><br><span class="line">	Done         <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *ResourceManager)</span> <span class="title">DebounceTrigger</span><span class="params">()</span></span> &#123;</span><br><span class="line">	expectedTime := time.Now()</span><br><span class="line">	ignoredAtomic := atomic.Bool&#123;&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> t := <span class="keyword">range</span> m.TriggerTimes &#123;</span><br><span class="line">		<span class="keyword">if</span> t.After(expectedTime) &#123;</span><br><span class="line">			expectedTime = time.Now().Add(debounceInterval)</span><br><span class="line">			fmt.Println(<span class="string">&quot;update expectedTime&quot;</span>)</span><br><span class="line">			<span class="comment">// insert a new event to m.TriggerTimes after debounceInterval.</span></span><br><span class="line">			<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				<span class="comment">// since AfterFunc is blocking, need to run in another thread.</span></span><br><span class="line">				time.AfterFunc(debounceInterval, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">					<span class="comment">// load the ignored boolean and reset it.</span></span><br><span class="line">					<span class="keyword">if</span> ignored := ignoredAtomic.Swap(<span class="literal">false</span>); ignored &#123;</span><br><span class="line">						fmt.Printf(<span class="string">&quot;do process with time %v \n&quot;</span>, t)</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;)</span><br><span class="line">			&#125;()</span><br><span class="line"></span><br><span class="line">			fmt.Printf(<span class="string">&quot;do process with time %v \n&quot;</span>, t)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			ignoredAtomic.Store(<span class="literal">true</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/12/20/Golang-CSP-Channel-And-Gorutine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1232,139 +1320,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/09/Blog3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="WongJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatCat">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/09/Blog3/" class="post-title-link" itemprop="url">從零搭建Blog part3： 圖片和其他資源</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-10-09 23:51:33" itemprop="dateCreated datePublished" datetime="2020-10-09T23:51:33+08:00">2020-10-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-07 23:00:56" itemprop="dateModified" datetime="2023-09-07T23:00:56+08:00">2023-09-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index"><span itemprop="name">Blog</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="從零搭建Blog-part3：-圖片和其他資源"><a href="#從零搭建Blog-part3：-圖片和其他資源" class="headerlink" title="從零搭建Blog part3： 圖片和其他資源"></a>從零搭建Blog part3： 圖片和其他資源</h1><h2 id="絕對路徑本地引用"><a href="#絕對路徑本地引用" class="headerlink" title="# 絕對路徑本地引用"></a># 絕對路徑本地引用</h2><p>當Hexo項目中只用到少量圖片時，可以將圖片統一放在source/images文件夾中，通過markdown語法訪問它們。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](&#x2F;images&#x2F;image.jpg)</span><br></pre></td></tr></table></figure>
-
-<p>圖片既可以在首頁內容中訪問到，也可以在文章正文中訪問到。</p>
-<ul>
-<li><p><code>![example](assetsTest/example.png)</code></p>
-<p>幾乎所有的 markdown 編輯器都支持的相對引用的寫法，在markdown 編輯器的預覽視圖中都能正常顯示圖片，但在主頁和文章中無法正常顯示。</p>
-</li>
-</ul>
-<p>為了解決無法在主頁和文章中正常顯示的問題，需要安裝<a target="_blank" rel="noopener" href="https://github.com/xcodebuild/hexo-asset-image">hexo-asset-image</a>插件：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image@0.0.1 --save</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="相對路徑本地引用"><a href="#相對路徑本地引用" class="headerlink" title="# 相對路徑本地引用"></a># 相對路徑本地引用</h2><p>圖片除了可以放在統一的images文件夾中，還可以放在文章自己的目錄中。文章的目錄可以通過站點配置文件_config.yml來生成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#_config.yml</span><br><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
-
-<p>config.yml文件中的配置項<code>post_asset_folder</code>設為<code>true</code>後，執行命令<code>$ hexo new post_nam</code>e，在source/_posts中會生成文章<code>post_name.md</code>和<code>同名文件夾post_name</code>。將圖片資源放在<code>post_name文件夾</code>中，文章就可以使用相對路徑引用圖片資源了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](image.jpg)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>![example](example.png)</code></p>
-<p>Hexo 官方文檔關於 markdown 的示例寫法，圖片不能在主頁正常顯示，但在文章中能正常顯示。此外，這種相對引用寫法在絕大數markdown 編輯器的預覽視圖中都無法正常顯示圖片（Typora 通過設置<code>Use Image Root Path</code> 可以解決，它會在文件頭添加<code>typora-root-url: xxxx </code>）。</p>
-</li>
-</ul>
-<h2 id="標籤插件語法引用"><a href="#標籤插件語法引用" class="headerlink" title="# 標籤插件語法引用"></a># 標籤插件語法引用</h2><p>通過常規的MarkDown語法和相對路徑引用圖片或其它資源相對方便，但是這些包含相對位置引用資源的文章在首頁，或者存檔頁面不能正常顯示。 HEXO 3開始核心代碼中加入了相對路徑引用的標籤插件，用以解決這個問題。 （在HEXO 3之前許多開發者開發類似插件，現在被官方更新後核心代碼採用了）。</p>
-<p>並且需要安裝插件，安裝方法為:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https:&#x2F;&#x2F;github.com&#x2F;7ym0n&#x2F;hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 本地圖片資源，不限製圖片尺寸</span><br><span class="line">&#123;% asset_img image.jpg This is an image %&#125;</span><br><span class="line"># 網絡圖片資源，限製圖片顯示尺寸</span><br><span class="line">&#123;% img http:&#x2F;&#x2F;www.viemu.com&#x2F;vi-vim-cheat-sheet.gif 200 400 vi-vim-cheat-sheet %&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>&#123;% asset_img example.png example %&#125;</code></p>
-<p>Hexo 官方推薦使用標籤的寫法，圖片能在主頁和文章中正常顯示，但是不能在 markdown 編輯器的預覽視圖中預覽圖片。</p>
-</li>
-</ul>
-<h3 id="啟用fancybox：點擊查看圖片大圖"><a href="#啟用fancybox：點擊查看圖片大圖" class="headerlink" title="# 啟用fancybox：點擊查看圖片大圖"></a># 啟用fancybox：點擊查看圖片大圖</h3><p>我這裡使用的是Hexo的NexT主題，NexT主題中提供了fancybox的方便接口。</p>
-<p>Usage：<a target="_blank" rel="noopener" href="https://github.com/theme-next/theme-next-fancybox3">https://github.com/theme-next/theme-next-fancybox3</a><br>markdown用法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% img http:&#x2F;&#x2F;www.viemu.com&#x2F;vi-vim-cheat-sheet.gif 600 600 &quot;點擊查看圖片大圖:vi&#x2F;vim-cheat-sheet&quot; %&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="HTML語法引用（最終手段，一定能成，推薦）"><a href="#HTML語法引用（最終手段，一定能成，推薦）" class="headerlink" title="# HTML語法引用（最終手段，一定能成，推薦）"></a># HTML語法引用（最終手段，一定能成，推薦）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;&quot;image.png&quot; width&#x3D;&quot;50%&quot; height&#x3D;&quot;50%&quot; title&#x3D;&quot;image&quot; alt&#x3D;&quot;image&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-
-<p><mark>使用此方法要注意路徑</mark></p>
-<p>config.yml文件中的配置項<code>post_asset_folder</code>設為<code>true</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ tree source&#x2F;_posts </span><br><span class="line">source&#x2F;_posts</span><br><span class="line">├── Blog1</span><br><span class="line">│   └── image1.png</span><br><span class="line">└── Blog1.md</span><br><span class="line"></span><br><span class="line"># Blog1.md 中的 HTML語法引用</span><br><span class="line">&lt;img src&#x3D;&quot;.&#x2F;image1.png&quot; width&#x3D;&quot;50%&quot; height&#x3D;&quot;50%&quot; title&#x3D;&quot;image&quot; alt&#x3D;&quot;image&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8304172/tree-command-on-osx-bash">tree command on osx bash</a></p>
-<h2 id="—Problem—"><a href="#—Problem—" class="headerlink" title="# —Problem—"></a># —Problem—</h2><p>問題推測</p>
-<p>（一）本地圖片沒有有效上傳至github倉庫中，導致引用無效</p>
-<p>解決方案：安裝外掛（回看前文）</p>
-<p>（二）本地圖片沒有存放在同名資料夾中</p>
-<p>解決方案：將需要引用的本地圖片存放在與文章名相同的資料夾中</p>
-<p>（三）圖片路徑出錯</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="# reference"></a># reference</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders.html">資源文件夾</a></p>
-<p><a target="_blank" rel="noopener" href="https://fuhailin.github.io/Hexo-images/">在Hexo博客中插入图片的各种方式</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.itread01.com/content/1542264790.html">hexo引用本地圖片無法顯示</a></p>
-<p><a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/docs/tag-plugins.html">標籤外掛（Tag Plugins）</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_32767041/article/details/103283522">Hexo 搭建个人博客（五）Hexo 资源文件夹</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1434,20 +1389,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
