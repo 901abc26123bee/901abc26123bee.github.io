@@ -25,7 +25,7 @@ Kubelet automatically mount a default ServiceAccount’s API credentials (Servic
 
 serviceAccount, Role, RoleBinding
 
-```
+```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -58,7 +58,7 @@ roleRef:
 
 deployment.yaml (program running in pod which want to access Kubernate API Server within cluster to deploy a Job)
 
-```
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -109,7 +109,7 @@ spec:
 
 configmap.yaml (render by helm, place to store Job template)
 
-```
+```yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -122,7 +122,7 @@ data:
 
 local-values.yaml (render by helm)
 
-```
+```yaml
 configmapFiles: "configmaps/files/local/**"
 configmapStrings: "configmaps/strings/local.yaml"
 configmapJobsFiles: "configmaps/jobs/local/**"
@@ -130,7 +130,7 @@ configmapJobsFiles: "configmaps/jobs/local/**"
 
 Job template
 
-```
+```yaml
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -166,7 +166,7 @@ spec:
 
 Golang program read in Job template YAML as an parameter by golang flag and parse YAML to client-go Job spec. You can then customize Job setting. Beware that the InClusterConfig only work when running program within cluster.
 
-```
+```go
 package k8sutil
 
 import (
