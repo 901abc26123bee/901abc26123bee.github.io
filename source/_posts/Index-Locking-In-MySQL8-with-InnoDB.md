@@ -4,8 +4,7 @@ date: 2023-09-07 23:26:30
 categories: MySQL
 tags:
 - MySQL
-- DB
-- SQL
+- Database
 ---
 
 # **MySQL data structures for Index**
