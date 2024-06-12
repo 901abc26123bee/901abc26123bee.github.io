@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Practical Experiences with Modern DatabasesDeadLock in transactionPrevention:  Order Resource Acquisition Consistently:Ensure that resources are acquired in a consistent order across transactions to a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Practical Experiences with Modern Databases">
+<meta property="og:url" content="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/index.html">
+<meta property="og:site_name" content="FatCat">
+<meta property="og:description" content="Practical Experiences with Modern DatabasesDeadLock in transactionPrevention:  Order Resource Acquisition Consistently:Ensure that resources are acquired in a consistent order across transactions to a">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/join_table_1.png">
+<meta property="og:image" content="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/join_table_2.png">
+<meta property="article:published_time" content="2024-06-12T14:57:40.000Z">
+<meta property="article:modified_time" content="2024-06-12T15:59:27.764Z">
+<meta property="article:author" content="WongJY">
+<meta property="article:tag" content="Database">
+<meta property="article:tag" content="PostgreSQL">
+<meta property="article:tag" content="MSSQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/join_table_1.png">
+
+<link rel="canonical" href="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>Practical Experiences with Modern Databases | FatCat</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">FatCat</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/12/Practical-Experiences-with-Modern-Databases/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Practical Experiences with Modern Databases
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-12 22:57:40 / Modified: 23:59:27" itemprop="dateCreated datePublished" datetime="2024-06-12T22:57:40+08:00">2024-06-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Practical-Experiences-with-Modern-Databases"><a href="#Practical-Experiences-with-Modern-Databases" class="headerlink" title="Practical Experiences with Modern Databases"></a>Practical Experiences with Modern Databases</h1><h2 id="DeadLock-in-transaction"><a href="#DeadLock-in-transaction" class="headerlink" title="DeadLock in transaction"></a>DeadLock in transaction</h2><p>Prevention:</p>
+<ol>
+<li><p><strong>Order Resource Acquisition Consistently:</strong><br>Ensure that resources are acquired in a consistent order across transactions to avoid circular wait conditions.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Transaction 1 (T1):</span><br><span class="line"></span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br><span class="line"></span><br><span class="line">Transaction 2 (T2):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br></pre></td></tr></table></figure>
+<p> In this example, both T1 and T2 acquire Resource A first, ensuring there is no circular wait condition:</p>
+<ul>
+<li><p>T1 acquires Resource A and waits for Resource B.</p>
+</li>
+<li><p>T2 acquires Resource B and waits for Resource A.</p>
+<p>Execute table or row operations in a consistent order within transactions to avoid deadlocks between different transactions.</p>
+<p>For more information on PostgreSQL lock monitoring and handling lock waits, refer to:</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://pganalyze.com/blog/5mins-postgres-lock-monitoring-lwlock-log-lock-waits">5mins of Postgres E25: Postgres lock monitoring, LWLocks and the log_lock_waits setting</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/35319597/how-to-stop-kill-a-query-in-postgresql">How to stop/kill a query in postgresql?</a></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Implement a Timeout Mechanism:</strong><br>Use a timeout mechanism to abort transactions that have been waiting too long, preventing long waits and potential deadlocks. For example, set <code>context.WithTimeout</code> in Golang for the root context.</p>
+</li>
+<li><p><strong>Move Query Operations Outside of Transactions if Possible:</strong><br>Whenever possible, perform query operations outside of transactions to reduce the risk of deadlocks. Additionally, shorten the duration of transactions.</p>
+</li>
+</ol>
+<h2 id="Default-Connection-Limit"><a href="#Default-Connection-Limit" class="headerlink" title="Default Connection Limit"></a>Default Connection Limit</h2><p>For microservices, it is crucial to be aware that each service has a default connection limit for both the database server and the client. As the number of services increases, you may encounter bottlenecks because all available connections can become occupied.</p>
+<p>Use PostgreSQL as an example</p>
+<ul>
+<li><p><strong>Client Side:</strong><br>If you are using an ORM package, it may provide relevant settings for the client service.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ex: gorm:</span><br><span class="line">  sqlDB.SetMaxIdleConns(defaultMaxIdleConn)</span><br><span class="line">  sqlDB.SetMaxOpenConns(defaultMaxOpenConn)</span><br><span class="line">  sqlDB.SetConnMaxLifetime(defaultLifetime)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Server Side:</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30778015/how-to-increase-the-max-connections-in-postgres">How to increase the max connections in postgres?</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION">20.3. Connections and Authentication</a></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">max_connections (integer) </span><br><span class="line">Determines the maximum number of concurrent connections to the database server. The default is typically 100 connections.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Using-Shorter-Keys-in-Indexes"><a href="#Using-Shorter-Keys-in-Indexes" class="headerlink" title="Using Shorter Keys in Indexes"></a>Using Shorter Keys in Indexes</h2><p>Using shorter keys in B-Tree indexes offers multiple benefits, including improved performance, efficient memory and storage usage, and better cache utilization.</p>
+<p>  <strong>MySQL B+ Tree Indexes:</strong><br>  MySQL uses B+ Tree indexes, which are a variation of B-Tree indexes with additional optimizations. These indexes ensure that all values are stored at the leaf level and linked in a doubly linked list, enhancing range query performance and efficiency.</p>
+<p>  <strong>PostgreSQL B-Tree Indexes:</strong><br>  PostgreSQL utilizes B-Tree indexes to efficiently manage and query large datasets. The structure and operation of these indexes can be explored in detail in the PostgreSQL documentation:<br>  <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/btree-implementation.html#:~:text=PostgreSQL%20B%2DTree%20indexes%20are,leaf%20pages%20or%20internal%20pages">PostgreSQL B-Tree Implementation doc</a></p>
+<h2 id="Create-Views-for-Frequently-Used-Join-Queries"><a href="#Create-Views-for-Frequently-Used-Join-Queries" class="headerlink" title="Create Views for Frequently Used Join Queries."></a>Create Views for Frequently Used Join Queries.</h2><p>By encapsulating frequently used queries, views ensure consistent results and reduce the need for query repetition. They can be reused across different parts of the application.</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2454113/why-is-database-view-used"><strong>Why is database view used?</strong></a></p>
+<h2 id="Database-Parameter-Limits"><a href="#Database-Parameter-Limits" class="headerlink" title="Database Parameter Limits"></a>Database Parameter Limits</h2><p>When dealing with large datasets, there’s a risk of hitting database parameter limits, which can cause performance bottlenecks. By dividing large operations into smaller chunks, systems can avoid hitting these limits while maintaining performance and scalability.</p>
+<ul>
+<li><p><strong>PostgreSQL</strong><br><a target="_blank" rel="noopener" href="https://klotzandrew.com/blog/postgres-passing-65535-parameter-limit">Passing the Postgres 65535 parameter limit at 120x speed</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gorm provide CreateInBatches function to dividing large operations into smaller chunks</span></span><br><span class="line"><span class="comment">// CreateInBatches insert the value in batches of batchSize</span></span><br><span class="line">CreateInBatches(value <span class="keyword">interface</span>&#123;&#125;, batchSize <span class="keyword">int</span>) DB</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>MSSQL</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// define mssql parameter limit, not to exceed query limit 2100</span></span><br><span class="line">MSSQL_PARAMETER_LIMIT = <span class="number">2048</span></span><br><span class="line"><span class="comment">// ChunkSlice chunk slice into chunks with size</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">ChunkSlice</span><span class="params">(slice []<span class="keyword">int64</span>, chunkSize <span class="keyword">int</span>)</span> [][]<span class="title">int64</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> chunks [][]<span class="keyword">int64</span></span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(slice); i += chunkSize &#123;</span><br><span class="line">    end := i + chunkSize</span><br><span class="line">    <span class="comment">// necessary check to avoid slicing beyond</span></span><br><span class="line">    <span class="comment">// slice capacity</span></span><br><span class="line">    <span class="keyword">if</span> end &gt; <span class="built_in">len</span>(slice) &#123;</span><br><span class="line">      end = <span class="built_in">len</span>(slice)</span><br><span class="line">    &#125;</span><br><span class="line">    chunks = <span class="built_in">append</span>(chunks, slice[i:end])</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> chunks</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// usage</span></span><br><span class="line">chunks := common.ChunkSlice(req.GetIds(), common.MSSQL_PARAMETER_LIMIT)</span><br><span class="line"><span class="keyword">for</span> _, chunk := <span class="keyword">range</span> chunks &#123;</span><br><span class="line">  <span class="comment">// query restored student plan IDs are all in same school plan</span></span><br><span class="line">  <span class="keyword">var</span> users []*db.Users</span><br><span class="line">  <span class="keyword">if</span> err := s.db.WithContext(ctx).Model(&amp;db.Users&#123;&#125;).Where(<span class="string">&quot;id IN (?) AND deleted=0&quot;</span>, chunk).Scan(&amp;users).Error; err != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>, errors.Errorf(<span class="string">&quot;failed to query users by ids, err: %v&quot;</span>, err)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ... fellowing operation</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Avoid-Generating-Temporary-Tables-for-Small-Joins"><a href="#Avoid-Generating-Temporary-Tables-for-Small-Joins" class="headerlink" title="Avoid Generating Temporary Tables for Small Joins"></a>Avoid Generating Temporary Tables for Small Joins</h2><p>When performing a join between tables that are not large, it is generally advisable to avoid generating temporary tables by selecting columns in the join condition.</p>
+<p>  <strong>PostgreSQL</strong><br>  <a target="_blank" rel="noopener" href="https://www.crunchydata.com/blog/get-started-with-explain-analyze">Explaining Your Postgres Query Performance</a></p>
+<p>  <strong>MSSQL</strong></p>
+<ul>
+<li><p><strong>generate temporary tables</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">ON</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Your query here</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    users.*, </span><br><span class="line">    a.auth_id, </span><br><span class="line">    a.auth_deleted, </span><br><span class="line">    a.auth_create_user, </span><br><span class="line">    a.auth_create_time, </span><br><span class="line">    a.auth_belong_to</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    <span class="keyword">users</span></span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        a.id <span class="keyword">AS</span> auth_id,</span><br><span class="line">        a.plan_id <span class="keyword">AS</span> auth_plan_id,</span><br><span class="line">        a.user_id <span class="keyword">AS</span> auth_user_id,</span><br><span class="line">        a.role <span class="keyword">AS</span> auth_role,</span><br><span class="line">        a.belong_to <span class="keyword">AS</span> auth_belong_to,</span><br><span class="line">        a.deleted <span class="keyword">AS</span> auth_deleted,</span><br><span class="line">        a.create_user <span class="keyword">AS</span> auth_create_user,</span><br><span class="line">        a.create_time <span class="keyword">AS</span> auth_create_time</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        auths a</span><br><span class="line">    <span class="keyword">WHERE</span> </span><br><span class="line">        a.plan_id = <span class="number">3</span> </span><br><span class="line">        <span class="keyword">AND</span> a.role = <span class="number">6</span> </span><br><span class="line">        <span class="keyword">AND</span> a.deleted = <span class="number">0</span> </span><br><span class="line">        <span class="keyword">AND</span> a.belong_to = <span class="number">3794</span></span><br><span class="line">) <span class="keyword">AS</span> a </span><br><span class="line"><span class="keyword">ON</span> </span><br><span class="line">    a.auth_user_id = users.id</span><br><span class="line"><span class="keyword">WHERE</span>  </span><br><span class="line">    users.role = <span class="number">6</span> </span><br><span class="line">    <span class="keyword">AND</span> users.school_code = <span class="string">&#x27;014666&#x27;</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">OFF</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<img src="/2024/06/12/Practical-Experiences-with-Modern-Databases/join_table_1.png" width="100%" height="100%" title="join_table_1" alt="join_table_1">
+</li>
+<li><p><strong>no temporary tables are generated</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">ON</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Your query here</span></span><br><span class="line"><span class="keyword">select</span> u.id, u.name, u.email, a.*</span><br><span class="line">        <span class="keyword">from</span> <span class="keyword">users</span> u</span><br><span class="line">        <span class="keyword">left</span> <span class="keyword">join</span> auths a <span class="keyword">ON</span> a.user_id=u.id <span class="keyword">and</span> a.plan_id=<span class="number">3</span> <span class="keyword">and</span> a.role=u.role <span class="keyword">and</span> a.deleted=<span class="number">0</span> <span class="keyword">and</span> a.belong_to=<span class="number">3794</span></span><br><span class="line">        <span class="keyword">where</span> u.role=<span class="number">6</span> <span class="keyword">and</span> u.school_code=<span class="string">&#x27;014666&#x27;</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">OFF</span>;</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
+<img src="/2024/06/12/Practical-Experiences-with-Modern-Databases/join_table_2.png" width="100%" height="100%" title="join_table_2" alt="join_table_2">
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Database/" rel="tag"># Database</a>
+              <a href="/tags/PostgreSQL/" rel="tag"># PostgreSQL</a>
+              <a href="/tags/MSSQL/" rel="tag"># MSSQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/12/25/Debouncing-mechanism/" rel="prev" title="Debouncing mechanism">
+      <i class="fa fa-chevron-left"></i> Debouncing mechanism
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Practical-Experiences-with-Modern-Databases"><span class="nav-number">1.</span> <span class="nav-text">Practical Experiences with Modern Databases</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DeadLock-in-transaction"><span class="nav-number">1.1.</span> <span class="nav-text">DeadLock in transaction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Default-Connection-Limit"><span class="nav-number">1.2.</span> <span class="nav-text">Default Connection Limit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-Shorter-Keys-in-Indexes"><span class="nav-number">1.3.</span> <span class="nav-text">Using Shorter Keys in Indexes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-Views-for-Frequently-Used-Join-Queries"><span class="nav-number">1.4.</span> <span class="nav-text">Create Views for Frequently Used Join Queries.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Database-Parameter-Limits"><span class="nav-number">1.5.</span> <span class="nav-text">Database Parameter Limits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Avoid-Generating-Temporary-Tables-for-Small-Joins"><span class="nav-number">1.6.</span> <span class="nav-text">Avoid Generating Temporary Tables for Small Joins</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">WongJY</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WongJY</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e6aa29d7b0f95f9e44b5',
+      clientSecret: 'be8f55231d3f2acd60346a56f0af6b4e8204f161',
+      repo        : '901abc26123bee.github.io',
+      owner       : '901abc26123bee',
+      admin       : ['901abc26123bee'],
+      id          : '1199e514cfed2f4d3dc4a6e0991ce0f0',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
