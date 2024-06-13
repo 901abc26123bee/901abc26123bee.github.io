@@ -8,14 +8,13 @@ tags:
 - MSSQL
 ---
 # Practical Experiences with Modern Databases
-## DeadLock in transaction
+## DeadLock in Transaction
 Prevention:
 1. **Order Resource Acquisition Consistently:**
   Ensure that resources are acquired in a consistent order across transactions to avoid circular wait conditions.
 
     ```
     Transaction 1 (T1):
-
     update(Resource A)
     update(Resource B)
 
@@ -40,7 +39,22 @@ Prevention:
 3. **Move Query Operations Outside of Transactions if Possible:**
 Whenever possible, perform query operations outside of transactions to reduce the risk of deadlocks. Additionally, shorten the duration of transactions.
 
+4. **Avoid Long Transaction**
 
+## Time and Timezone In Database
+
+**Timestamp Format**
+
+- Store Timestamps in UTC:
+    It ensures consistency and avoids complications arising from daylight saving time changes and other timezone-related issues.
+- Set the Database Timezone to UTC:
+    If your database system allows setting the timezone, setting it to UTC can enforce consistency and avoid unexpected behavior in date and time functions.
+- Handle Timezones at the Application Level:
+    Manage timezone conversions within your application. Store timestamps in UTC in the database and convert to the appropriate local time zone when needed for display or user interactions
+
+**Epoch Format**
+
+- Epoch time, representing the number of seconds (or milliseconds) since a fixed point (1970-01-01 00:00:00 UTC), can be more efficient for storage and quicker for comparison operations. However, since epoch time does not inherently include time zone information or formatting, it should only be used if your application is completely time zone independent.
 ## Default Connection Limit
 
 For microservices, it is crucial to be aware that each service has a default connection limit for both the database server and the client. As the number of services increases, you may encounter bottlenecks because all available connections can become occupied.
