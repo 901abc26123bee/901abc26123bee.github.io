@@ -155,6 +155,177 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/" class="post-title-link" itemprop="url">Index Locking In MySQL8 with InnoDB</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-09-07 23:26:30" itemprop="dateCreated datePublished" datetime="2023-09-07T23:26:30+08:00">2023-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-12 22:58:38" itemprop="dateModified" datetime="2024-06-12T22:58:38+08:00">2024-06-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="MySQL-data-structures-for-Index"><a href="#MySQL-data-structures-for-Index" class="headerlink" title="MySQL data structures for Index"></a><strong>MySQL data structures for Index</strong></h1><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/index-btree-hash.html">8.3.9 Comparison of B-Tree and Hash Indexes</a></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/7306316/b-tree-vs-hash-table">B-Tree vs Hash Table</a></p>
+<ul>
+<li>Hash Table: You can only access elements by their primary key <code>O(1)</code>. When you select ranges (<em>everything in between <code>x</code> and <code>y</code></em>) can result in a full table scan <code>O(n)</code> . There may be a point where your index exceeds a tolerable size compared to your hash sizes and your entire index needs to be re-built.</li>
+<li>Tree algorithms support ranges selecting in <em><code>log(n)</code></em> , elements accessing and inserting by their primary key in <em><code>log(n)</code></em> .</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Page Splitting: Create a new table with<code>NOT NULL PRIMARY KEY AUTO_INCREMENT</code> to avoid vacancy in page(higher memory usage) and to ensure orderly insertion(higher performance).</li>
+<li>Primary key type: The smaller the length of the primary key, result in smaller occupied space by the ordinary index(leaf nodes in Indexes other than the primary key → primary key).</li>
+</ul>
+<h1 id="MySQL-Clustered-and-Secondary-Indexes"><a href="#MySQL-Clustered-and-Secondary-Indexes" class="headerlink" title="MySQL Clustered and Secondary Indexes"></a><strong>MySQL Clustered and Secondary Indexes</strong></h1><blockquote>
+<p>15.6.2.1 Clustered and Secondary Indexes</p>
+<p><em>Each <code>InnoDB</code> table has a special index called the clustered index that stores row data. Typically, the clustered index is synonymous with the primary key.</em></p>
+</blockquote>
+<ul>
+<li>Select by primary key → find in clustered index B+ tree → get the required data(row).</li>
+<li>Select by Indexes other than the primary key → find in secondary index B+ tree→ get the primary key for data → find in clustered index B+ tree → get the required data(row).</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.red-gate.com/simple-talk/databases/sql-server/learn/using-covering-indexes-to-improve-query-performance/">Using Covering Indexes to Improve Query Performance</a></p>
+<ul>
+<li>Covering index: The covering index contains the data to be searched through include, so that the SQL query can get the required data without reaching the basic table.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.mysqltutorial.org/mysql-index/mysql-prefix-index/">MySQL Prefix Index</a></p>
+<ul>
+<li>Prefix index: MySQL allows you to create an index for the leading part of the column values of the string columns using the following syntax: <code>column_name(length)</code> . Create a prefix index can save space, but may increase the number of query scans and make the Covering index useless.</li>
+</ul>
+<h1 id="MySQL-multiversion-concurrency-control-MVCC"><a href="#MySQL-multiversion-concurrency-control-MVCC" class="headerlink" title="MySQL multiversion concurrency control (MVCC)"></a><strong>MySQL multiversion concurrency control (MVCC)</strong></h1><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html">15.7.2.4 Locking Reads</a></p>
+<ul>
+<li>SELECT … FOR SHARE: Sets a shared mode lock on any rows that are read. Other sessions can read the rows, but cannot modify them until your transaction commits.</li>
+<li>SELECT … FOR UPDATE: For index records the search encounters, locks the rows and any associated index entries, the same as if you issued an <code>UPDATE</code> statement for those rows.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/commit.html">13.3.1 START TRANSACTION, COMMIT, and ROLLBACK Statements</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-consistent-read.html">15.7.2.3 Consistent Nonlocking Reads</a></p>
+<p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-multi-versioning.html">15.3 InnoDB Multi-Versioning</a></p>
+<ul>
+<li>The snapshot of the database state applies to <code>[SELECT](https://dev.mysql.com/doc/refman/8.0/en/select.html)</code> statements within a transaction, not necessarily to <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_dml">DML</a> statements.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># suppose command below are in each transaction, REPEATABLE READ# Snapshot&#x2F;Consistent read, no lock (MVCC, redo log), each consistent read within a transaction sets and reads its own fresh snapshot.</span><br><span class="line">select * from table where id &#x3D; ?;</span><br><span class="line">-----------------------------------------------------------------# See the “freshest” state of the database, A SELECT blocks until the transaction containing the freshest rows ends.# set S lock</span><br><span class="line">select * from table where id &#x3D; ? for share;# set X lock</span><br><span class="line">select * from table where id &#x3D; ? for update;show engine innodb status;</span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL-Lock"><a href="#MySQL-Lock" class="headerlink" title="MySQL Lock"></a><strong>MySQL Lock</strong></h1><h2 id="Lock-types-for-MySQL-server"><a href="#Lock-types-for-MySQL-server" class="headerlink" title="Lock types for MySQL server:"></a><strong>Lock types for MySQL server:</strong></h2><p><strong><em>1.Table Lock (</em></strong><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/lock-tables.html">13.3.6 LOCK TABLES and UNLOCK TABLES Statements</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">LOCK TABLES</span><br><span class="line">    tbl_name [[AS] alias] lock_type</span><br><span class="line">    [, tbl_name [[AS] alias] lock_type] ...lock_type: &#123;</span><br><span class="line">    READ [LOCAL]</span><br><span class="line">  | [LOW_PRIORITY] WRITE</span><br><span class="line">&#125;UNLOCK TABLES</span><br></pre></td></tr></table></figure>
+
+<p>A session can release its table locks explicitly with <code>UNLOCK TABLES</code>. If the connection for a client session terminates, whether normally or abnormally, the server implicitly releases all table locks held by the session (transactional and nontransactional). Since InnoDB supports row-level locking, we rarely use LOCK TABLES command.</p>
+<p><strong><em>2. MDL(Meta data lock) (</em></strong><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/metadata-locking.html">8.11.4 Metadata Locking</a>)</p>
+<p>MDL is added automatically when accesses a table. MySQL uses metadata locking to manage concurrent access to database objects and to ensure data consistency. The server achieves this by acquiring metadata locks on tables used within a transaction and deferring release of those locks until the transaction ends. MDL read lock is added when you manipulate data in a table(DML — Data Manipulation Language). MDL read lock is added when you perform a Data Definition Language(DDL) operation or <code>LOCK TABLES</code> on a table.</p>
+<ul>
+<li>Meta data Read lock: Read locks are not mutually exclusive, so you can have multiple threads adding, deleting, modifying, and querying a table at the same time.</li>
+<li>Meta data Write lock: Read-write locks and write locks are mutually exclusive to ensure the security of operations that change the table structure. Therefore, if two threads want to add fields to a table at the same time, one of them will not start executing until the other is finished.</li>
+</ul>
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Long transaction:</li>
+</ul>
+<ol>
+<li>DML(<strong><em>MDL read</em></strong>) block DDL(<strong><em>MDL write</em></strong>): If session A operate a DML on table Z, the fellowing DDL operation on table Z will be blocked until transaction in session A completes. To solve this problem, check <code>innodb_trx</code> table in <code>information_schema</code> before DDL operation. Another solution is to set wait time in the DDL statement to avoid blocking fellow operation when fail in MDL acquirement. (<code>ALTER TABLE tbl_name WAIT N add column …</code>). The Performance Schema <code>[metadata_locks](https://dev.mysql.com/doc/refman/8.0/en/performance-schema-metadata-locks-table.html)</code> table exposes metadata lock information, which can be useful for seeing which sessions hold locks, are blocked waiting for locks, and so forth.</li>
+<li>DDL(<strong><em>MDL write</em></strong>) block DML(<strong><em>MDL read</em></strong>)</li>
+<li>DDL(<strong><em>MDL write</em></strong>) block DDL(<strong><em>MDL write</em></strong>)</li>
+</ol>
+<h2 id="Lock-type-for-MySQL-engine-InnoDB"><a href="#Lock-type-for-MySQL-engine-InnoDB" class="headerlink" title="Lock type for MySQL engine(InnoDB):"></a><strong>Lock type for MySQL engine(<code>InnoDB</code>):</strong></h2><p><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-locking.html#innodb-gap-locks">15.7.1 InnoDB Locking</a></p>
+<p><strong><em>Shared and Exclusive Locks</em></strong></p>
+<p><code>InnoDB</code> implements standard row-level locking where there are two types of locks, shared (<code>S</code>) locks and exclusive (<code>X</code>) locks.</p>
+<p><strong><em>Intention Locks</em></strong></p>
+<p>Intention locks are table-level locks that indicate which type of lock (shared or exclusive) a transaction requires later for a row in a table. There are two types of intention locks:</p>
+<ul>
+<li>An intention shared lock (<code>IS</code>) indicates that a transaction intends to set a <em>shared</em> lock on individual rows in a table.</li>
+<li>An intention exclusive lock (<code>IX</code>) indicates that a transaction intends to set an exclusive lock on individual rows in a table.</li>
+</ul>
+<p>The main purpose of intention locks is to directly determine whether there is a lock conflict based on whether the intention lock exists.</p>
+<ul>
+<li>Before a transaction can acquire a shared lock on a row in a table, it must first acquire an <code>IS</code> lock or stronger on the table.</li>
+<li>Before a transaction can acquire an exclusive lock on a row in a table, it must first acquire an <code>IX</code> lock on the table.</li>
+</ul>
+<p><strong><em>1.Record Locks</em></strong></p>
+<p>Record locks always lock index records, even if a table is defined with no indexes. For such cases, <code>InnoDB</code> creates a hidden clustered index and uses this index for record locking.</p>
+<p><strong><em>2.Gap Locks</em></strong></p>
+<p>A gap lock is a lock on a gap between index records, or a lock on the gap before the first or after the last index record. For example, <code>SELECT c1 FROM t WHERE c1 BETWEEN 10 and 20 FOR UPDATE;</code> prevents other transactions from inserting a value of <code>15</code> into column <code>t.c1</code>, whether or not there was already any such value in the column, because the gaps between all existing values in the range are locked.</p>
+<ul>
+<li>Gap locking is not needed for statements that lock rows using a unique index to search for a unique row. (This does not include the case that the search condition includes only some columns of a multiple-column unique index; in that case, gap locking does occur.).</li>
+<li>Gap locks can co-exist. A gap lock taken by one transaction does not prevent another transaction from taking a gap lock on the same gap. There is no difference between shared and exclusive gap locks. They do not conflict with each other, and they perform the same function.</li>
+<li>Gap locking can be disabled explicitly. This occurs if you change the transaction isolation level to <code>READ COMMITTED</code>(MySQL default transaction isolation level:<code>REPEATABLE READ</code> ) .Gap locks exist when the isolation level is <code>REPEATABLE READ</code> and <code>SERIALIZABLE.</code></li>
+</ul>
+<p><strong><em>3. Next-Key Locks</em></strong></p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/56828411/why-next-key-lock-is-called-this-way">Why Next-Key lock is called this way?</a></p>
+<p>A next-key lock is a combination of a record lock on the index record and a gap lock on the <strong><em>gap</em> <em>before the index record</em></strong>.</p>
+<p>By default, <code>InnoDB</code> operates in <code>REPEATABLE READ</code> transaction isolation level. In this case, <code>InnoDB</code> uses next-key locks for searches and index scans, which prevents phantom rows (see <a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/innodb-next-key-locking.html">Section 15.7.4, “Phantom Rows”</a>).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE &#96;t&#96; (</span><br><span class="line">  &#96;pId&#96; int(10) NOT NULL,</span><br><span class="line">  &#96;name&#96; varchar(10) DEFAULT NULL,</span><br><span class="line">  &#96;num&#96; int(10) DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (&#96;pId&#96;),</span><br><span class="line">  KEY &#96;num&#96; (&#96;num&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB;covering index: num</span><br><span class="line">primary index: pId------------------------------------</span><br><span class="line">pId(int) | name(varchar) | num(int)</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 2       |      Atom     |   55</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 5       |      Bom      |   22</span><br><span class="line">---------|---------------|----------</span><br><span class="line"> 9       |     Cindy     |   33</span><br><span class="line">------------------------------------select * from table where name &#x3D; &#96;Bom&#96; for update;</span><br><span class="line"> --&gt; scan all clustered index(pid) in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 2, 5, 9</span><br><span class="line"> --&gt; addGap Lockson clustered index (-∞,2)(2,5)(5,9)(9,+∞)select * from table where pid &#x3D; 2 for update;</span><br><span class="line"> --&gt; scan pid &#x3D; 2 on clustered index(pid) in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 2select * from table where pid &#x3D; 7 for update;</span><br><span class="line"> --&gt; scan pid &#x3D; 7 on clustered index(pid) in table, not exist</span><br><span class="line"> --&gt; addGap Lockson clustered index (5, 9)select * from table where num &#x3D; 33 for share;</span><br><span class="line"> --&gt; scan secondary index(num) in table</span><br><span class="line"> --&gt; addRecord Lockson secondary index 33</span><br><span class="line"> --&gt; addGap Lockson secondary index (22,33)(33,55)select * from table where num &#x3D; 33 for update;</span><br><span class="line"> --&gt; scan secondary index(num) in table</span><br><span class="line"> --&gt; addRecord Lockson secondary index 33</span><br><span class="line"> --&gt; addGap Lockson secondary index (22,33)(33,55)</span><br><span class="line"> --&gt; scan clustered index(pid) by secondary index 33 in table</span><br><span class="line"> --&gt; addRecord Lockson clustered index 9</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>Related topic:</em></strong></p>
+<ul>
+<li>Long transaction.</li>
+<li>Dead lock:</li>
+</ul>
+<ol>
+<li>set <code>innodb_lock_wait_timeout</code> to avoid long blocking.</li>
+<li><code>innodb_deadlock_detect = on</code> If a deadlock is found, roll back a transaction in the deadlock chain to let other transactions continue to execute.</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1007,7 +1178,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1020,7 +1191,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
