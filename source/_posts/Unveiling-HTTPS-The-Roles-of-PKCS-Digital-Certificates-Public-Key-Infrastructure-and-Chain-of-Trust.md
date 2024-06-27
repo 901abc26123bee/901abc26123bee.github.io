@@ -322,7 +322,7 @@ Finally, this certificate contains all of Google's identity information and a di
 
   - **Verification**: This certificate has an issuing authority, the CA. You just need to obtain the public key of this CA and use it to decrypt the signature part in certificate. If the decryption is successful and the hash matches, it means that the certificate is valid.
 
-  <img src="./Digital_Signature_diagram.svg" width="70%" height="70%" title="Digital_Signature_diagram" alt="https://io.wikipedia.org/wiki/Bica_signato#/media/Arkivo:Digital_Signature_diagram.svg">
+  <img src="./Digital_Signature_diagram_svg.png" width="70%" height="70%" title="Digital_Signature_diagram" alt="https://io.wikipedia.org/wiki/Bica_signato#/media/Arkivo:Digital_Signature_diagram.svg">
 
 Reference
 - [Digital Signature](https://en.wikipedia.org/wiki/Digital_signature)
