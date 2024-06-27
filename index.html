@@ -155,6 +155,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/" class="post-title-link" itemprop="url">Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-06-26 22:00:11" itemprop="dateCreated datePublished" datetime="2024-06-26T22:00:11+08:00">2024-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-27 23:49:42" itemprop="dateModified" datetime="2024-06-27T23:49:42+08:00">2024-06-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two categories: symmetric encryption and asymmetric encryption.</p>
+<h2 id="Symmetric-Encryption"><a href="#Symmetric-Encryption" class="headerlink" title="Symmetric Encryption"></a>Symmetric Encryption</h2><p>Symmetric-key algorithms are algorithms for cryptography that use the same cryptographic keys for both the encryption of plaintext and the decryption of ciphertext. The key represent a shared secret between two or more parties that can be used to maintain a private information link.</p>
+<ul>
+<li><p>Example Algorithms: AES (Advanced Encryption Standard), DES (Data Encryption Standard). </p>
+</li>
+<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener" href="https://cryptobook.nakov.com/symmetric-key-ciphers/popular-symmetric-algorithms">Popular Symmetric Algorithms</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">Symmetric-key algorithm</a></p>
+</li>
+</ul>
+<p>This solution appears ideal, but there’s a significant issue: how can multiple parties agree on the encryption key? If the key is transmitted over the network, it could be intercepted by hackers. Consequently, symmetric encryption is perpetually caught in this dilemma. This is where asymmetric encryption becomes essential.</p>
+<h2 id="Asymmetric-Encryption-Public-key-cryptography"><a href="#Asymmetric-Encryption-Public-key-cryptography" class="headerlink" title="Asymmetric Encryption(Public key cryptography)"></a>Asymmetric Encryption(Public key cryptography)</h2><p>Asymmetric Encryption use pairs of related keys. Each key pair consists of a public key and a corresponding private key. Anyone with a public key can encrypt a message, yielding a ciphertext, but only those who know the corresponding private key can decrypt the ciphertext to obtain the original message.</p>
+<ul>
+<li><p>Example Algorithms: RSA (Rivest-Shamir-Adleman), ECC (Elliptic Curve Cryptography).</p>
+</li>
+<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener" href="https://dev.digicert.com/en/trustcore-sdk/nanocrypto/asymmetric-algorithms.html">Asymmetric Algorithms</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Public-key_cryptography">Public-key cryptography</a></p>
+</li>
+</ul>
+<h2 id="PKCS-Public-Key-Cryptography-Standards"><a href="#PKCS-Public-Key-Cryptography-Standards" class="headerlink" title="PKCS(Public Key Cryptography Standards)"></a>PKCS(Public Key Cryptography Standards)</h2><p>Public Key Cryptography Standards (PKCS) are protocols that structure various aspects of using public key infrastructure for information exchange. It includes standards for key exchange, password-based encryption, cryptographic messaging, private key information, certification requests, cryptographic tokens, and personal information exchange.</p>
+<p>RSA, a fundamental cryptographic algorithm, is utilized within various PKCS standards to ensure secure and standardized implementation of public key cryptography. As one of the first public key cryptosystems, the RSA algorithm is widely used for secure data transmission and underpins many protocols within the PKCS suite.</p>
+<p><strong>Some PKCS Standards Related To RSA</strong>:</p>
+<ul>
+<li><p><strong>PKCS #1 RSA Cryptography Standard</strong>:</p>
+<p>  This is the most directly related standard to the RSA algorithm. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. </p>
+<ul>
+<li><strong>PKCS #1 v1.5</strong>  and <strong>PKCS #1 v2.0(OAEP)</strong>  are the primary padding schemes for RSA encryption, RSA can be used with various padding schemes, particularly in the context of digital signatures. OAEP is generally preferred for its stronger security properties</li>
+<li>Standard RSA private key decryption involves removing all padding or encoding from the ciphertext, resulting in the plaintext as it was originally encrypted. Prior to decryption, it is essential to determine the specific padding mode used during encryption. Additionally, the length of the input to any RSA decryption method must match the size of the RSA key in bytes (i.e., the modulus size in bytes).  For OAEP (Optimal Asymmetric Encryption Padding), it is also crucial to know which hash functions were used during the encoding process.</li>
+</ul>
+</li>
+<li><p><strong>PKCS #7 Cryptographic Message Syntax Standard</strong>:</p>
+<p>  This standard defines a general syntax for data that may have cryptography applied to it, such as digital signatures and encryption. RSA is often used within PKCS #7 for signing and encrypting messages.</p>
+</li>
+<li><p><strong>PKCS #8 Private-Key Information Syntax Standard</strong>:</p>
+<p>  This standard describes the syntax for private key information, including RSA private keys. It outlines how private keys should be encoded and stored securely.</p>
+</li>
+<li><p><strong>PKCS #10 Certification Request Standard:</strong></p>
+<p>  This standard is used when applying for a digital certificate from a certificate authority.</p>
+</li>
+<li><p><strong>PKCS #12 Personal Information Exchange Syntax Standard</strong>:</p>
+<p>  This standard defines how to securely store and transport a user’s private keys, certificates, and other related information. It is used extensively for exporting and importing digital certificates.</p>
+</li>
+</ul>
+<p>More PKCS details:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2018/04/21/PKI-Digital-Certificate-Format-Convertion-Notes">認識 PKI 架構下的數位憑證格式與憑證格式轉換的心得分享</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PKCS">wiki PKCS</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.spiceworks.com/it-security/network-security/articles/what-is-pkcs/">What are Public Key Cryptography Standards (PKCS)? Meaning, Specifications, and Importance</a></li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8017">IETF DataTracker PKCS #1: RSA Cryptography Specifications Version 2.2</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/48958304/pkcs1-and-pkcs8-format-for-rsa-private-key">PKCS#1 and PKCS#8 format for RSA private key</a></li>
+</ul>
+<p>Asymmetric encryption also encounters a similar challenge: how do you share the public key with the other party? One approach is to post it on a public web address for the other party to download; another is to send it during the connection establishment. Both methods share a common problem: how do you verify that the public key you received is legitimate? Could someone impersonate the website and provide you with their own public key?</p>
+<p>This is where Public Key Infrastructure (PKI) and Digital certificate(Public key certificates) comes in.</p>
+<h2 id="Public-Key-Infrastructure-PKI"><a href="#Public-Key-Infrastructure-PKI" class="headerlink" title="Public Key Infrastructure (PKI)"></a>Public Key Infrastructure (PKI)</h2><p>A Public Key Infrastructure (PKI) is a system that binds public keys with the identities of entities such as individuals and organizations. This binding is achieved through a registration and certificate issuance process conducted by a trusted entity known as a Certificate Authority (CA). Depending on the security requirements, this process can be automated or involve human oversight.</p>
+<p>PKI provides essential “trust services,” which essentially means trusting the actions or outputs of entities, whether they are people or computers. These trust services aim to achieve one or more of the following objectives: Confidentiality, Integrity, and Authenticity (often abbreviated as CIA).</p>
+<p>Here’s an overview of what is involved in PKI:</p>
+<ul>
+<li><strong>Certificate Authority (CA):</strong> An entity that stores, issues, and signs digital certificates.</li>
+<li><strong>Registration Authority (RA):</strong> An entity that verifies the identities of entities (individuals, organizations, applications, etc.) requesting certificates.</li>
+<li><strong>Central Directory:</strong> A repository where keys are stored and retrieved.</li>
+<li><strong>Certificate Management System:</strong> A system that manages the lifecycle of certificates, including issuance, access, and delivery.</li>
+<li><strong>Certificate Policy:</strong> A set of rules that defines the procedures for managing certificates and keys within the PKI framework, ensuring their security.</li>
+</ul>
+<p>For more detailed information: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Public_key_infrastructure">Wikipedia page on Public Key Infrastructure</a>.</p>
+<p>Now that you understand what a PKI (Public Key Infrastructure) is, let’s delve into how you can request digital certificates and authenticate them.</p>
+<h2 id="Digital-certificate-Public-key-certificates"><a href="#Digital-certificate-Public-key-certificates" class="headerlink" title="Digital certificate (Public key certificates)"></a>Digital certificate (Public key certificates)</h2><h3 id="Generating-a-Key-Pair"><a href="#Generating-a-Key-Pair" class="headerlink" title="Generating a Key Pair"></a>Generating a Key Pair</h3><p>First, generate a pair of cryptographic keys—a public key and a private key. The public key is shared openly, while the private key is kept secure and known only to you.</p>
+<ol>
+<li>generate private key</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NOTICE: kept private key secure</span></span><br><span class="line">$ openssl genrsa -out yoursite_private.key 1024</span><br><span class="line">$ cat yoursite_private.key</span><br><span class="line"></span><br><span class="line">-----BEGIN PRIVATE KEY-----</span><br><span class="line">MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAKLp3YaO0SuRvokz</span><br><span class="line">DD91tVnY0wxQI3powVlV0EcXX19t2CcCYu2glkYTKqGdpECY1iV2QQXBZiZ2dx5N</span><br><span class="line">TRfVllYv4ThLhOydUjFGWL0+z1FbwkyyUYusyRbkpc7xG2oZ/UijFM8y47LqKIzK</span><br><span class="line">C5sqSsrxESR4csGkljkp7KTHtT4jAgMBAAECgYA4JbfmlzQ5+uobKQ/Qk0XkaFkc</span><br><span class="line">hkYj+xSgMHYu+jwxjI8Rqr3jvhPspNBtkQI6DTLJCH+Sdzw4h124gNXQIBnGn4kt</span><br><span class="line">K9FadXSJRpqnulhEkPkA/NyAcKHzjm4GpWa5bA5+BrLJScBq00VK6cmhXfP3jFSJ</span><br><span class="line">D4nZd+4Eck9wvaGGOQJBANiIghGCKQ3q3BUig1S3NXRHVDp69j8T+cDstNuvK1Wp</span><br><span class="line">+dMjpbzWOhloRK0ieCdVa0TRXhaylPuomNpI4m1hjO8CQQDAm3MPyS8toCz0ggkH</span><br><span class="line">9Y2DVqJmTI4vQ6in+9Lya1z2iSp2Tc5Lyqm/ZcFc1uBCYSdoYWX5cgEMoKRJHNPx</span><br><span class="line">PEoNAkEAkc4J14RP5ME7BThCOu9LHUtSmjZmTj9DM/ewKSWhBoP4Z4ZfefK/GJCv</span><br><span class="line">fe3x/np0Sti4hIwn6fWzR3lAjurbHQJAVqOWVnuBJVzv2+zCczoZtgK6epnlO42L</span><br><span class="line">yESW10VERAHff+fv7Ff1k4sKN+DQcAuT1ng5jsOhhTSdseWt0M314QJBAMTFneqp</span><br><span class="line">vO4QEmhHHhf4vqAiZ16IpTRl4XgfN50gpr+GoHshVSdxsk1cW3dTH2pNoiVBL56R</span><br><span class="line">esjnNHpPWmkIJME=</span><br><span class="line">-----END PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>generate public key from private key</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ openssl rsa -<span class="keyword">in</span> yoursite_private.key -pubout -out yoursite_public.pem</span><br><span class="line">$ cat yoursite_public.key</span><br><span class="line"></span><br><span class="line">-----BEGIN PUBLIC KEY-----</span><br><span class="line">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi6d2GjtErkb6JMww/dbVZ2NMM</span><br><span class="line">UCN6aMFZVdBHF19fbdgnAmLtoJZGEyqhnaRAmNYldkEFwWYmdnceTU0X1ZZWL+E4</span><br><span class="line">S4TsnVIxRli9Ps9RW8JMslGLrMkW5KXO8RtqGf1IoxTPMuOy6iiMygubKkrK8REk</span><br><span class="line">eHLBpJY5Keykx7U+IwIDAQAB</span><br><span class="line">-----END PUBLIC KEY-----</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>Then you can encrypt and decrypt a message by pair of cryptographic keys.</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PKCS#1 v2.0(RSA-OAEP)</span></span><br><span class="line"><span class="comment"># encrypt</span></span><br><span class="line">openssl pkeyutl -encrypt -<span class="keyword">in</span> plaintext.txt -pubin -inkey yoursite_public.pem -pkeyopt rsa_padding_mode:oaep -out ciphertext.bin</span><br><span class="line"><span class="comment"># decrypt</span></span><br><span class="line">openssl pkeyutl -decrypt -<span class="keyword">in</span> ciphertext.bin -inkey yoursite_private.key -pkeyopt rsa_padding_mode:oaep -out decrypted.txt</span><br></pre></td></tr></table></figure>
+
+<p>Since that every entity can generate their own key pair, how can others verify that this key pair indeed represents your identity? This is where the involvement of authoritative bodies becomes crucial. A third-party validation authority (VA) can provide the necessary entity information on behalf of the certification authority (CA).</p>
+<h3 id="Generate-Certificate-Signing-Request-CSR"><a href="#Generate-Certificate-Signing-Request-CSR" class="headerlink" title="Generate Certificate Signing Request (CSR):"></a>Generate Certificate Signing Request (CSR):</h3><p>A CSR includes your public key and information about your identity. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Run the OpenSSL command to generate the CSR:</span></span><br><span class="line">$ openssl req -new -key yoursite_private.key -out yoursite.csr</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter <span class="string">&#x27;.&#x27;</span>, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [AU]:TW</span><br><span class="line">State or Province Name (full name) [Some-State]:Taipei</span><br><span class="line">Locality Name (eg, city) []:Taipai</span><br><span class="line">Organization Name (eg, company) [Internet Widgits Pty Ltd]:YourSite</span><br><span class="line">Organizational Unit Name (eg, section) []:Test</span><br><span class="line">Common Name (e.g. server FQDN or YOUR name) []:Test</span><br><span class="line">Email Address []:<span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">Please enter the following <span class="string">&#x27;extra&#x27;</span> attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:<span class="built_in">test</span></span><br><span class="line">An optional company name []:<span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">$ cat yoursite.csr</span><br><span class="line"></span><br><span class="line">-----BEGIN CERTIFICATE REQUEST-----</span><br><span class="line">MIIB3zCCAUgCAQAwdTELMAkGA1UEBhMCVFcxDzANBgNVBAgMBlRhaXBlaTEPMA0G</span><br><span class="line">A1UEBwwGVGFpcGFpMREwDwYDVQQKDAhZb3VyU2l0ZTENMAsGA1UECwwEVGVzdDEN</span><br><span class="line">MAsGA1UEAwwEVGVzdDETMBEGCSqGSIb3DQEJARYEdGVzdDCBnzANBgkqhkiG9w0B</span><br><span class="line">AQEFAAOBjQAwgYkCgYEAoundho7RK5G+iTMMP3W1WdjTDFAjemjBWVXQRxdfX23Y</span><br><span class="line">JwJi7aCWRhMqoZ2kQJjWJXZBBcFmJnZ3Hk1NF9WWVi/hOEuE7J1SMUZYvT7PUVvC</span><br><span class="line">TLJRi6zJFuSlzvEbahn9SKMUzzLjsuoojMoLmypKyvERJHhywaSWOSnspMe1PiMC</span><br><span class="line">AwEAAaAqMBMGCSqGSIb3DQEJAjEGDAR0ZXN0MBMGCSqGSIb3DQEJBzEGDAR0ZXN0</span><br><span class="line">MA0GCSqGSIb3DQEBCwUAA4GBACl5YxcubqBt9HQ6sA0+M40xf8EyU+/xYYxi7j7p</span><br><span class="line">LqWMAupBsbicX3zsB7dP8AuT2cQkbCt6AGzuPyLA2aDSlcY1a7f4LbpMIP268LPs</span><br><span class="line">zGTFGbQGM+Y2xh7uPBZyF7FJOlX//usRnzDsss8OLoCgHxNomIwvFKWvemxB2k/a</span><br><span class="line">jtgC</span><br><span class="line">-----END CERTIFICATE REQUEST-----</span><br><span class="line"></span><br><span class="line"><span class="comment"># Verify the CSR: you can inspect the contents of the CSR to ensure that the information is correct:</span></span><br><span class="line">$ openssl req -<span class="keyword">in</span> yoursite.csr -noout -text</span><br><span class="line"></span><br><span class="line">Certificate Request:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 1 (0x0)</span><br><span class="line">        Subject: C=TW, ST=Taipei, L=Taipai, O=YourSite, OU=Test, CN=Test, emailAddress=<span class="built_in">test</span></span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: rsaEncryption</span><br><span class="line">                Public-Key: (1024 bit)</span><br><span class="line">                Modulus:</span><br><span class="line">                    00:a2:e9:dd:86:8e:d1:2b:91:be:89:33:0c:3f:75:</span><br><span class="line">                    b5:59:d8:d3:0c:50:23:7a:68:c1:59:55:d0:47:17:</span><br><span class="line">                    5f:5f:6d:d8:27:02:62:ed:a0:96:46:13:2a:a1:9d:</span><br><span class="line">                    a4:40:98:d6:25:76:41:05:c1:66:26:76:77:1e:4d:</span><br><span class="line">                    4d:17:d5:96:56:2f:e1:38:4b:84:ec:9d:52:31:46:</span><br><span class="line">                    58:bd:3e:cf:51:5b:c2:4c:b2:51:8b:ac:c9:16:e4:</span><br><span class="line">                    a5:ce:f1:1b:6a:19:fd:48:a3:14:cf:32:e3:b2:ea:</span><br><span class="line">                    28:8c:ca:0b:9b:2a:4a:ca:f1:11:24:78:72:c1:a4:</span><br><span class="line">                    96:39:29:ec:a4:c7:b5:3e:23</span><br><span class="line">                Exponent: 65537 (0x10001)</span><br><span class="line">        Attributes:</span><br><span class="line">            unstructuredName         :<span class="built_in">test</span></span><br><span class="line">            challengePassword        :<span class="built_in">test</span></span><br><span class="line">            Requested Extensions:</span><br><span class="line">    Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">    Signature Value:</span><br><span class="line">        29:79:63:17:2e:6e:a0:6d:f4:74:3a:b0:0d:3e:33:8d:31:7f:</span><br><span class="line">        c1:32:53:ef:f1:61:8c:62:ee:3e:e9:2e:a5:8c:02:ea:41:b1:</span><br><span class="line">        b8:9c:5f:7c:ec:07:b7:4f:f0:0b:93:d9:c4:24:6c:2b:7a:00:</span><br><span class="line">        6c:ee:3f:22:c0:d9:a0:d2:95:c6:35:6b:b7:f8:2d:ba:4c:20:</span><br><span class="line">        fd:ba:f0:b3:ec:cc:64:c5:19:b4:06:33:e6:36:c6:1e:ee:3c:</span><br><span class="line">        16:72:17:b1:49:3a:55:ff:fe:eb:11:9f:30:ec:b2:cf:0e:2e:</span><br><span class="line">        80:a0:1f:13:68:98:8c:2f:14:a5:af:7a:6c:41:da:4f:da:8e:</span><br><span class="line">        d8:02</span><br></pre></td></tr></table></figure>
+
+<p>After running these steps, you’ll have a <code>yoursite.csr</code> file that you can submit to a Certificate Authority (CA) to obtain an SSL/TLS certificate.</p>
+<p>A Certificate Authority (CA) may run below command to generate Certificate.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -req -<span class="keyword">in</span> yoursite.csr -CA cacertificate.pem -CAkey caprivate.key -out yoursite.pem</span><br></pre></td></tr></table></figure>
+
+<p>Reference:</p>
+<ul>
+<li>Explains the various ways in which RSA keys can be stored:  <a target="_blank" rel="noopener" href="https://www.cryptosys.net/pki/rsakeyformats.html">RSA Key Formats</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/63195304/difference-between-pem-crt-key-files">Difference between pem, crt, key files</a></li>
+</ul>
+<h3 id="Self-signed-certificate"><a href="#Self-signed-certificate" class="headerlink" title="Self-signed certificate"></a>Self-signed certificate</h3><p>For for testing or internal use, you can also generate self-signed certificate using OpenSSL, you’ll need both a private key and a certificate signing request (CSR). However, you can generate a self-signed certificate directly without a CSR. Here’s how to do it:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ openssl req -new -x509 -key yoursite_private.key -out yoursite_certificate.crt -days 365</span><br><span class="line">$ openssl x509 -<span class="keyword">in</span> yoursite_certificate.crt -text -noout</span><br><span class="line"></span><br><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 3 (0x2)</span><br><span class="line">        Serial Number:</span><br><span class="line">            3d:b5:59:d5:c9:77:54:96:91:d4:9f:c3:27:f4:34:8a:58:a3:2a:3a</span><br><span class="line">        Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">        Issuer: C=TW, ST=Taipei, L=Taipei, O=YourSite</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Jun 26 01:58:40 2024 GMT</span><br><span class="line">            Not After : Jun 26 01:58:40 2025 GMT</span><br><span class="line">        Subject: C=TW, ST=Taipei, L=Taipei, O=YourSite</span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: rsaEncryption</span><br><span class="line">                Public-Key: (1024 bit)</span><br><span class="line">                Modulus:</span><br><span class="line">                    00:a2:e9:dd:86:8e:d1:2b:91:be:89:33:0c:3f:75:</span><br><span class="line">                    b5:59:d8:d3:0c:50:23:7a:68:c1:59:55:d0:47:17:</span><br><span class="line">                    5f:5f:6d:d8:27:02:62:ed:a0:96:46:13:2a:a1:9d:</span><br><span class="line">                    a4:40:98:d6:25:76:41:05:c1:66:26:76:77:1e:4d:</span><br><span class="line">                    4d:17:d5:96:56:2f:e1:38:4b:84:ec:9d:52:31:46:</span><br><span class="line">                    58:bd:3e:cf:51:5b:c2:4c:b2:51:8b:ac:c9:16:e4:</span><br><span class="line">                    a5:ce:f1:1b:6a:19:fd:48:a3:14:cf:32:e3:b2:ea:</span><br><span class="line">                    28:8c:ca:0b:9b:2a:4a:ca:f1:11:24:78:72:c1:a4:</span><br><span class="line">                    96:39:29:ec:a4:c7:b5:3e:23</span><br><span class="line">                Exponent: 65537 (0x10001)</span><br><span class="line">        X509v3 extensions:</span><br><span class="line">            X509v3 Subject Key Identifier:</span><br><span class="line">                42:37:D1:41:A1:BC:B9:12:61:76:FE:F4:BD:80:F3:6D:96:75:21:FC</span><br><span class="line">            X509v3 Authority Key Identifier:</span><br><span class="line">                42:37:D1:41:A1:BC:B9:12:61:76:FE:F4:BD:80:F3:6D:96:75:21:FC</span><br><span class="line">            X509v3 Basic Constraints: critical</span><br><span class="line">                CA:TRUE</span><br><span class="line">    Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">    Signature Value:</span><br><span class="line">        33:f3:3f:5f:9c:63:a0:10:1e:90:d1:50:4e:d3:e2:6f:19:24:</span><br><span class="line">        98:41:57:65:32:48:a5:89:4e:b3:ea:25:95:8b:d0:ee:44:5e:</span><br><span class="line">        28:b1:1c:3d:65:3e:37:95:e0:<span class="built_in">cd</span>:6e:7b:2f:5c:8a:02:4e:99:</span><br><span class="line">        df:42:8b:a7:6b:f7:23:b4:47:15:7e:93:a5:8f:91:e8:29:21:</span><br><span class="line">        56:5a:f9:ab:9f:a1:24:d7:cf:5a:40:aa:57:02:30:a5:db:be:</span><br><span class="line">        2d:b1:c8:53:6c:14:86:9c:2b:a4:7e:0e:84:ff:53:a7:1b:02:</span><br><span class="line">        28:27:ca:4a:63:70:c0:de:84:33:66:f7:d9:aa:a0:b3:ba:80:</span><br><span class="line">        f8:8a</span><br></pre></td></tr></table></figure>
+
+<p>the contents of this certificate:</p>
+<ul>
+<li>Issuer: This indicates who issued the certificate.</li>
+<li>Subject: Specifies to whom the certificate was issued.</li>
+<li>Validity: Indicates the duration of validity for the certificate.</li>
+<li>Public Key: Contains the content of the public key.</li>
+<li>Signature Algorithm: Specifies the algorithm used for signing.</li>
+</ul>
+<p>Reference:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2019/02/25/Creating-Self-signed-Certificate-using-OpenSSL">如何使用 OpenSSL 建立開發測試用途的自簽憑證 (Self-Signed Certificate)</a></li>
+</ul>
+<h3 id="Digital-signature"><a href="#Digital-signature" class="headerlink" title="Digital signature"></a>Digital signature</h3><p>A digital signature is a cryptographic mechanism used to verify the authenticity and integrity of a message, software, or digital document. It functions like a handwritten signature or a stamped seal, but it is much more secure.</p>
+<p>When we submit a certificate request to a Certificate Authority (CA), the CA will sign the certificate. This process is known as the signature algorithm. But how can we ensure that the signature is indeed from the CA? The answer lies in using something that only the CA privately owns, which is the CA’s private key.</p>
+<p>For example, if Google needs to prove to users that it is indeed Google, it must find a reliable CA. The CA’s staff will verify various documents and proofs of identity and then issue a digital certificate for Google.</p>
+<p>Finally, this certificate contains all of Google’s identity information and a digital signature signed by the CA.</p>
+<ul>
+<li><p>The digital signature algorithm works as follows:</p>
+<ul>
+<li><p><strong>Signing</strong>: A certificate contains three parts: certificate content, hash algorithm, and encrypted ciphertext. The certificate content is hashed using the hash algorithm to produce a hash value, which is then encrypted using the private key provided by the CA institution.</p>
+</li>
+<li><p><strong>Verification</strong>: This certificate has an issuing authority, the CA. You just need to obtain the public key of this CA and use it to decrypt the signature part in certificate. If the decryption is successful and the hash matches, it means that the certificate is valid.</p>
+</li>
+</ul>
+<img src="/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/Digital_Signature_diagram.svg" width="70%" height="70%" title="Digital_Signature_diagram" alt="https://io.wikipedia.org/wiki/Bica_signato#/media/Arkivo:Digital_Signature_diagram.svg">
+
+</li>
+</ul>
+<p>Reference</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Digital_signature">Digital Signature</a></li>
+</ul>
+<h2 id="Chain-Of-Trust"><a href="#Chain-Of-Trust" class="headerlink" title="Chain Of Trust"></a><strong>Chain Of Trust</strong></h2><p>The main difference between a CA-signed certificate and a self-signed certificate is that a self-signed certificate contains a single CERTIFICATE block, whereas a CA-signed certificate contains multiple CERTIFICATE blocks.</p>
+<ul>
+<li>Self-signed certificate contains a single CERTIFICATE block, encompassing all necessary information such as the public key, identity details, and digital signature. While self-signed certificates can be convenient for testing or internal use, they lack the endorsement of a trusted third party, which is essential for establishing widespread trust in the certificate’s authenticity.</li>
+<li>On the other hand,  CA-signed certificates are issued and signed by a trusted Certificate Authority. These certificates typically include multiple CERTIFICATE blocks within a chain. The primary CERTIFICATE block represents the certificate being issued (end-entity certificate), while subsequent blocks (intermediate certificates) link the end-entity certificate to the root certificate of the CA. This chain of certificates forms the basis of the “chain of trust,” where each certificate in the chain is validated against the next until the root CA certificate is reached.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># self signed contains single CERTIFICATE block</span></span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">MIICYDCCAcmgAwIBAgIUPbVZ1cl3VJaR1J/DJ/Q0ilijKjowDQYJKoZIhvcNAQEL</span><br><span class="line">BQAwQjELMAkGA1UEBhMCVFcxDzANBgNVBAgMBlRhaXBlaTEPMA0GA1UEBwwGVGFp</span><br><span class="line">cGVpMREwDwYDVQQKDAhZb3VyU2l0ZTAeFw0yNDA2MjYwMTU4NDBaFw0yNTA2MjYw</span><br><span class="line">MTU4NDBaMEIxCzAJBgNVBAYTAlRXMQ8wDQYDVQQIDAZUYWlwZWkxDzANBgNVBAcM</span><br><span class="line">BlRhaXBlaTERMA8GA1UECgwIWW91clNpdGUwgZ8wDQYJKoZIhvcNAQEBBQADgY0A</span><br><span class="line">MIGJAoGBAKLp3YaO0SuRvokzDD91tVnY0wxQI3powVlV0EcXX19t2CcCYu2glkYT</span><br><span class="line">KqGdpECY1iV2QQXBZiZ2dx5NTRfVllYv4ThLhOydUjFGWL0+z1FbwkyyUYusyRbk</span><br><span class="line">pc7xG2oZ/UijFM8y47LqKIzKC5sqSsrxESR4csGkljkp7KTHtT4jAgMBAAGjUzBR</span><br><span class="line">MB0GA1UdDgQWBBRCN9FBoby5EmF2/vS9gPNtlnUh/DAfBgNVHSMEGDAWgBRCN9FB</span><br><span class="line">oby5EmF2/vS9gPNtlnUh/DAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUA</span><br><span class="line">A4GBADPzP1+cY6AQHpDRUE7T4m8ZJJhBV2UySKWJTrPqJZWL0O5EXiixHD1lPjeV</span><br><span class="line">4M1uey9cigJOmd9Ci6dr9yO0RxV+k6WPkegpIVZa+aufoSTXz1pAqlcCMKXbvi2x</span><br><span class="line">yFNsFIacK6R+DoT/U6cbAignykpjcMDehDNm99mqoLO6gPiK</span><br><span class="line">-----END CERTIFICATE-----</span><br><span class="line"></span><br><span class="line"><span class="comment"># CA signed contains multiple CERTIFICATE block</span></span><br><span class="line"></span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">[End-entity Certificate]</span><br><span class="line">-----END CERTIFICATE-----</span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">[Intermediate Certificate 1]</span><br><span class="line">-----END CERTIFICATE-----</span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">[Intermediate Certificate 2]</span><br><span class="line">-----END CERTIFICATE-----</span><br><span class="line">-----BEGIN CERTIFICATE-----</span><br><span class="line">[Root Certificate]</span><br><span class="line">-----END CERTIFICATE-----</span><br></pre></td></tr></table></figure>
+
+<p>The chain of trust is critical in ensuring the integrity and security of digital communications. By relying on CA-signed certificates and their associated chains, users can verify the legitimacy of a certificate without directly verifying the identity of the entity themselves. This process helps prevent various security threats, including man-in-the-middle attacks and unauthorized access.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/13/How-to-Implement-Custom-GORM-Logger/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1165,113 +1363,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="WongJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatCat">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/07/Database-Cache-Consistency-Strategies/" class="post-title-link" itemprop="url">Database Cache Consistency Strategies</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-09-07 23:28:11 / Modified: 23:47:11" itemprop="dateCreated datePublished" datetime="2023-09-07T23:28:11+08:00">2023-09-07</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/System-Design/" itemprop="url" rel="index"><span itemprop="name">System Design</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Database-Cache-Consistency-Strategies"><a href="#Database-Cache-Consistency-Strategies" class="headerlink" title="Database Cache Consistency* Strategies**"></a>Database Cache Consistency* Strategies**</h1><ul>
-<li>Cache Aside</li>
-<li>Read/Write Through</li>
-<li>Write Behind Caching</li>
-</ul>
-<h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
-<ul>
-<li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
-<li>Cache hit: The application retrieves data from the cache and returns.</li>
-<li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
-<p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
-<p>Consider the following situation.</p>
-<img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
-
-<p>inconsistency between the cache and the database</p>
-<p>However, the probability of occurrence may be very low in practice, because the write operation of the database is slower than the read operation. To avoid inconsistency of data, you can set a timeout on data in cache and it will automatically be deleted in a time period.</p>
-<h1 id="Read-Write-Through-Pattern"><a href="#Read-Write-Through-Pattern" class="headerlink" title="Read/Write Through Pattern"></a><strong>Read/Write Through Pattern</strong></h1><p><em>Strong Database Cache Consistency</em></p>
-<p>Application views the backend as a single storage, and the storage maintains its own Cache.</p>
-<p><strong>Read Through</strong></p>
-<p>The application doesn’t orchestrate where to read the data from (cache or database). Instead, it always reads data through the cache. When the cache is invalid (expired or LRU swapped out) during query operation(request), the cache service itself loads data from database.</p>
-<p><strong>Write Through</strong></p>
-<p>The Write Through is similar to Read Through, but happens when data is updated. When there is data updated,</p>
-<ul>
-<li>if the cache is not hit, update the database directly, and then return.</li>
-<li>If the cache is hit, the cache is updated, and updates the data in database. Both operations happen in a single transaction(this is a synchronous operation)</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
-<p>It does create some extra latency on writes but at least it improves the data inconsistency problem greatly as the data in the cache and data storage is the same. Another advantage is, because application only talks to the cache, the code is much cleaner and simpler.</p>
-<h1 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a><strong>Write Behind Caching Pattern</strong></h1><p><em>Eventually Database Cache Consistency</em></p>
-<p>Write-behind(also call Write Back) caching Pattern is similar to the write-through cache in a way that application only communicates with the cache. The difference is that the data gets written to the cache first. And then, written to the underlying database asynchronously. The advantage of this design is that the I/O operation of the data is extremely fast. Also, due to asynchronous update in database, the writes can be collected and then does a batch write to the database.</p>
-<p>However, the problem with this is that the data is not strongly consistent and may be lost. To tackle the data inconsistency problem a system could combine the write-behind strategy with the read-through strategy. In this way up to date data is always to be read from the cache. In addition, the implementation logic of Write Back is more complicated, because it needs to track which data has been updated and needs to be stored in database.</p>
-<p>When we compare it to the write-through strategy, it fits more for systems with large write and read volume that tolerate some data inconsistency. Another useful case is that when execution order of data updated doesn’t matter, like the number of page views, every time the user clicks, this field in the database is incremented by one. Execution order of SQL/request would not cause thread safety problem in concurrently write and read, since each SQL/request does the same(page views field incremented by one).</p>
-<h1 id="Final"><a href="#Final" class="headerlink" title="Final"></a><strong>Final</strong></h1><p>We do not consider the transaction of the cache and under layer storage. For example, the cache is updated successfully, but the update of the database fails. Or the other way reverse. If you need strong consistency, you need to consider Transaction Processing in a Distributed System, like “two-phase commit protocol” — — prepare, commit/rollback.</p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><p><a target="_blank" rel="noopener" href="https://danielw.cn/cache-consistency-with-database#concepts">Cache Consistency with Database</a></p>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Caching Strategies Overview</a></p>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">缓存更新的套路</a></p>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">Cache (computing)</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cache-aside">Cache-Aside pattern</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1341,7 +1432,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1354,7 +1445,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

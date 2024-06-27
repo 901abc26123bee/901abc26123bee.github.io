@@ -155,6 +155,113 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/07/Database-Cache-Consistency-Strategies/" class="post-title-link" itemprop="url">Database Cache Consistency Strategies</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-07 23:28:11 / Modified: 23:47:11" itemprop="dateCreated datePublished" datetime="2023-09-07T23:28:11+08:00">2023-09-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/System-Design/" itemprop="url" rel="index"><span itemprop="name">System Design</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Database-Cache-Consistency-Strategies"><a href="#Database-Cache-Consistency-Strategies" class="headerlink" title="Database Cache Consistency* Strategies**"></a>Database Cache Consistency* Strategies**</h1><ul>
+<li>Cache Aside</li>
+<li>Read/Write Through</li>
+<li>Write Behind Caching</li>
+</ul>
+<h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
+<ul>
+<li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
+<li>Cache hit: The application retrieves data from the cache and returns.</li>
+<li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
+<p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
+<p>Consider the following situation.</p>
+<img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
+
+<p>inconsistency between the cache and the database</p>
+<p>However, the probability of occurrence may be very low in practice, because the write operation of the database is slower than the read operation. To avoid inconsistency of data, you can set a timeout on data in cache and it will automatically be deleted in a time period.</p>
+<h1 id="Read-Write-Through-Pattern"><a href="#Read-Write-Through-Pattern" class="headerlink" title="Read/Write Through Pattern"></a><strong>Read/Write Through Pattern</strong></h1><p><em>Strong Database Cache Consistency</em></p>
+<p>Application views the backend as a single storage, and the storage maintains its own Cache.</p>
+<p><strong>Read Through</strong></p>
+<p>The application doesn’t orchestrate where to read the data from (cache or database). Instead, it always reads data through the cache. When the cache is invalid (expired or LRU swapped out) during query operation(request), the cache service itself loads data from database.</p>
+<p><strong>Write Through</strong></p>
+<p>The Write Through is similar to Read Through, but happens when data is updated. When there is data updated,</p>
+<ul>
+<li>if the cache is not hit, update the database directly, and then return.</li>
+<li>If the cache is hit, the cache is updated, and updates the data in database. Both operations happen in a single transaction(this is a synchronous operation)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
+<p>It does create some extra latency on writes but at least it improves the data inconsistency problem greatly as the data in the cache and data storage is the same. Another advantage is, because application only talks to the cache, the code is much cleaner and simpler.</p>
+<h1 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a><strong>Write Behind Caching Pattern</strong></h1><p><em>Eventually Database Cache Consistency</em></p>
+<p>Write-behind(also call Write Back) caching Pattern is similar to the write-through cache in a way that application only communicates with the cache. The difference is that the data gets written to the cache first. And then, written to the underlying database asynchronously. The advantage of this design is that the I/O operation of the data is extremely fast. Also, due to asynchronous update in database, the writes can be collected and then does a batch write to the database.</p>
+<p>However, the problem with this is that the data is not strongly consistent and may be lost. To tackle the data inconsistency problem a system could combine the write-behind strategy with the read-through strategy. In this way up to date data is always to be read from the cache. In addition, the implementation logic of Write Back is more complicated, because it needs to track which data has been updated and needs to be stored in database.</p>
+<p>When we compare it to the write-through strategy, it fits more for systems with large write and read volume that tolerate some data inconsistency. Another useful case is that when execution order of data updated doesn’t matter, like the number of page views, every time the user clicks, this field in the database is incremented by one. Execution order of SQL/request would not cause thread safety problem in concurrently write and read, since each SQL/request does the same(page views field incremented by one).</p>
+<h1 id="Final"><a href="#Final" class="headerlink" title="Final"></a><strong>Final</strong></h1><p>We do not consider the transaction of the cache and under layer storage. For example, the cache is updated successfully, but the update of the database fails. Or the other way reverse. If you need strong consistency, you need to consider Transaction Processing in a Distributed System, like “two-phase commit protocol” — — prepare, commit/rollback.</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><p><a target="_blank" rel="noopener" href="https://danielw.cn/cache-consistency-with-database#concepts">Cache Consistency with Database</a></p>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Caching Strategies Overview</a></p>
+<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">缓存更新的套路</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">Cache (computing)</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cache-aside">Cache-Aside pattern</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1178,7 +1285,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1191,7 +1298,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
