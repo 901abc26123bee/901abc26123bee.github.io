@@ -88,11 +88,15 @@ Using shorter keys in B-Tree indexes offers multiple benefits, including improve
   PostgreSQL utilizes B-Tree indexes to efficiently manage and query large datasets. The structure and operation of these indexes can be explored in detail in the PostgreSQL documentation:
   [PostgreSQL B-Tree Implementation doc](https://www.postgresql.org/docs/current/btree-implementation.html#:~:text=PostgreSQL%20B%2DTree%20indexes%20are,leaf%20pages%20or%20internal%20pages)
 
-## Create Views for Frequently Used Join Queries.
+## Materialized-Views/Views for Frequently Used Join Queries.
+Views
+  - By encapsulating frequently used queries, views ensure consistent results and reduce the need for query repetition. They can be reused across different parts of the application.
+  [**Why is database view used?**](https://stackoverflow.com/questions/2454113/why-is-database-view-used)
+  - Notice: Views do not store data themselves; instead, they dynamically retrieve data from the underlying tables each time they are accessed.
 
-By encapsulating frequently used queries, views ensure consistent results and reduce the need for query repetition. They can be reused across different parts of the application.
-
-[**Why is database view used?**](https://stackoverflow.com/questions/2454113/why-is-database-view-used)
+Materialized views
+  - A materialized view is a database object that contains the results of a query. Unlike a regular view, the result of the query is stored in the database, occupying physical space. This can improve query performance by providing quick access to precomputed and joined results.
+  - Notice: Since materialized views store data physically, they are not suitable for real-time data, frequent data changes, or when storage is a concern.
 
 ## Database Parameter Limits
 When dealing with large datasets, there's a risk of hitting database parameter limits, which can cause performance bottlenecks. By dividing large operations into smaller chunks, systems can avoid hitting these limits while maintaining performance and scalability.
@@ -135,6 +139,29 @@ When dealing with large datasets, there's a risk of hitting database parameter l
       // ... fellowing operation
     }
     ```
+
+## Composite Indexes to Avoid Bookmark Lookup
+[Clustered and nonclustered indexes](https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described?view=sql-server-ver16)
+
+When a non-clustered index is used to locate rows, the database engine first searches the non-clustered index to find the indexed columns. If the query needs columns not included in the index, the engine then performs a bookmark lookup to retrieve the rest of the row's data from the clustered index.
+
+A composite index includes multiple columns from the table. If a query's SELECT clause or WHERE clause references all the columns in the composite index, the database engine can satisfy the query using just the index without needing to perform a bookmark lookup.
+
+ex:
+```sql
+CREATE INDEX composite_index_name
+ON table_name (column1, column2);
+```
+
+## Using Indexes to Optimize Fuzzy Search Queries
+Fuzzy search refers to queries that are used to find records that match a pattern, typically using the LIKE operator in SQL. Using indexes to optimize fuzzy search queries can be a bit challenging, especially if the pattern starts with a wildcard (e.g., %pattern). However, there are strategies to make it more efficient:
+- Trigrams:
+  Trigrams are a way to break down a text into substrings of three characters. By indexing these trigrams, you can perform more efficient fuzzy searches.
+  [pg_trgm — support for similarity of text using trigram matching](https://www.postgresql.org/docs/current/pgtrgm.html)
+  ```sql
+  CREATE EXTENSION pg_trgm;
+  CREATE INDEX trgm_idx_users_username ON users USING gin (username gin_trgm_ops);
+  ```
 
 ## Avoid Generating Temporary Tables for Small Joins
 When performing a join between tables that are not large, it is generally advisable to avoid generating temporary tables by selecting columns in the join condition.
