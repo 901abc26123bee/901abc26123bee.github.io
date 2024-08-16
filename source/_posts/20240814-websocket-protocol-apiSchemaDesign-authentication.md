@@ -1,8 +1,9 @@
 ---
-title: 20240814-websocket-protocol-apiSchemaDesign-authentication
+title: Dig in WebSocket; Protocol, API Design, and Security
 date: 2024-08-15 00:24:11
-categories:
+categories: WebSocket
 tags:
+- WebSocket
 ---
 
 
