@@ -155,6 +155,176 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/" class="post-title-link" itemprop="url">20240814-websocket-protocol-apiSchemaDesign-authentication</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-15 00:24:11" itemprop="dateCreated datePublished" datetime="2024-08-15T00:24:11+08:00">2024-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-16 09:18:44" itemprop="dateModified" datetime="2024-08-16T09:18:44+08:00">2024-08-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Dig-in-WebSocket-Protocol-API-Design-and-Security"><a href="#Dig-in-WebSocket-Protocol-API-Design-and-Security" class="headerlink" title="Dig in WebSocket: Protocol, API Design, and  Security"></a>Dig in WebSocket: Protocol, API Design, and  Security</h1><h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>WebSocket operate at the Application layer in both the OSI(Layer 7) and TCP/IP(Layer 4) models.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> HTTP       WebSocket</span><br><span class="line">--------------------</span><br><span class="line">        TCP</span><br><span class="line">--------------------</span><br><span class="line">        IP</span><br><span class="line">--------------------</span><br><span class="line">Network access Layer</span><br></pre></td></tr></table></figure>
+
+<p>The WebSocket protocol enables full-duplex communication, allowing data to be sent and received simultaneously over a single, persistent connection. This capability is ideal for real-time applications such as chat systems, live notifications, and online gaming.</p>
+<h2 id="How-to-Establish-a-WebSocket-Connection"><a href="#How-to-Establish-a-WebSocket-Connection" class="headerlink" title="How to Establish a WebSocket Connection"></a>How to Establish a WebSocket Connection</h2><p>A WebSocket server is essentially an application that listens on any port of a TCP, following a designated protocol. A WebSocket connection starts with an HTTP handshake and then upgrades to a persistent TCP connection. Once this connection is established, it remains open for an extended period, allowing real-time communication between the client and server.</p>
+<ol>
+<li><p><strong>Client handshake request</strong></p>
+<p> Client sent a HTTP request with method <code>GET</code> for upgrading the connection from HTTP to WebSocket.</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /chat HTTP/<span class="number">1.1</span></span><br><span class="line">Host: example.com:<span class="number">8000</span></span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==</span><br><span class="line">Sec-WebSocket-Version: <span class="number">13</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The <strong><code>Sec-WebSocket-Key</code></strong> header is used  to ensure that the client and server are speaking the WebSocket protocol.<br>  It is a base64 encoded value that is generated by randomly selecting 16-byte value as a nonce.</li>
+<li>The <strong><code>Sec-WebSocket-Version</code></strong> header indicates the version of the WebSocket protocol that the client supports.</li>
+<li>The HTTP version must be 1.1 or greater because earlier versions of HTTP do not support the necessary features for upgrading to WebSocket.</li>
+<li>Origin header is supplied if the client is a web browser, and CORS issues must also be addressed.</li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>Server handshake response</strong></p>
+<p> If the server supports WebSocket, it responds with an upgrade header, establishing a WebSocket connection. </p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">101</span> Switching Protocols</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p> <strong><code>Sec-WebSocket-Accept</code></strong> = concatenate the client’s <code>Sec-WebSocket-Key</code> and the string “<code>258EAFA5-E914-47DA-95CA-C5AB0DC85B11</code>“ together (it’s a “<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Magic_string">magic string</a>“), take the SHA-1 hash of the result, and return the base64 encoding of that hash.</p>
+<p>The <code>Sec-WebSocket-Key</code> and <code>Sec-WebSocket-Accept</code> headers are part of the security mechanism to ensure that the WebSocket handshake is being conducted correctly and to prevent certain types of attacks.</p>
+<ul>
+<li>Protocol Upgrade Validation: confirms that the server has correctly understood the WebSocket handshake request(server indeed support WebSocket).</li>
+<li>Security and Authentication: This value is used to ensure that the handshake request is valid and is not replayed by a malicious entity.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>Exchanging data frames</strong></p>
+<p> Websockets have four states: <code>connecting</code>, <code>open</code>, <code>closing</code> and <code>closed</code>. All communication between clients and servers takes place though the use of the websocket <code>frame</code>.</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Frame format:</span><br><span class="line"></span><br><span class="line">      0                   1                   2                   3</span><br><span class="line">      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</span><br><span class="line">    +-+-+-+-+-------+-+-------------+-------------------------------+</span><br><span class="line">    |F|R|R|R| opcode|M| Payload len |    Extended payload length    |</span><br><span class="line">    |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |</span><br><span class="line">    |N|V|V|V|       |S|             |   (<span class="keyword">if</span> payload len==126/127)   |</span><br><span class="line">    | |1|2|3|       |K|             |                               |</span><br><span class="line">    +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +</span><br><span class="line">    |     Extended payload length continued, <span class="keyword">if</span> payload len == 127  |</span><br><span class="line">    + - - - - - - - - - - - - - - - +-------------------------------+</span><br><span class="line">    |                               |Masking-key, <span class="keyword">if</span> MASK <span class="built_in">set</span> to 1  |</span><br><span class="line">    +-------------------------------+-------------------------------+</span><br><span class="line">    | Masking-key (continued)       |          Payload Data         |</span><br><span class="line">    +-------------------------------- - - - - - - - - - - - - - - - +</span><br><span class="line">    :                     Payload Data continued ...                :</span><br><span class="line">    + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +</span><br><span class="line">    |                     Payload Data continued ...                |</span><br><span class="line">    +---------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p> For more detail about each field: <a target="_blank" rel="noopener" href="https://ably.com/topic/websockets#how-do-web-sockets-work">The WebSocket API and protocol explained</a>, <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6455#section-5.2">rfc6455</a></p>
+<ul>
+<li>FIN bit: webSocket protocol makes fragmentation possible via this field, which indicates whether the frame is the final fragment in a WebSocket message.</li>
+<li>Opcode: determines how to interpret the payload data.<ul>
+<li>0: continuation frame; continues the payload from the previous frame.</li>
+<li>1: text frame (UTF-8 text data).</li>
+<li>2: binary frame.</li>
+<li>8: connection close frame; leads to the connection being terminated.</li>
+<li>9: ping frame</li>
+<li>10: pong frame</li>
+</ul>
+</li>
+<li>Mask, Masking key, (Extended) payload length, Payload data: Masking is applied from the client to the server to protect against specific security risks associated with WebSocket communication, such as cross-protocol attacks and interference by intermediaries. The server does not need to mask its messages to the client because the client is considered to be in a more secure and controlled environment, and masking would only add unnecessary overhead.</li>
+</ul>
+</li>
+</ol>
+<h2 id="Data-flow"><a href="#Data-flow" class="headerlink" title="Data flow"></a>Data flow</h2><p>Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.<br><a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Image From python websockets library doc</a><br><img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc"></p>
+<h2 id="Websocket-API-Design"><a href="#Websocket-API-Design" class="headerlink" title="Websocket API Design"></a>Websocket API Design</h2><p>The WebSocket protocol enables two-way communication between a client and server over a persistent connection without enforcing a specific message format. Messages can be sent in two primary formats:</p>
+<ul>
+<li>Text Messages (Opcode 1): These are sent as UTF-8 encoded strings.</li>
+<li>Binary Messages (Opcode 2): These consist of binary data.</li>
+</ul>
+<p>Still, there are several API specification formats and standards that can be used for WebSockets, although they are less standardized compared to REST APIs. Here are some of the most commonly used formats:</p>
+<ul>
+<li><strong>AsyncAPI</strong> is the most comprehensive and purpose-built specification for WebSocket and other asynchronous APIs.</li>
+<li><strong>OpenAPI (with Extensions)</strong> is useful if you want to keep WebSocket API documentation consistent with REST API documentation.</li>
+<li><strong>WAMP</strong> is more of a protocol but includes its own specifications for WebSocket communication.</li>
+<li><strong>RAML</strong> can be extended for WebSockets but is less common for this use case.</li>
+<li>Custom Documentation Formats, ex: <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">  &quot;type&quot;: &quot;message_type&quot;,</span></span><br><span class="line"><span class="comment">  &quot;payload&quot;: &#123;</span></span><br><span class="line"><span class="comment">      // payload</span></span><br><span class="line"><span class="comment">  &#125;,</span></span><br><span class="line"><span class="comment">  &quot;timestamp&quot;: &quot;2024-08-15T12:34:56Z&quot;,</span></span><br><span class="line"><span class="comment">  &quot;meta&quot;: &#123;</span></span><br><span class="line"><span class="comment">      &quot;source&quot;: &quot;client_id&quot;,</span></span><br><span class="line"><span class="comment">      &quot;destination&quot;: &quot;room_id&quot;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleWebSocketStreamConnectMessage</span><span class="params">(ctx context.Context, msgReq StreamWSMessageRequest)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> msgReq.Type &#123;</span><br><span class="line">  <span class="keyword">case</span> WSMessageTypeChatRoomAction:</span><br><span class="line">    <span class="keyword">var</span> actionPayload ChatRoomActionRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.Unmarshal(msgReq.Payload, &amp;actionPayload); err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// handling action</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> WSMessageTypeChat:</span><br><span class="line">    <span class="keyword">var</span> chatMsgPayload ChatRoomMessageRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.Unmarshal(msgReq.Payload, &amp;chatMsgPayload); err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// handle message</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="WebSocket-Security"><a href="#WebSocket-Security" class="headerlink" title="WebSocket Security"></a>WebSocket Security</h2><h3 id="WSS"><a href="#WSS" class="headerlink" title="WSS"></a>WSS</h3><p>Use secure <code>wss://</code> protocol over the vulnerable <code>ws://</code> transport,  similar to the preference for <code>https://</code> over <code>http://</code>. WSS encrypts WebSocket connections, safeguarding against man-in-the-middle attacks.</p>
+<h3 id="Validate-Transported-message"><a href="#Validate-Transported-message" class="headerlink" title="Validate Transported message"></a>Validate Transported message</h3><p>Validate client message before processing it to avoid SQL injection, and validate server message to avoid unexpected errors.</p>
+<h3 id="Authentication-Authorization"><a href="#Authentication-Authorization" class="headerlink" title="Authentication/Authorization"></a>Authentication/Authorization</h3><ol>
+<li><p>Send Access Token in the Query Parameter</p>
+<p> Unlike HTTP, which mandates authentication credentials for each request, WebSockets establish a persistent connection. Authentication occurs during the initial HTTP handshake before the connection is upgraded to WebSocket, allowing subsequent communication without repeated credential checks.</p>
+   <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wss://website.com?token=your_token_here</span><br></pre></td></tr></table></figure>
+<p> If the token is valid, proceed with the WebSocket upgrade. Otherwise, send a standard 401 Unauthorized response and close the underlying socket.</p>
+</li>
+<li><p>Send Access Token Over WebSocket<br> Another way to authenticate a WebSocket connection is to send the access token in the first message after establishing the connection. The server should validate the token before allowing any client actions.<br> However, this approach has drawbacks:</p>
+<ul>
+<li><p>Increased Complexity: Implementing a custom stateful protocol adds complexity, requiring session management, synchronization across scales, and addressing inconsistencies. If issues arise, it could block logins or introduce security vulnerabilities.</p>
+</li>
+<li><p>Vulnerability to DoS Attacks: Attackers might open multiple WebSocket connections without authenticating, tying up server resources. This requires strict timeouts to prevent server overload, adding more complexity compared to HTTP-based methods.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://ably.com/topic/websockets">The WebSocket API and protocol explained</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">Writing WebSocket servers</a></li>
+<li><a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Design</a></li>
+<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc6455#section-5.2">rfc6455</a></li>
+<li><a target="_blank" rel="noopener" href="https://noio-ws.readthedocs.io/en/latest/overview_of_websockets.html">overview_of_websockets</a></li>
+<li><a target="_blank" rel="noopener" href="https://dev.to/idanarye/are-there-any-api-specification-formats-for-websockets-2mkk">Are there any API specification formats for WebSockets?</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications">Writing_WebSocket_client_applications</a></li>
+<li><a target="_blank" rel="noopener" href="https://ably.com/blog/websocket-authentication">websocket-authentication</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/67487034/how-to-do-authentication-over-web-sockets">how-to-do-authentication-over-web-sockets</a></li>
+<li><a target="_blank" rel="noopener" href="https://pages.ably.com/hubfs/the-websocket-handbook.pdf">the-websocket-handbook</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/websockets-in-microservices-architecture/">websockets-in-microservices-architecture</a></li>
+<li><a target="_blank" rel="noopener" href="https://devcenter.heroku.com/articles/websocket-security">WebSocket Security</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31564432/websocket-security">Websocket Security</a></li>
+<li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/web-cache-poisoning">web cache poisoning</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1272,117 +1442,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="WongJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatCat">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/" class="post-title-link" itemprop="url">How to deploy a Kubernate Job by client-go in cluster</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-09-07 23:47:47" itemprop="dateCreated datePublished" datetime="2023-09-07T23:47:47+08:00">2023-09-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-12-27 23:23:27" itemprop="dateModified" datetime="2023-12-27T23:23:27+08:00">2023-12-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernete/" itemprop="url" rel="index"><span itemprop="name">Kubernete</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Kubernets-API-Server"><a href="#Kubernets-API-Server" class="headerlink" title="Kubernets API Server"></a><strong>Kubernets API Server</strong></h1><p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.</p>
-<h1 id="Role-Based-Access-Control"><a href="#Role-Based-Access-Control" class="headerlink" title="Role-Based Access Control"></a><strong>Role-Based Access Control</strong></h1><p>In the Kubernetes cluster , the mechanism responsible for completing the authorization work is RBAC (Role-Based Access Control). RBAC defines policies for restricting and controlling user access to resources of a system by using roles attached to users. However, RBAC policies can also govern the behavior of software resources. A <em>service account</em> provides an identity for processes that run in a Pod, and maps to a ServiceAccount object. A secret with access token is generated when ServiceAccount object is deployed. After specify <code>serviceAccountName</code> with in a pod, the secret will mount into pod at <code>/var/run/secrets/kubernetes.io/serviceaccount</code> . The pod can access API Server with permissions defined in <code>serviceAccountName</code> .</p>
-<p>RBAC authorizations can define permissions/policies that can be limited within a namespace(Role) or the entire cluster(ClusterRule).</p>
-<img src="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/1.png" width="100%" height="100%" alt="1">
-
-<h1 id="ServiceAccountToken"><a href="#ServiceAccountToken" class="headerlink" title="ServiceAccountToken"></a><strong>ServiceAccountToken</strong></h1><p>Kubelet automatically mount a default ServiceAccount’s API credentials (ServiceAccountToken) in the same namespace as the pod is create without specifying a ServiceAccount. This allow pod to access API server incluster by ServiceAccountToken. You can opt out of automounting API credentials on <code>/var/run/secrets/kubernetes.io/serviceaccount/token</code> for a service account by setting <code>automountServiceAccountToken: false</code> on the ServiceAccount.</p>
-<p>serviceAccount, Role, RoleBinding</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">service-account-jobs</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">job-operation</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">rules:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">apiGroups:</span> [<span class="string">&quot;&quot;</span>, <span class="string">&quot;batch&quot;</span>]</span><br><span class="line">    <span class="attr">resources:</span> [<span class="string">&quot;jobs&quot;</span>]</span><br><span class="line">    <span class="attr">verbs:</span> [<span class="string">&quot;get&quot;</span>, <span class="string">&quot;list&quot;</span>, <span class="string">&quot;watch&quot;</span>, <span class="string">&quot;create&quot;</span>, <span class="string">&quot;delete&quot;</span>]</span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">rbac.authorization.k8s.io/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">RoleBinding</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">job-operation</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">subjects:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">kind:</span> <span class="string">ServiceAccount</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">service-account-jobs</span></span><br><span class="line"><span class="attr">roleRef:</span></span><br><span class="line">  <span class="attr">kind:</span> <span class="string">Role</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">job-operation</span></span><br><span class="line">  <span class="attr">apiGroup:</span> <span class="string">rbac.authorization.k8s.io</span></span><br></pre></td></tr></table></figure>
-
-<p>deployment.yaml (program running in pod which want to access Kubernate API Server within cluster to deploy a Job)</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">program</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">program</span></span><br><span class="line">  <span class="attr">strategy:</span></span><br><span class="line">    <span class="attr">type:</span> <span class="string">RollingUpdate</span></span><br><span class="line">    <span class="attr">rollingUpdate:</span></span><br><span class="line">      <span class="attr">maxSurge:</span> <span class="number">1</span></span><br><span class="line">      <span class="attr">maxUnavailable:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">program</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">serviceAccountName:</span> <span class="string">service-account-jobs</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">program</span></span><br><span class="line">        <span class="attr">image:</span> &#123;&#123; <span class="string">.Values.program.image</span> &#125;&#125;</span><br><span class="line">        <span class="attr">command:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;bin/sh&quot;</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;-c&quot;</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;/go/bin/server -sql=/etc/sql/postgres.txt -worker-job=/etc/jobs/worker-job.yaml&quot;</span></span><br><span class="line">        <span class="attr">ports:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">8081</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">postgre-sql</span></span><br><span class="line">            <span class="attr">mountPath:</span> <span class="string">/etc/sql</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">worker-job</span></span><br><span class="line">            <span class="attr">mountPath:</span> <span class="string">/etc/jobs</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">postgre-sql</span></span><br><span class="line">          <span class="attr">configMap:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">configs</span></span><br><span class="line">            <span class="attr">items:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">postgres.txt</span></span><br><span class="line">                <span class="attr">path:</span> <span class="string">postgres.txt</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">worker-job</span></span><br><span class="line">          <span class="attr">configMap:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">configs</span></span><br><span class="line">            <span class="attr">items:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">worker-job.yaml</span></span><br><span class="line">                <span class="attr">path:</span> <span class="string">worker-job.yaml</span></span><br></pre></td></tr></table></figure>
-
-<p>configmap.yaml (render by helm, place to store Job template)</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">configs</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  &#123;&#123;<span class="bullet">-</span> <span class="string">.Files.Get</span> <span class="string">.Values.configmapStrings</span> <span class="string">|</span> <span class="string">nindent</span> <span class="number">2</span> &#125;&#125;</span><br><span class="line">  &#123;&#123;<span class="bullet">-</span> <span class="string">(.Files.Glob</span> <span class="string">.Values.configmapFiles).AsConfig</span> <span class="string">|</span> <span class="string">nindent</span> <span class="number">2</span> &#125;&#125;</span><br><span class="line">  &#123;&#123;<span class="bullet">-</span> <span class="string">(.Files.Glob</span> <span class="string">.Values.configmapJobsFiles).AsConfig</span> <span class="string">|</span> <span class="string">nindent</span> <span class="number">2</span> &#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>local-values.yaml (render by helm)</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">configmapFiles:</span> <span class="string">&quot;configmaps/files/local/**&quot;</span></span><br><span class="line"><span class="attr">configmapStrings:</span> <span class="string">&quot;configmaps/strings/local.yaml&quot;</span></span><br><span class="line"><span class="attr">configmapJobsFiles:</span> <span class="string">&quot;configmaps/jobs/local/**&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>Job template</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">batch/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Job</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">worker</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">worker</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ttlSecondsAfterFinished:</span> <span class="number">100</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">worker</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">worker:target</span></span><br><span class="line">        <span class="attr">imagePullPolicy:</span> <span class="string">Never</span></span><br><span class="line">        <span class="attr">command:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;bin/sh&quot;</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;-c&quot;</span></span><br><span class="line">          <span class="bullet">-</span> <span class="string">&quot;/go/bin/image_worker -sql=/etc/sql/postgres.txt -custom=$&#123;CUSTOM_ID&#125;&quot;</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">postgre-sql</span></span><br><span class="line">            <span class="attr">mountPath:</span> <span class="string">/etc/sql</span></span><br><span class="line">      <span class="attr">restartPolicy:</span> <span class="string">Never</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">postgre-sql</span></span><br><span class="line">          <span class="attr">configMap:</span></span><br><span class="line">            <span class="attr">name:</span> <span class="string">configs</span></span><br><span class="line">            <span class="attr">items:</span></span><br><span class="line">              <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">postgres.txt</span></span><br><span class="line">                <span class="attr">path:</span> <span class="string">postgres.txt</span></span><br><span class="line">  <span class="attr">backoffLimit:</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
-<p>Golang program read in Job template YAML as an parameter by golang flag and parse YAML to client-go Job spec. You can then customize Job setting. Beware that the InClusterConfig only work when running program within cluster.</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> k8sutil</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line"> <span class="string">&quot;context&quot;</span></span><br><span class="line"> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"> <span class="string">&quot;os&quot;</span></span><br><span class="line"> <span class="string">&quot;strings&quot;</span></span><br><span class="line"></span><br><span class="line"> batchv1 <span class="string">&quot;k8s.io/api/batch/v1&quot;</span></span><br><span class="line"> metav1 <span class="string">&quot;k8s.io/apimachinery/pkg/apis/meta/v1&quot;</span></span><br><span class="line"> <span class="string">&quot;k8s.io/client-go/kubernetes&quot;</span></span><br><span class="line"> <span class="string">&quot;k8s.io/client-go/kubernetes/scheme&quot;</span></span><br><span class="line"> <span class="string">&quot;k8s.io/client-go/rest&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">connectToK8s</span><span class="params">()</span> <span class="params">(*kubernetes.Clientset, error)</span></span> &#123;</span><br><span class="line"> <span class="comment">// creates the in-cluster config</span></span><br><span class="line"> config, err := rest.InClusterConfig()</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;failed to create in-cluster cofig: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// creates the clientset</span></span><br><span class="line"> clientset, err := kubernetes.NewForConfig(config)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;failed to create k8s client set: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> clientset, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">resolveJobTemplate</span><span class="params">(imageWorkerJobYamlPath <span class="keyword">string</span>)</span> <span class="params">(*batchv1.Job, error)</span></span> &#123;</span><br><span class="line"> <span class="comment">// read in k8s yaml file</span></span><br><span class="line"> b, err := os.ReadFile(imageWorkerJobYamlPath)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;failed to read job yaml file: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// deserialize k8s yaml to k8s object</span></span><br><span class="line"> decode := scheme.Codecs.UniversalDeserializer().Decode</span><br><span class="line"> obj, groupVersionKind, err := decode([]<span class="keyword">byte</span>(b), <span class="literal">nil</span>, <span class="literal">nil</span>)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span>, fmt.Errorf(<span class="string">&quot;failed to decode yaml file to object: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> job *batchv1.Job</span><br><span class="line"> <span class="keyword">if</span> groupVersionKind.Kind == <span class="string">&quot;Job&quot;</span> &#123;</span><br><span class="line">  job = obj.(*batchv1.Job)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> job, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// LaunchImageWorkerK8sJob luach a worker job with specific job name and customID</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LaunchImageWorkerK8sJob</span><span class="params">(ctx context.Context, jobName <span class="keyword">string</span>, customID <span class="keyword">string</span>, imageWorkerJobYamlPath <span class="keyword">string</span>)</span> <span class="title">error</span></span> &#123;</span><br><span class="line"> <span class="comment">// resolve kubernate job template</span></span><br><span class="line"> jobSpec, err := resolveJobTemplate(imageWorkerJobYamlPath)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;failed to resolve kubernate job template: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// connect to k8s</span></span><br><span class="line"> clientset, err := connectToK8s()</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;failed to connect to kubernate: %v&quot;</span>, err)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// customize Job setting</span></span><br><span class="line"> <span class="comment">// job name setting</span></span><br><span class="line"> jobSpec.ObjectMeta.Name = jobName</span><br><span class="line"> <span class="comment">// replace customiD flag with target customID</span></span><br><span class="line"> commandWithFlag := jobSpec.Spec.Template.Spec.Containers[<span class="number">0</span>].Command[<span class="number">2</span>]</span><br><span class="line"> replaceCustomIDFlag := strings.Replace(commandWithFlag, <span class="string">&quot;$&#123;CUSTOM_ID&#125;&quot;</span>, customID, <span class="number">1</span>)</span><br><span class="line"> jobSpec.Spec.Template.Spec.Containers[<span class="number">0</span>].Command[<span class="number">2</span>] = replaceCustomIDFlag</span><br><span class="line"></span><br><span class="line"> namespace := jobSpec.Namespace</span><br><span class="line"></span><br><span class="line"> <span class="comment">// apply k8s job</span></span><br><span class="line"> jobs := clientset.BatchV1().Jobs(namespace)</span><br><span class="line"> jobDetail, err := jobs.Create(ctx, jobSpec, metav1.CreateOptions&#123;&#125;)</span><br><span class="line"> <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;failed to create kubernete job: %v \n Job detail: %v&quot;</span>, err, jobDetail)</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Reference</strong></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/50510381/creating-a-job-with-kubernetes-client-go">Creating a Job with Kubernetes client-go</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/client-go/blob/master/examples/in-cluster-client-configuration/main.go">client-go/examples/in-cluster-client-configuration/main.go</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/60885448/how-to-run-kubectl-within-a-job-in-a-namespace">How to run kubectl within a job in a namespace?</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/client-go/issues/193">Support for parsing K8s yaml spec into client-go data structures #193</a></li>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/authentication/">Authenticating</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/34388593/how-to-enter-an-optional-flag-with-no-parameters-in-go-cli-program">How to enter an optional flag with no parameters in Go CLI program</a></li>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/rbac/">Using RBAC Authorization</a></li>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">Configure Service Accounts for Pods</a></li>
-<li><a target="_blank" rel="noopener" href="https://medium.com/rahasak/kubernetes-http-api-with-authentication-and-authorization-c0cb7051114f">Kubernetes HTTP API with Authentication and Authorization</a></li>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/">Kubelet authentication/authorization</a></li>
-<li><a target="_blank" rel="noopener" href="https://iximiuz.com/en/posts/kubernetes-api-call-simple-http-client/">How To Call Kubernetes API using Simple HTTP Client</a></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1452,7 +1511,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
