@@ -13,7 +13,18 @@ tags:
 - Chain of Trust
 ---
 
-In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two categories: symmetric encryption and asymmetric encryption.
+In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here's how it works:
+
+1. TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.
+
+2. SSL/TLS Handshake:
+    - Client Hello: The client sends a message indicating its support for SSL/TLS version and set of necessary encryption algorithms (cipher suites) it prefers.
+    - Server Hello: The server responds so let browser knows whether it can support the algorithms and TLS version. The server then sends the SSL certificate to the client. The certificate contains the public key, hostname, expiry dates, etc.
+    - Certificate Verification: The client verifies the server's certificate to ensure it belongs to the intended party.
+    - Key Exchange: The client uses this public key(parse from certificate) to encrypt a randomly generated session key.
+    - Finished: Now that both the client and the server hold the same session key (symmetric encryption),.
+3. Data Encryption:
+    - Symmetric Encryption: All subsequent data is encrypted using the shared secret key. This is much faster than asymmetric encryption and is ideal for large amounts of data.
 
 ## Symmetric Encryption
 
@@ -43,7 +54,7 @@ RSA, a fundamental cryptographic algorithm, is utilized within various PKCS stan
 
 - **PKCS #1 RSA Cryptography Standard**:
     
-    This is the most directly related standard to the RSA algorithm. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. 
+    This is the a standard specifically for RSA cryptography. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. 
     
     - **PKCS #1 v1.5**  and **PKCS #1 v2.0(OAEP)**  are the primary padding schemes for RSA encryption, RSA can be used with various padding schemes, particularly in the context of digital signatures. OAEP is generally preferred for its stronger security properties
     - Standard RSA private key decryption involves removing all padding or encoding from the ciphertext, resulting in the plaintext as it was originally encrypted. Prior to decryption, it is essential to determine the specific padding mode used during encryption. Additionally, the length of the input to any RSA decryption method must match the size of the RSA key in bytes (i.e., the modulus size in bytes).  For OAEP (Optimal Asymmetric Encryption Padding), it is also crucial to know which hash functions were used during the encoding process.
@@ -52,8 +63,7 @@ RSA, a fundamental cryptographic algorithm, is utilized within various PKCS stan
     This standard defines a general syntax for data that may have cryptography applied to it, such as digital signatures and encryption. RSA is often used within PKCS #7 for signing and encrypting messages.
     
 - **PKCS #8 Private-Key Information Syntax Standard**:
-    
-    This standard describes the syntax for private key information, including RSA private keys. It outlines how private keys should be encoded and stored securely.
+    This is a more versatile standard for storing private keys. It defines the structure for private key information and supports a variety of key types, including RSA, DSA, and ECDSA. The standard specifies how private keys should be encoded and securely stored.
     
 - **PKCS #10 Certification Request Standard:**
     

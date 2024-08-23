@@ -1,5 +1,5 @@
 ---
-title: Dig in WebSocket; Protocol, API Design, and Security
+title: 'Dig in WebSocket: Protocol, API Design, and Security'
 date: 2024-08-15 00:24:11
 categories: WebSocket
 tags:
@@ -105,16 +105,25 @@ A WebSocket server is essentially an application that listens on any port of a T
         - 10: pong frame
     - Mask, Masking key, (Extended) payload length, Payload data: Masking is applied from the client to the server to protect against specific security risks associated with WebSocket communication, such as cross-protocol attacks and interference by intermediaries. The server does not need to mask its messages to the client because the client is considered to be in a more secure and controlled environment, and masking would only add unnecessary overhead.
 
-## Data flow
+## Life Cycle and Data Flow
 Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.
 [Image From python websockets library doc](https://websockets.readthedocs.io/en/stable/topics/design.html)
+
+The WebSocket protocol uses PING/PONG messages to keep connections alive, even when operating behind proxies, firewalls, or load balancers. The server sends a PING message to the client, which responds with a PONG. If the client fails to respond, the server closes the connection.
+
+<img src="./lifecycle.svg"  title="Image from python websockets library doc" alt="Image from python websockets library doc"/>
+
+
+The following diagram shows how data flows between an application built on top of websockets and a remote endpoint. It applies regardless of which side is the server or the client.
+
+
 <img src="./protocol.svg"  title="Image from python websockets library doc" alt="Image from python websockets library doc"/>
 
 ## Websocket API Design
 The WebSocket protocol enables two-way communication between a client and server over a persistent connection without enforcing a specific message format. Messages can be sent in two primary formats:
 
-- Text Messages (Opcode 1): These are sent as UTF-8 encoded strings.
-- Binary Messages (Opcode 2): These consist of binary data.
+- Text (String) Messages (Opcode 1): These are sent as UTF-8 encoded strings.
+- Binary (Blob) Messages (Opcode 2): These consist of binary data.
 
 Still, there are several API specification formats and standards that can be used for WebSockets, although they are less standardized compared to REST APIs. Here are some of the most commonly used formats:
 
@@ -185,6 +194,12 @@ Validate client message before processing it to avoid SQL injection, and validat
 
     - Vulnerability to DoS Attacks: Attackers might open multiple WebSocket connections without authenticating, tying up server resources. This requires strict timeouts to prevent server overload, adding more complexity compared to HTTP-based methods.
 
+## **Graceful Degradation**
+
+- **Fallback Mechanisms:** In scenarios where maintaining a WebSocket connection is difficult (e.g., due to network issues or server overload) or not supported by client devices ([Can I use WebSocket?](https://caniuse.com/websockets)), applications often implement fallback mechanisms like HTTP long polling or Server-Sent Events (SSE). These alternatives can help maintain communication, albeit less efficiently, when WebSockets are not viable.
+
+## Sec-WebSocket-Extensions
+check [Protocol upgrade mechanism](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)for more detail
 
 
 ## References:
@@ -202,3 +217,5 @@ Validate client message before processing it to avoid SQL injection, and validat
 - [WebSocket Security](https://devcenter.heroku.com/articles/websocket-security)
 - [Websocket Security](https://stackoverflow.com/questions/31564432/websocket-security)
 - [web cache poisoning](https://portswigger.net/web-security/web-cache-poisoning)
+- [Protocol upgrade mechanism](https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism)
+- [Can I use WebSocket?](https://caniuse.com/websockets)

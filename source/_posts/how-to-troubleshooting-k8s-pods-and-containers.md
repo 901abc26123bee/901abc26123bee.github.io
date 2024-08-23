@@ -1,10 +1,11 @@
 ---
 title: How to troubleshooting k8s pods and containers
 date: 2023-09-16 17:00:06
-categories: Kubernete, Docker
+categories:
+ - Kubernetes
 tags:
  - Docker
- - Kubernete
+ - Kubernetes
 ---
 # How to troubleshooting k8s pods and containers
 ## hold on program by `tail -f /dev/null`

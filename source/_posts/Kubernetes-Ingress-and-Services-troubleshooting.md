@@ -1,8 +1,8 @@
 ---
-title: Kubernete Ingress and Services troubleshooting
+title: Kubernetes Ingress and Services troubleshooting
 date: 2023-09-10 00:52:24
-categories: Kubernete
-tags: Kubernete, debug
+categories: Kubernetes
+tags: Kubernetes, debug
 ---
 
 # Kubernetes Ingress and Services troubleshooting
