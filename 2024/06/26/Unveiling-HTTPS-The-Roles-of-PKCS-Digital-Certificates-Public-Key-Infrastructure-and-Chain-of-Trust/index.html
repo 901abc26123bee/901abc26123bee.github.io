@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two ca">
+  <meta name="description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust">
 <meta property="og:url" content="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/index.html">
 <meta property="og:site_name" content="FatCat">
-<meta property="og:description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two ca">
+<meta property="og:description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a c">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/Digital_Signature_diagram_svg.png">
 <meta property="article:published_time" content="2024-06-26T14:00:11.000Z">
-<meta property="article:modified_time" content="2024-06-27T15:53:46.604Z">
+<meta property="article:modified_time" content="2024-08-22T16:09:36.417Z">
 <meta property="article:author" content="WongJY">
 <meta property="article:tag" content="HTTPS">
 <meta property="article:tag" content="PKCS">
@@ -198,7 +198,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-27 23:53:46" itemprop="dateModified" datetime="2024-06-27T23:53:46+08:00">2024-06-27</time>
+                <time title="Modified: 2024-08-23 00:09:36" itemprop="dateModified" datetime="2024-08-23T00:09:36+08:00">2024-08-23</time>
               </span>
 
           
@@ -212,7 +212,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two categories: symmetric encryption and asymmetric encryption.</p>
+        <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
+<ol>
+<li><p>TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.</p>
+</li>
+<li><p>SSL/TLS Handshake:</p>
+<ul>
+<li>Client Hello: The client sends a message indicating its support for SSL/TLS version and set of necessary encryption algorithms (cipher suites) it prefers.</li>
+<li>Server Hello: The server responds so let browser knows whether it can support the algorithms and TLS version. The server then sends the SSL certificate to the client. The certificate contains the public key, hostname, expiry dates, etc.</li>
+<li>Certificate Verification: The client verifies the server’s certificate to ensure it belongs to the intended party.</li>
+<li>Key Exchange: The client uses this public key(parse from certificate) to encrypt a randomly generated session key.</li>
+<li>Finished: Now that both the client and the server hold the same session key (symmetric encryption),.</li>
+</ul>
+</li>
+<li><p>Data Encryption:</p>
+<ul>
+<li>Symmetric Encryption: All subsequent data is encrypted using the shared secret key. This is much faster than asymmetric encryption and is ideal for large amounts of data.</li>
+</ul>
+</li>
+</ol>
 <h2 id="Symmetric-Encryption"><a href="#Symmetric-Encryption" class="headerlink" title="Symmetric Encryption"></a>Symmetric Encryption</h2><p>Symmetric-key algorithms are algorithms for cryptography that use the same cryptographic keys for both the encryption of plaintext and the decryption of ciphertext. The key represent a shared secret between two or more parties that can be used to maintain a private information link.</p>
 <ul>
 <li><p>Example Algorithms: AES (Advanced Encryption Standard), DES (Data Encryption Standard). </p>
@@ -233,7 +251,7 @@
 <p><strong>Some PKCS Standards Related To RSA</strong>:</p>
 <ul>
 <li><p><strong>PKCS #1 RSA Cryptography Standard</strong>:</p>
-<p>  This is the most directly related standard to the RSA algorithm. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. </p>
+<p>  This is the a standard specifically for RSA cryptography. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. </p>
 <ul>
 <li><strong>PKCS #1 v1.5</strong>  and <strong>PKCS #1 v2.0(OAEP)</strong>  are the primary padding schemes for RSA encryption, RSA can be used with various padding schemes, particularly in the context of digital signatures. OAEP is generally preferred for its stronger security properties</li>
 <li>Standard RSA private key decryption involves removing all padding or encoding from the ciphertext, resulting in the plaintext as it was originally encrypted. Prior to decryption, it is essential to determine the specific padding mode used during encryption. Additionally, the length of the input to any RSA decryption method must match the size of the RSA key in bytes (i.e., the modulus size in bytes).  For OAEP (Optimal Asymmetric Encryption Padding), it is also crucial to know which hash functions were used during the encoding process.</li>
@@ -242,8 +260,7 @@
 <li><p><strong>PKCS #7 Cryptographic Message Syntax Standard</strong>:</p>
 <p>  This standard defines a general syntax for data that may have cryptography applied to it, such as digital signatures and encryption. RSA is often used within PKCS #7 for signing and encrypting messages.</p>
 </li>
-<li><p><strong>PKCS #8 Private-Key Information Syntax Standard</strong>:</p>
-<p>  This standard describes the syntax for private key information, including RSA private keys. It outlines how private keys should be encoded and stored securely.</p>
+<li><p><strong>PKCS #8 Private-Key Information Syntax Standard</strong>:<br>  This is a more versatile standard for storing private keys. It defines the structure for private key information and supports a variety of key types, including RSA, DSA, and ECDSA. The standard specifies how private keys should be encoded and securely stored.</p>
 </li>
 <li><p><strong>PKCS #10 Certification Request Standard:</strong></p>
 <p>  This standard is used when applying for a digital certificate from a certificate authority.</p>
@@ -373,8 +390,8 @@
       <i class="fa fa-chevron-left"></i> How to Implement Custom GORM Logger
     </a></div>
       <div class="post-nav-item">
-    <a href="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/" rel="next" title="Dig in WebSocket; Protocol, API Design, and  Security">
-      Dig in WebSocket; Protocol, API Design, and  Security <i class="fa fa-chevron-right"></i>
+    <a href="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/" rel="next" title="Dig in WebSocket: Protocol, API Design, and Security">
+      Dig in WebSocket: Protocol, API Design, and Security <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -449,7 +466,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -462,7 +479,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -155,6 +155,80 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/20/20240820-websocket-architecture-and-scaling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="WongJY">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatCat">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/08/20/20240820-websocket-architecture-and-scaling/" class="post-title-link" itemprop="url">WebSocket Usage Pattern in Microservices Architecture and How to Horizontal Scaling</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-20 22:01:01" itemprop="dateCreated datePublished" datetime="2024-08-20T22:01:01+08:00">2024-08-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-23 23:51:28" itemprop="dateModified" datetime="2024-08-23T23:51:28+08:00">2024-08-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/WebSocket/" itemprop="url" rel="index"><span itemprop="name">WebSocket</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>To Be Continue…</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -169,7 +243,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/" class="post-title-link" itemprop="url">Dig in WebSocket; Protocol, API Design, and  Security</a>
+            <a href="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/" class="post-title-link" itemprop="url">Dig in WebSocket: Protocol, API Design, and Security</a>
         </h2>
 
         <div class="post-meta">
@@ -186,7 +260,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-16 09:30:55" itemprop="dateModified" datetime="2024-08-16T09:30:55+08:00">2024-08-16</time>
+                <time title="Modified: 2024-08-23 00:25:03" itemprop="dateModified" datetime="2024-08-23T00:25:03+08:00">2024-08-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,11 +338,18 @@
 </ul>
 </li>
 </ol>
-<h2 id="Data-flow"><a href="#Data-flow" class="headerlink" title="Data flow"></a>Data flow</h2><p>Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.<br><a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Image From python websockets library doc</a><br><img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc"></p>
+<h2 id="Life-Cycle-and-Data-Flow"><a href="#Life-Cycle-and-Data-Flow" class="headerlink" title="Life Cycle and Data Flow"></a>Life Cycle and Data Flow</h2><p>Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.<br><a target="_blank" rel="noopener" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Image From python websockets library doc</a></p>
+<p>The WebSocket protocol uses PING/PONG messages to keep connections alive, even when operating behind proxies, firewalls, or load balancers. The server sends a PING message to the client, which responds with a PONG. If the client fails to respond, the server closes the connection.</p>
+<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+
+
+<p>The following diagram shows how data flows between an application built on top of websockets and a remote endpoint. It applies regardless of which side is the server or the client.</p>
+<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+
 <h2 id="Websocket-API-Design"><a href="#Websocket-API-Design" class="headerlink" title="Websocket API Design"></a>Websocket API Design</h2><p>The WebSocket protocol enables two-way communication between a client and server over a persistent connection without enforcing a specific message format. Messages can be sent in two primary formats:</p>
 <ul>
-<li>Text Messages (Opcode 1): These are sent as UTF-8 encoded strings.</li>
-<li>Binary Messages (Opcode 2): These consist of binary data.</li>
+<li>Text (String) Messages (Opcode 1): These are sent as UTF-8 encoded strings.</li>
+<li>Binary (Blob) Messages (Opcode 2): These consist of binary data.</li>
 </ul>
 <p>Still, there are several API specification formats and standards that can be used for WebSockets, although they are less standardized compared to REST APIs. Here are some of the most commonly used formats:</p>
 <ul>
@@ -299,6 +380,10 @@
 </ul>
 </li>
 </ol>
+<h2 id="Graceful-Degradation"><a href="#Graceful-Degradation" class="headerlink" title="Graceful Degradation"></a><strong>Graceful Degradation</strong></h2><ul>
+<li><strong>Fallback Mechanisms:</strong> In scenarios where maintaining a WebSocket connection is difficult (e.g., due to network issues or server overload) or not supported by client devices (<a target="_blank" rel="noopener" href="https://caniuse.com/websockets">Can I use WebSocket?</a>), applications often implement fallback mechanisms like HTTP long polling or Server-Sent Events (SSE). These alternatives can help maintain communication, albeit less efficiently, when WebSockets are not viable.</li>
+</ul>
+<h2 id="Sec-WebSocket-Extensions"><a href="#Sec-WebSocket-Extensions" class="headerlink" title="Sec-WebSocket-Extensions"></a>Sec-WebSocket-Extensions</h2><p>check <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism">Protocol upgrade mechanism</a>for more detail</p>
 <h2 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://ably.com/topic/websockets">The WebSocket API and protocol explained</a></li>
 <li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">Writing WebSocket servers</a></li>
@@ -314,6 +399,8 @@
 <li><a target="_blank" rel="noopener" href="https://devcenter.heroku.com/articles/websocket-security">WebSocket Security</a></li>
 <li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31564432/websocket-security">Websocket Security</a></li>
 <li><a target="_blank" rel="noopener" href="https://portswigger.net/web-security/web-cache-poisoning">web cache poisoning</a></li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism">Protocol upgrade mechanism</a></li>
+<li><a target="_blank" rel="noopener" href="https://caniuse.com/websockets">Can I use WebSocket?</a></li>
 </ul>
 
       
@@ -365,7 +452,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-06-27 23:53:46" itemprop="dateModified" datetime="2024-06-27T23:53:46+08:00">2024-06-27</time>
+                <time title="Modified: 2024-08-23 00:09:36" itemprop="dateModified" datetime="2024-08-23T00:09:36+08:00">2024-08-23</time>
               </span>
 
           
@@ -379,7 +466,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. Encryption technology is mainly divided into two categories: symmetric encryption and asymmetric encryption.</p>
+          <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
+<ol>
+<li><p>TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.</p>
+</li>
+<li><p>SSL/TLS Handshake:</p>
+<ul>
+<li>Client Hello: The client sends a message indicating its support for SSL/TLS version and set of necessary encryption algorithms (cipher suites) it prefers.</li>
+<li>Server Hello: The server responds so let browser knows whether it can support the algorithms and TLS version. The server then sends the SSL certificate to the client. The certificate contains the public key, hostname, expiry dates, etc.</li>
+<li>Certificate Verification: The client verifies the server’s certificate to ensure it belongs to the intended party.</li>
+<li>Key Exchange: The client uses this public key(parse from certificate) to encrypt a randomly generated session key.</li>
+<li>Finished: Now that both the client and the server hold the same session key (symmetric encryption),.</li>
+</ul>
+</li>
+<li><p>Data Encryption:</p>
+<ul>
+<li>Symmetric Encryption: All subsequent data is encrypted using the shared secret key. This is much faster than asymmetric encryption and is ideal for large amounts of data.</li>
+</ul>
+</li>
+</ol>
 <h2 id="Symmetric-Encryption"><a href="#Symmetric-Encryption" class="headerlink" title="Symmetric Encryption"></a>Symmetric Encryption</h2><p>Symmetric-key algorithms are algorithms for cryptography that use the same cryptographic keys for both the encryption of plaintext and the decryption of ciphertext. The key represent a shared secret between two or more parties that can be used to maintain a private information link.</p>
 <ul>
 <li><p>Example Algorithms: AES (Advanced Encryption Standard), DES (Data Encryption Standard). </p>
@@ -400,7 +505,7 @@
 <p><strong>Some PKCS Standards Related To RSA</strong>:</p>
 <ul>
 <li><p><strong>PKCS #1 RSA Cryptography Standard</strong>:</p>
-<p>  This is the most directly related standard to the RSA algorithm. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. </p>
+<p>  This is the a standard specifically for RSA cryptography. It defines the mathematical properties and formats for RSA public and private keys, as well as the encryption and signature schemes based on RSA. It includes details on padding schemes (such as OAEP and PSS) to ensure the security of RSA operations. </p>
 <ul>
 <li><strong>PKCS #1 v1.5</strong>  and <strong>PKCS #1 v2.0(OAEP)</strong>  are the primary padding schemes for RSA encryption, RSA can be used with various padding schemes, particularly in the context of digital signatures. OAEP is generally preferred for its stronger security properties</li>
 <li>Standard RSA private key decryption involves removing all padding or encoding from the ciphertext, resulting in the plaintext as it was originally encrypted. Prior to decryption, it is essential to determine the specific padding mode used during encryption. Additionally, the length of the input to any RSA decryption method must match the size of the RSA key in bytes (i.e., the modulus size in bytes).  For OAEP (Optimal Asymmetric Encryption Padding), it is also crucial to know which hash functions were used during the encoding process.</li>
@@ -409,8 +514,7 @@
 <li><p><strong>PKCS #7 Cryptographic Message Syntax Standard</strong>:</p>
 <p>  This standard defines a general syntax for data that may have cryptography applied to it, such as digital signatures and encryption. RSA is often used within PKCS #7 for signing and encrypting messages.</p>
 </li>
-<li><p><strong>PKCS #8 Private-Key Information Syntax Standard</strong>:</p>
-<p>  This standard describes the syntax for private key information, including RSA private keys. It outlines how private keys should be encoded and stored securely.</p>
+<li><p><strong>PKCS #8 Private-Key Information Syntax Standard</strong>:<br>  This is a more versatile standard for storing private keys. It defines the structure for private key information and supports a variety of key types, including RSA, DSA, and ECDSA. The standard specifies how private keys should be encoded and securely stored.</p>
 </li>
 <li><p><strong>PKCS #10 Certification Request Standard:</strong></p>
 <p>  This standard is used when applying for a digital certificate from a certificate authority.</p>
@@ -1137,17 +1241,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-09-16 17:00:06 / Modified: 17:14:00" itemprop="dateCreated datePublished" datetime="2023-09-16T17:00:06+08:00">2023-09-16</time>
+              <time title="Created: 2023-09-16 17:00:06" itemprop="dateCreated datePublished" datetime="2023-09-16T17:00:06+08:00">2023-09-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-23 23:50:54" itemprop="dateModified" datetime="2024-08-23T23:50:54+08:00">2024-08-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernete-Docker/" itemprop="url" rel="index"><span itemprop="name">Kubernete, Docker</span></a>
+                  <a href="/categories/Kubernetes-Docker/" itemprop="url" rel="index"><span itemprop="name">Kubernetes, Docker</span></a>
                 </span>
             </span>
 
@@ -1204,7 +1314,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/" class="post-title-link" itemprop="url">Kubernete Ingress and Services troubleshooting</a>
+            <a href="/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/" class="post-title-link" itemprop="url">Kubernetes Ingress and Services troubleshooting</a>
         </h2>
 
         <div class="post-meta">
@@ -1213,17 +1323,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-09-10 00:52:24 / Modified: 01:11:01" itemprop="dateCreated datePublished" datetime="2023-09-10T00:52:24+08:00">2023-09-10</time>
+              <time title="Created: 2023-09-10 00:52:24" itemprop="dateCreated datePublished" datetime="2023-09-10T00:52:24+08:00">2023-09-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-23 23:50:54" itemprop="dateModified" datetime="2024-08-23T23:50:54+08:00">2024-08-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernete/" itemprop="url" rel="index"><span itemprop="name">Kubernete</span></a>
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
                 </span>
             </span>
 
@@ -1319,138 +1435,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="WongJY">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatCat">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/" class="post-title-link" itemprop="url">Docker volumes Problem onUbuntu on WSL2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2023-09-10 00:29:48 / Modified: 00:51:05" itemprop="dateCreated datePublished" datetime="2023-09-10T00:29:48+08:00">2023-09-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Docker-volumes-Problem-onUbuntu-on-WSL2"><a href="#Docker-volumes-Problem-onUbuntu-on-WSL2" class="headerlink" title="Docker volumes Problem onUbuntu on WSL2"></a>Docker volumes Problem onUbuntu on WSL2</h1><h2 id="Docker-Volume-type"><a href="#Docker-Volume-type" class="headerlink" title="Docker Volume type"></a>Docker Volume type</h2><p><a target="_blank" rel="noopener" href="https://docs.docker.com/storage/">Manage data in Docker</a></p>
-<ul>
-<li><p>bind mounts :</p>
-<p>When you use a bind mount, a file or directory on the host machine is mounted into a container. They rely on the host machine’s filesystem having a specific directory structure available.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">  — &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db:&#x2F;var&#x2F;lib&#x2F;mysql”</span><br><span class="line">--&gt; manipulate data in &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db on Ubuntu on WSL &#x3D;&#x3D; manipulate data &#x2F;var&#x2F;lib&#x2F;mysql in docker volume</span><br></pre></td></tr></table></figure></li>
-<li><p>volumes :<br><a target="_blank" rel="noopener" href="https://docs.docker.com/storage/">volumes</a></p>
-</li>
-</ul>
-<p>  Volumes are stored in a part of the host filesystem which is managed by Docker (<code>/var/lib/docker/volumes/</code> on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.</p>
-<p>  When you create a volume, it is stored within a directory on the Docker host. When you mount the volume into a container, this directory is what is mounted into the container. This is similar to the way that bind mounts work, except that volumes are managed by Docker and are isolated from the core functionality of the host machine.</p>
-<h2 id="File-permission-problem"><a href="#File-permission-problem" class="headerlink" title="File permission problem :"></a>File permission problem :</h2><img src="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/1.png" width="80%" height="80%" alt="inconsistency_between_database_and_cache">
-
-
-<p>When you use bind mounts for persisting data in generated by and used by Docker containers on Ubuntu on WSL2, you may encounter file permission problems.</p>
-<ul>
-<li><p>docker-compose.yaml</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># ...</span></span><br><span class="line">  <span class="attr">db_mysql:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./db_context</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-db-mysql</span></span><br><span class="line">    <span class="attr">env_file:</span> <span class="string">.env</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;$&#123;DB_DATA_PATH_MYSQL&#125;:/var/lib/mysql&quot;</span></span><br><span class="line">    <span class="attr">command:</span>  <span class="string">--transaction-isolation=READ-COMMITTED</span> <span class="string">--socket=/tmp/mysql.sock</span> <span class="string">--sql_mode=&quot;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3316</span><span class="string">:3306</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="attr">docker_network:</span></span><br><span class="line">        <span class="attr">ipv4_address:</span> <span class="number">172.16</span><span class="number">.238</span><span class="number">.6</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">db_mysql</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Dockerfile-db_mysql</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="string">mysql:8.0</span></span><br><span class="line"><span class="string">COPY</span> <span class="string">my.cnf</span> <span class="string">/etc/mysql/conf.d/</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>.evn</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">DB_DATA_PATH_MYSQL&#x3D;&#x2F;mnt&#x2F;c&#x2F;work&#x2F;db</span><br><span class="line">MYSQL_ROOT_PASSWORD&#x3D;123456</span><br><span class="line">MYSQL_USER&#x3D;test</span><br><span class="line">MYSQL_PASSWORD&#x3D;test123</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Error log like:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysqld: Can&#39;t change permissions of the file &#39;ca-key.pem&#39; (Errcode: 1 - Operation not permitted)</span><br><span class="line">2022-03-25T05:32:05.406540Z 0 [ERROR] Could not set file permission for ca-key.pem</span><br><span class="line">2022-03-25T05:32:05.406553Z 0 [ERROR] Aborting</span><br><span class="line">2022-03-04T02:58:39.130160Z 0 [ERROR] [MY-010295] [Server] Could not set file permission for ca.pem</span><br><span class="line">2022-03-04T02:58:39.130213Z 0 [ERROR] [MY-013236] [Server] The designated data directory &#x2F;var&#x2F;lib&#x2F;mysql&#x2F; is unusable. You can remove all files that the server added to it.</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>These problems are caused by sharing files permission across the Windows Subsystem for Linux (WSL) and Window. Windows file systems differ substantially from Linux file systems. WSL use a filesystem plugin DrvFs to support interop between WSL and the Windows filesystem.</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://github.com/MicrosoftDocs/wsl/blob/main/WSL/wsl-config.md">MicrosoftDocs/WSLPublic</a><br>  <a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/commandline/chmod-chown-wsl-improvements/">Chmod/Chown WSL Improvements</a><br>  <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-tw/archive/blogs/wsl/wsl-file-system-support">WSL File System Support</a><br>  <strong>DrvFs</strong><br>    To facilitate interoperability with Windows, WSL uses the DrvFs file system. WSL automatically mounts all fixed drives with supported file systems under /mnt, such as /mnt/c, /mnt/d, etc. Currently, only NTFS and ReFS volumes are supported.<br>    (window) C:\work\db ← → (WSL) /mnt/c/work/db</p>
-</blockquote>
-<h3 id="Solution-1-volume"><a href="#Solution-1-volume" class="headerlink" title="Solution 1 : volume"></a>Solution 1 : volume</h3><img src="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/2.png" width="80%" height="80%" alt="inconsistency_between_database_and_cache">
-
-
-<p>Use volumes which are completely managed by Docker to solve this problem.</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="comment"># ...</span></span><br><span class="line">  <span class="attr">db_mysql:</span></span><br><span class="line">    <span class="attr">build:</span></span><br><span class="line">      <span class="attr">context:</span> <span class="string">./db_context</span></span><br><span class="line">      <span class="attr">dockerfile:</span> <span class="string">Dockerfile-db-mysql</span></span><br><span class="line">    <span class="attr">env_file:</span> <span class="string">.env</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;$&#123;DB_DATA_PATH_MYSQL&#125;:/var/lib/mysql&quot;</span></span><br><span class="line">    <span class="attr">command:</span>  <span class="string">--transaction-isolation=READ-COMMITTED</span> <span class="string">--socket=/tmp/mysql.sock</span> <span class="string">--sql_mode=&quot;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3316</span><span class="string">:3306</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="attr">docker_network:</span></span><br><span class="line">        <span class="attr">ipv4_address:</span> <span class="number">172.16</span><span class="number">.238</span><span class="number">.6</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">db_mysql</span></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line"> <span class="attr">mysql:</span></span><br></pre></td></tr></table></figure>
-
-<p>WSL2 Ubuntu</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker-compose up build</span><br><span class="line">$ docker <span class="built_in">exec</span> -it db_mysql bash</span><br><span class="line">root@fdg453:/<span class="comment"># mysql -h 127.0.0.1 -u test -p</span></span><br><span class="line">Enter password : test123</span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
-
-<p>Also, you may encounter other problems likes :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqld: [Warning] World-writable config file &#39;&#x2F;etc&#x2F;mysql&#x2F;conf.d&#x2F;my.cnf&#39; is ignored.</span><br></pre></td></tr></table></figure>
-
-<p>After mount file systems into WSL2 from Window, my.cnf file permissions were changed to 777 from 744. Docker daemon copies files from the host to the container verbatim, inluding numeric user ids, resulting inmy.cnfwith file permissions 777 in docker container. Mysql’s security mechanism ignores the file because of insecure read and write permissions. We need to change permissions of <code>my.cnf</code>.</p>
-<p>Consider below methods to fix:</p>
-<ol>
-<li>Chmod in DockerFile : <a target="_blank" rel="noopener" href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/">Fixing World-writable MySql error in Docker, HANDLING PERMISSIONS WITH DOCKER VOLUMES</a></li>
-<li>Modified file permissions on host before Docker daemon copy it into container.</li>
-</ol>
-<p>Modified file permissions for target file on WSL2 ubuntu</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/mnt/c/work/db_context<span class="comment"># ls -al</span></span><br><span class="line">total 0</span><br><span class="line">drwxrwxrwx 1 xxx xxx 512 Mar 25 16:20 .</span><br><span class="line">drwxrwxrwx 1 xxx xxx 512 Mar 28 12:12 ..</span><br><span class="line">-rwxrwxrwx 1 xxx xxx  49 Mar 25 16:20 Dockerfile-db-mysql</span><br><span class="line">-rw-r--r-- 1 xxx xxx 389 Mar 17 11:28 my.cnf</span><br><span class="line">/mnt/c/work/db_context<span class="comment"># chmod 644 my.cnf</span></span><br><span class="line">/mnt/c/work/db_context<span class="comment"># ls -al</span></span><br><span class="line">total 0</span><br><span class="line">drwxrwxrwx 1 xxx xxx 512 Mar 25 16:20 .</span><br><span class="line">drwxrwxrwx 1 xxx xxx 512 Mar 28 12:12 ..</span><br><span class="line">-rwxrwxrwx 1 xxx xxx  49 Mar 25 16:20 Dockerfile-db-mysql</span><br><span class="line">-rw-r--r-- 1 xxx xxx 389 Mar 17 11:28 my.cnf</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="Solution-2-bind-mount-wsl-conf"><a href="#Solution-2-bind-mount-wsl-conf" class="headerlink" title="Solution 2 : bind mount + wsl.conf"></a>Solution 2 : bind mount + wsl.conf</h3><img src="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/3.png" width="80%" height="80%" alt="inconsistency_between_database_and_cache">
-
-<p>Add wsl.conf with metadataautomount options to support Linux system permissions in WSL2.(MicrosoftDocs/WSLPublic)</p>
-<p>WSL2 ubuntu</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># login root</span></span><br><span class="line">$ sudo -i</span><br><span class="line">$ <span class="built_in">cd</span> /etc/</span><br><span class="line"><span class="comment"># create wsl.conf</span></span><br><span class="line">$ vim wsl.conf</span><br></pre></td></tr></table></figure>
-
-<p>wsl.conf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[automount]</span><br><span class="line">options &#x3D; &quot;metadata&quot;</span><br></pre></td></tr></table></figure>
-
-<p>restart WSL2 (Using PowerShell)</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ wsl --shutdown</span><br><span class="line">$ wsl</span><br><span class="line"><span class="comment"># start docker</span></span><br><span class="line">$ service docker start</span><br><span class="line"><span class="comment"># restart your mysql project</span></span><br><span class="line">$ docker-compose up</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1520,7 +1504,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1533,7 +1517,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
