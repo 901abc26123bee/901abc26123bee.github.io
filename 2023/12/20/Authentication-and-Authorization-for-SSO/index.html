@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Authentication and Authorization for SSOOAuth 2.0 (Open Authorization 2.0):  OAuth 2.0 is an authorization framework that allows third-party applications to obtain limited access to a user’s resources">
+  <meta name="description" content="OAuth 2.0 (Open Authorization 2.0):  OAuth 2.0 is an authorization framework that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their cred">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Authentication and Authorization for SSO">
 <meta property="og:url" content="http://example.com/2023/12/20/Authentication-and-Authorization-for-SSO/index.html">
 <meta property="og:site_name" content="WongJY Blog">
-<meta property="og:description" content="Authentication and Authorization for SSOOAuth 2.0 (Open Authorization 2.0):  OAuth 2.0 is an authorization framework that allows third-party applications to obtain limited access to a user’s resources">
+<meta property="og:description" content="OAuth 2.0 (Open Authorization 2.0):  OAuth 2.0 is an authorization framework that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their cred">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2023-12-20T15:54:06.000Z">
-<meta property="article:modified_time" content="2023-12-20T15:58:30.281Z">
+<meta property="article:modified_time" content="2024-08-24T04:51:33.381Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="OAuth 2.0">
 <meta property="article:tag" content="OpenID">
@@ -155,6 +155,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -206,10 +211,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-12-20 23:54:06 / Modified: 23:58:30" itemprop="dateCreated datePublished" datetime="2023-12-20T23:54:06+08:00">2023-12-20</time>
+              <time title="Created: 2023-12-20 23:54:06" itemprop="dateCreated datePublished" datetime="2023-12-20T23:54:06+08:00">2023-12-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-24 12:51:33" itemprop="dateModified" datetime="2024-08-24T12:51:33+08:00">2024-08-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -238,14 +249,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Authentication-and-Authorization-for-SSO"><a href="#Authentication-and-Authorization-for-SSO" class="headerlink" title="Authentication and Authorization for SSO"></a>Authentication and Authorization for SSO</h1><h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
+        <h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
 <ul>
 <li><p>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</p>
 </li>
 <li><p>Implicit (front channel only)</p>
-<p><a target="_blank" rel="noopener" href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></p>
 </li>
 </ul>
+<a id="more"></a>
 <h2 id="OpenID-Connect-OIDC"><a href="#OpenID-Connect-OIDC" class="headerlink" title="OpenID Connect (OIDC):"></a>OpenID Connect (OIDC):</h2><p>  OpenID Connect is an <strong>interoperable authentication protocol based on the OAuth 2.0 framework</strong> . It provides a standardized way for clients to obtain information about the end-user in order to authenticate them. OIDC is often used for single sign-on (SSO) scenarios, where a user can log in once and access multiple applications without needing to log in again. OIDC uses JSON Web Tokens (JWT), HTTP flows and avoids sharing user credentials with services.</p>
 <p>  What OpenID Connect adds</p>
 <ul>
@@ -257,13 +269,13 @@
 </li>
 <li><p>Standardized implementation</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">------------------</span><br><span class="line">| OpenID Connect |  -&gt; OpenID Connect is <span class="keyword">for</span> authentication</span><br><span class="line">------------------</span><br><span class="line">|    OAuth 2.0   |  -&gt; OAuth 2.0 is <span class="keyword">for</span> authorization</span><br><span class="line">------------------</span><br><span class="line">|      HTTP      |</span><br><span class="line">------------------</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://openid.net/developers/how-connect-works/">How OpenID Connect Works - OpenID Foundation</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://openid.net/developers/how-connect-works/">How OpenID Connect Works - OpenID Foundation</a></p>
 <h2 id="JSON-Web-Tokens-JWT"><a href="#JSON-Web-Tokens-JWT" class="headerlink" title="JSON Web Tokens (JWT):"></a>JSON Web Tokens (JWT):</h2><p>JSON Web Tokens (JWT) are <strong>a format for representing claims</strong>, often used in OAuth 2.0 and OIDC as a means of transmitting information securely between parties. In OIDC, the identity token is a JWT.</p>
 <p>JWTs consist of three parts:</p>
 </li>
 <li><p>Header: typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;alg&quot;: &quot;HS256&quot;,</span><br><span class="line">  &quot;typ&quot;: &quot;JWT&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>PlayLoad(claims): there are three types of claims: registered(<a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7519#page-10">reference</a>), public(<a target="_blank" rel="noopener" href="https://www.iana.org/assignments/jwt/jwt.xhtml">reference</a>), and private(custom) claims.</p>
+<li><p>PlayLoad(claims): there are three types of claims: registered(<a target="_blank" rel="noopener external nofollow noreferrer" href="https://datatracker.ietf.org/doc/html/rfc7519#page-10">reference</a>), public(<a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.iana.org/assignments/jwt/jwt.xhtml">reference</a>), and private(custom) claims.</p>
 </li>
 <li><p>Signature: used to verify the message wasn’t changed along the way</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256(</span><br><span class="line">base64UrlEncode(header) + &quot;.&quot; +</span><br><span class="line">base64UrlEncode(payload),</span><br><span class="line">secret)</span><br></pre></td></tr></table></figure>
@@ -276,7 +288,7 @@
 
 </li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://jwt.io/introduction">Introduction to JSON Web Tokens</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://jwt.io/introduction">Introduction to JSON Web Tokens</a></p>
 
     </div>
 
@@ -364,7 +376,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Authentication-and-Authorization-for-SSO"><span class="nav-number">1.</span> <span class="nav-text">Authentication and Authorization for SSO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth-2-0-Open-Authorization-2-0"><span class="nav-number">1.1.</span> <span class="nav-text">OAuth 2.0 (Open Authorization 2.0):</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenID-Connect-OIDC"><span class="nav-number">1.2.</span> <span class="nav-text">OpenID Connect (OIDC):</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-Web-Tokens-JWT"><span class="nav-number">1.3.</span> <span class="nav-text">JSON Web Tokens (JWT):</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth-2-0-Open-Authorization-2-0"><span class="nav-number">1.</span> <span class="nav-text">OAuth 2.0 (Open Authorization 2.0):</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenID-Connect-OIDC"><span class="nav-number">2.</span> <span class="nav-text">OpenID Connect (OIDC):</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON-Web-Tokens-JWT"><span class="nav-number">3.</span> <span class="nav-text">JSON Web Tokens (JWT):</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -385,7 +397,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -398,7 +410,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
@@ -432,7 +444,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Tina Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
   </div>
 
         

@@ -20,16 +20,16 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a c">
+  <meta name="description" content="Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust">
 <meta property="og:url" content="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/index.html">
 <meta property="og:site_name" content="WongJY Blog">
-<meta property="og:description" content="In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a c">
+<meta property="og:description" content="Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://example.com/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/Digital_Signature_diagram_svg.png">
 <meta property="article:published_time" content="2024-06-26T14:00:11.000Z">
-<meta property="article:modified_time" content="2024-08-22T16:09:36.417Z">
+<meta property="article:modified_time" content="2024-08-24T04:47:17.371Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="HTTPS">
 <meta property="article:tag" content="PKCS">
@@ -159,6 +159,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -218,8 +223,17 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-23 00:09:36" itemprop="dateModified" datetime="2024-08-23T00:09:36+08:00">2024-08-23</time>
+                <time title="Modified: 2024-08-24 12:47:17" itemprop="dateModified" datetime="2024-08-24T12:47:17+08:00">2024-08-24</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HTTPS/" itemprop="url" rel="index"><span itemprop="name">HTTPS</span></a>
+                </span>
+            </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -229,6 +243,7 @@
               <span class="post-meta-item-text">Views: </span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust</div>
 
         </div>
       </header>
@@ -240,6 +255,8 @@
 
       
         <p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
+<a id="more"></a>
+
 <ol>
 <li><p>TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.</p>
 </li>
@@ -262,7 +279,7 @@
 <ul>
 <li><p>Example Algorithms: AES (Advanced Encryption Standard), DES (Data Encryption Standard). </p>
 </li>
-<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener" href="https://cryptobook.nakov.com/symmetric-key-ciphers/popular-symmetric-algorithms">Popular Symmetric Algorithms</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">Symmetric-key algorithm</a></p>
+<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://cryptobook.nakov.com/symmetric-key-ciphers/popular-symmetric-algorithms">Popular Symmetric Algorithms</a>, <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Symmetric-key_algorithm">Symmetric-key algorithm</a></p>
 </li>
 </ul>
 <p>This solution appears ideal, but there’s a significant issue: how can multiple parties agree on the encryption key? If the key is transmitted over the network, it could be intercepted by hackers. Consequently, symmetric encryption is perpetually caught in this dilemma. This is where asymmetric encryption becomes essential.</p>
@@ -270,7 +287,7 @@
 <ul>
 <li><p>Example Algorithms: RSA (Rivest-Shamir-Adleman), ECC (Elliptic Curve Cryptography).</p>
 </li>
-<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener" href="https://dev.digicert.com/en/trustcore-sdk/nanocrypto/asymmetric-algorithms.html">Asymmetric Algorithms</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Public-key_cryptography">Public-key cryptography</a></p>
+<li><p>For more Algorithms and their difference, reference: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://dev.digicert.com/en/trustcore-sdk/nanocrypto/asymmetric-algorithms.html">Asymmetric Algorithms</a>, <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Public-key_cryptography">Public-key cryptography</a></p>
 </li>
 </ul>
 <h2 id="PKCS-Public-Key-Cryptography-Standards"><a href="#PKCS-Public-Key-Cryptography-Standards" class="headerlink" title="PKCS(Public Key Cryptography Standards)"></a>PKCS(Public Key Cryptography Standards)</h2><p>Public Key Cryptography Standards (PKCS) are protocols that structure various aspects of using public key infrastructure for information exchange. It includes standards for key exchange, password-based encryption, cryptographic messaging, private key information, certification requests, cryptographic tokens, and personal information exchange.</p>
@@ -298,11 +315,11 @@
 </ul>
 <p>More PKCS details:</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2018/04/21/PKI-Digital-Certificate-Format-Convertion-Notes">認識 PKI 架構下的數位憑證格式與憑證格式轉換的心得分享</a></li>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PKCS">wiki PKCS</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.spiceworks.com/it-security/network-security/articles/what-is-pkcs/">What are Public Key Cryptography Standards (PKCS)? Meaning, Specifications, and Importance</a></li>
-<li><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc8017">IETF DataTracker PKCS #1: RSA Cryptography Specifications Version 2.2</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/48958304/pkcs1-and-pkcs8-format-for-rsa-private-key">PKCS#1 and PKCS#8 format for RSA private key</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.miniasp.com/post/2018/04/21/PKI-Digital-Certificate-Format-Convertion-Notes">認識 PKI 架構下的數位憑證格式與憑證格式轉換的心得分享</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/PKCS">wiki PKCS</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.spiceworks.com/it-security/network-security/articles/what-is-pkcs/">What are Public Key Cryptography Standards (PKCS)? Meaning, Specifications, and Importance</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://datatracker.ietf.org/doc/html/rfc8017">IETF DataTracker PKCS #1: RSA Cryptography Specifications Version 2.2</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/48958304/pkcs1-and-pkcs8-format-for-rsa-private-key">PKCS#1 and PKCS#8 format for RSA private key</a></li>
 </ul>
 <p>Asymmetric encryption also encounters a similar challenge: how do you share the public key with the other party? One approach is to post it on a public web address for the other party to download; another is to send it during the connection establishment. Both methods share a common problem: how do you verify that the public key you received is legitimate? Could someone impersonate the website and provide you with their own public key?</p>
 <p>This is where Public Key Infrastructure (PKI) and Digital certificate(Public key certificates) comes in.</p>
@@ -316,7 +333,7 @@
 <li><strong>Certificate Management System:</strong> A system that manages the lifecycle of certificates, including issuance, access, and delivery.</li>
 <li><strong>Certificate Policy:</strong> A set of rules that defines the procedures for managing certificates and keys within the PKI framework, ensuring their security.</li>
 </ul>
-<p>For more detailed information: <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Public_key_infrastructure">Wikipedia page on Public Key Infrastructure</a>.</p>
+<p>For more detailed information: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Public_key_infrastructure">Wikipedia page on Public Key Infrastructure</a>.</p>
 <p>Now that you understand what a PKI (Public Key Infrastructure) is, let’s delve into how you can request digital certificates and authenticate them.</p>
 <h2 id="Digital-certificate-Public-key-certificates"><a href="#Digital-certificate-Public-key-certificates" class="headerlink" title="Digital certificate (Public key certificates)"></a>Digital certificate (Public key certificates)</h2><h3 id="Generating-a-Key-Pair"><a href="#Generating-a-Key-Pair" class="headerlink" title="Generating a Key Pair"></a>Generating a Key Pair</h3><p>First, generate a pair of cryptographic keys—a public key and a private key. The public key is shared openly, while the private key is kept secure and known only to you.</p>
 <ol>
@@ -344,8 +361,8 @@
 
 <p>Reference:</p>
 <ul>
-<li>Explains the various ways in which RSA keys can be stored:  <a target="_blank" rel="noopener" href="https://www.cryptosys.net/pki/rsakeyformats.html">RSA Key Formats</a></li>
-<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/63195304/difference-between-pem-crt-key-files">Difference between pem, crt, key files</a></li>
+<li>Explains the various ways in which RSA keys can be stored:  <a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.cryptosys.net/pki/rsakeyformats.html">RSA Key Formats</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/63195304/difference-between-pem-crt-key-files">Difference between pem, crt, key files</a></li>
 </ul>
 <h3 id="Self-signed-certificate"><a href="#Self-signed-certificate" class="headerlink" title="Self-signed certificate"></a>Self-signed certificate</h3><p>For for testing or internal use, you can also generate self-signed certificate using OpenSSL, you’ll need both a private key and a certificate signing request (CSR). However, you can generate a self-signed certificate directly without a CSR. Here’s how to do it:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">$ openssl req -new -x509 -key yoursite_private.key -out yoursite_certificate.crt -days 365</span><br><span class="line">$ openssl x509 -<span class="keyword">in</span> yoursite_certificate.crt -text -noout</span><br><span class="line"></span><br><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 3 (0x2)</span><br><span class="line">        Serial Number:</span><br><span class="line">            3d:b5:59:d5:c9:77:54:96:91:d4:9f:c3:27:f4:34:8a:58:a3:2a:3a</span><br><span class="line">        Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">        Issuer: C=TW, ST=Taipei, L=Taipei, O=YourSite</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Jun 26 01:58:40 2024 GMT</span><br><span class="line">            Not After : Jun 26 01:58:40 2025 GMT</span><br><span class="line">        Subject: C=TW, ST=Taipei, L=Taipei, O=YourSite</span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: rsaEncryption</span><br><span class="line">                Public-Key: (1024 bit)</span><br><span class="line">                Modulus:</span><br><span class="line">                    00:a2:e9:dd:86:8e:d1:2b:91:be:89:33:0c:3f:75:</span><br><span class="line">                    b5:59:d8:d3:0c:50:23:7a:68:c1:59:55:d0:47:17:</span><br><span class="line">                    5f:5f:6d:d8:27:02:62:ed:a0:96:46:13:2a:a1:9d:</span><br><span class="line">                    a4:40:98:d6:25:76:41:05:c1:66:26:76:77:1e:4d:</span><br><span class="line">                    4d:17:d5:96:56:2f:e1:38:4b:84:ec:9d:52:31:46:</span><br><span class="line">                    58:bd:3e:cf:51:5b:c2:4c:b2:51:8b:ac:c9:16:e4:</span><br><span class="line">                    a5:ce:f1:1b:6a:19:fd:48:a3:14:cf:32:e3:b2:ea:</span><br><span class="line">                    28:8c:ca:0b:9b:2a:4a:ca:f1:11:24:78:72:c1:a4:</span><br><span class="line">                    96:39:29:ec:a4:c7:b5:3e:23</span><br><span class="line">                Exponent: 65537 (0x10001)</span><br><span class="line">        X509v3 extensions:</span><br><span class="line">            X509v3 Subject Key Identifier:</span><br><span class="line">                42:37:D1:41:A1:BC:B9:12:61:76:FE:F4:BD:80:F3:6D:96:75:21:FC</span><br><span class="line">            X509v3 Authority Key Identifier:</span><br><span class="line">                42:37:D1:41:A1:BC:B9:12:61:76:FE:F4:BD:80:F3:6D:96:75:21:FC</span><br><span class="line">            X509v3 Basic Constraints: critical</span><br><span class="line">                CA:TRUE</span><br><span class="line">    Signature Algorithm: sha256WithRSAEncryption</span><br><span class="line">    Signature Value:</span><br><span class="line">        33:f3:3f:5f:9c:63:a0:10:1e:90:d1:50:4e:d3:e2:6f:19:24:</span><br><span class="line">        98:41:57:65:32:48:a5:89:4e:b3:ea:25:95:8b:d0:ee:44:5e:</span><br><span class="line">        28:b1:1c:3d:65:3e:37:95:e0:<span class="built_in">cd</span>:6e:7b:2f:5c:8a:02:4e:99:</span><br><span class="line">        df:42:8b:a7:6b:f7:23:b4:47:15:7e:93:a5:8f:91:e8:29:21:</span><br><span class="line">        56:5a:f9:ab:9f:a1:24:d7:cf:5a:40:aa:57:02:30:a5:db:be:</span><br><span class="line">        2d:b1:c8:53:6c:14:86:9c:2b:a4:7e:0e:84:ff:53:a7:1b:02:</span><br><span class="line">        28:27:ca:4a:63:70:c0:de:84:33:66:f7:d9:aa:a0:b3:ba:80:</span><br><span class="line">        f8:8a</span><br></pre></td></tr></table></figure>
@@ -360,7 +377,7 @@
 </ul>
 <p>Reference:</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://blog.miniasp.com/post/2019/02/25/Creating-Self-signed-Certificate-using-OpenSSL">如何使用 OpenSSL 建立開發測試用途的自簽憑證 (Self-Signed Certificate)</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.miniasp.com/post/2019/02/25/Creating-Self-signed-Certificate-using-OpenSSL">如何使用 OpenSSL 建立開發測試用途的自簽憑證 (Self-Signed Certificate)</a></li>
 </ul>
 <h3 id="Digital-signature"><a href="#Digital-signature" class="headerlink" title="Digital signature"></a>Digital signature</h3><p>A digital signature is a cryptographic mechanism used to verify the authenticity and integrity of a message, software, or digital document. It functions like a handwritten signature or a stamped seal, but it is much more secure.</p>
 <p>When we submit a certificate request to a Certificate Authority (CA), the CA will sign the certificate. This process is known as the signature algorithm. But how can we ensure that the signature is indeed from the CA? The answer lies in using something that only the CA privately owns, which is the CA’s private key.</p>
@@ -380,7 +397,7 @@
 </ul>
 <p>Reference</p>
 <ul>
-<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Digital_signature">Digital Signature</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Digital_signature">Digital Signature</a></li>
 </ul>
 <h2 id="Chain-Of-Trust"><a href="#Chain-Of-Trust" class="headerlink" title="Chain Of Trust"></a><strong>Chain Of Trust</strong></h2><p>The main difference between a CA-signed certificate and a self-signed certificate is that a self-signed certificate contains a single CERTIFICATE block, whereas a CA-signed certificate contains multiple CERTIFICATE blocks.</p>
 <ul>
@@ -500,7 +517,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -513,7 +530,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
@@ -547,7 +564,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Tina Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
   </div>
 
         

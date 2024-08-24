@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window.  Button Clicks Event Ha">
+  <meta name="description" content="Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window. It is particularly suit">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Debouncing Mechanism With Golang">
 <meta property="og:url" content="http://example.com/2023/12/25/Debouncing-mechanism/index.html">
 <meta property="og:site_name" content="WongJY Blog">
-<meta property="og:description" content="Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window.  Button Clicks Event Ha">
+<meta property="og:description" content="Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window. It is particularly suit">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2023-12-25T04:38:26.000Z">
-<meta property="article:modified_time" content="2024-08-23T16:01:06.144Z">
+<meta property="article:modified_time" content="2024-08-24T05:00:08.713Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="Golang">
 <meta property="article:tag" content="Debounce">
@@ -153,6 +153,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -212,7 +217,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 00:01:06" itemprop="dateModified" datetime="2024-08-24T00:01:06+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:00:08" itemprop="dateModified" datetime="2024-08-24T13:00:08+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -232,6 +237,7 @@
               <span class="post-meta-item-text">Views: </span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window. It is particularly suitable for: Button Clicks, Event Handling, Throttling</div>
 
         </div>
       </header>
@@ -242,15 +248,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window.</p>
+        <p>Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window. It is particularly suitable for:</p>
 <ul>
 <li>Button Clicks</li>
 <li>Event Handling</li>
 <li>Throttling</li>
 </ul>
+<a id="more"></a>
+
 <h2 id="Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails"><a href="#Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails" class="headerlink" title="Debouncing to ensure that only the final input registers or prevails"></a>Debouncing to ensure that only the final input registers or prevails</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">--|--|--|--|--|--|--|--|-------------------|--|--|--|--|</span><br><span class="line">                       trigger                         trigger</span><br></pre></td></tr></table></figure>
 
-<p><a target="_blank" rel="noopener" href="https://github.com/bep/debounce/blob/master/debounce.go">reference code</a><br>This code snippet provides a simpler and more lightweight debouncing mechanism. The debouncer function takes a callback function and ensures that it is called only after a specified time duration has passed since the last invocation.</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/bep/debounce/blob/master/debounce.go">reference code</a><br>This code snippet provides a simpler and more lightweight debouncing mechanism. The debouncer function takes a callback function and ensures that it is called only after a specified time duration has passed since the last invocation.</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> debounceDelay = <span class="number">1</span> * time.Second</span><br><span class="line"><span class="keyword">const</span> eventTriggerInterval = <span class="number">500</span> * time.Millisecond</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// Create a debouncer with a 500ms delay</span></span><br><span class="line">	debounce := New(debounceDelay)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Create a channel to receive events</span></span><br><span class="line">	eventChannel := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Goroutine to listen to the channel and debounce events</span></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		<span class="keyword">for</span> &#123;</span><br><span class="line">			<span class="comment">// Wait for an event to be received on the channel</span></span><br><span class="line">			&lt;-eventChannel</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Trigger the debouncer with the function you want to execute</span></span><br><span class="line">			debounce(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">				<span class="comment">// Your code to be executed after the debounce delay</span></span><br><span class="line">				<span class="built_in">println</span>(<span class="string">&quot;Event debounced&quot;</span>)</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Simulate events by sending to the channel</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;event %d at time %v\n&quot;</span>, i, time.Now())</span><br><span class="line">		<span class="comment">// Simulate an event by sending to the channel</span></span><br><span class="line">		eventChannel &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Sleep for a short duration to simulate time passing between events</span></span><br><span class="line">		time.Sleep(eventTriggerInterval)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Wait for some time to allow debouncer to process the last event</span></span><br><span class="line">	time.Sleep(<span class="number">5</span> * time.Second)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// The debounced function can be invoked with different functions, if needed,</span></span><br><span class="line"><span class="comment">// the last one will win.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New</span><span class="params">(after time.Duration)</span> <span class="title">func</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">	d := &amp;debouncer&#123;after: after&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">		d.add(f)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> debouncer <span class="keyword">struct</span> &#123;</span><br><span class="line">	mu    sync.Mutex</span><br><span class="line">	after time.Duration</span><br><span class="line">	timer *time.Timer</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *debouncer)</span> <span class="title">add</span><span class="params">(f <span class="keyword">func</span>()</span>)</span> &#123;</span><br><span class="line">	d.mu.Lock()</span><br><span class="line">	<span class="keyword">defer</span> d.mu.Unlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> d.timer != <span class="literal">nil</span> &#123;</span><br><span class="line">		d.timer.Stop()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Create a new timer and start it</span></span><br><span class="line">	d.timer = time.AfterFunc(d.after, f)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
@@ -369,7 +377,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -382,7 +390,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
@@ -416,7 +424,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Tina Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
   </div>
 
         

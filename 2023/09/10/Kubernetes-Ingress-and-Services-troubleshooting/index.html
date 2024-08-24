@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Kubernetes Ingress and Services troubleshooting Traffic flow: Internet → Ingress controller rule (according to your Ingress YAML) → Service → Pods  Debug flow: Pods → Service → Ingress → Ingress contr">
+  <meta name="description" content="Kubernetes Ingress and Services troubleshooting">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kubernetes Ingress and Services troubleshooting">
 <meta property="og:url" content="http://example.com/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/index.html">
 <meta property="og:site_name" content="WongJY Blog">
-<meta property="og:description" content="Kubernetes Ingress and Services troubleshooting Traffic flow: Internet → Ingress controller rule (according to your Ingress YAML) → Service → Pods  Debug flow: Pods → Service → Ingress → Ingress contr">
+<meta property="og:description" content="Kubernetes Ingress and Services troubleshooting">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://example.com/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/1.png">
 <meta property="og:image" content="http://example.com/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/2.png">
 <meta property="article:published_time" content="2023-09-09T16:52:24.000Z">
-<meta property="article:modified_time" content="2024-08-23T15:50:54.521Z">
+<meta property="article:modified_time" content="2024-08-24T04:53:57.569Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="Kubernetes, debug">
 <meta name="twitter:card" content="summary">
@@ -155,6 +155,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -214,7 +219,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-23 23:50:54" itemprop="dateModified" datetime="2024-08-23T23:50:54+08:00">2024-08-23</time>
+                <time title="Modified: 2024-08-24 12:53:57" itemprop="dateModified" datetime="2024-08-24T12:53:57+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,6 +239,7 @@
               <span class="post-meta-item-text">Views: </span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">Kubernetes Ingress and Services troubleshooting</div>
 
         </div>
       </header>
@@ -244,12 +250,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Kubernetes-Ingress-and-Services-troubleshooting"><a href="#Kubernetes-Ingress-and-Services-troubleshooting" class="headerlink" title="Kubernetes Ingress and Services troubleshooting"></a>Kubernetes Ingress and Services troubleshooting</h1><ul>
+        <ul>
 <li><p>Traffic flow: Internet → Ingress controller rule (according to your Ingress YAML) → Service → Pods</p>
 </li>
 <li><p>Debug flow: Pods → Service → Ingress → Ingress controller → Internet</p>
 </li>
 </ul>
+<a id="more"></a>
+
 <h2 id="Check-the-Deployment-amp-Pods"><a href="#Check-the-Deployment-amp-Pods" class="headerlink" title="Check the Deployment &amp; Pods"></a>Check the Deployment &amp; Pods</h2><ol>
 <li>Makes sure that the Pod is up and running (Pod’s “Status” is “Running”). If not, checks the Deployment/Pod Resource Events and log to fix the problem.</li>
 <li>If you are using HTTP GET livenessProbe, ensure your Service and Ingress are deployed beforehand.</li>
@@ -259,7 +267,7 @@
 <h2 id="Check-the-port-mapping"><a href="#Check-the-port-mapping" class="headerlink" title="Check the port mapping"></a>Check the port mapping</h2><img src="/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/1.png" width="80%" height="80%" alt="1">
 
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a><br>    - An Ingress may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.<br>    - An Ingress does not expose arbitrary ports or protocols. Exposing services other than HTTP and HTTPS to the internet typically uses a service of type Service.Type=NodePort or Service.Type=LoadBalancer.</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a><br>    - An Ingress may be configured to give Services externally-reachable URLs, load balance traffic, terminate SSL / TLS, and offer name-based virtual hosting. An Ingress controller is responsible for fulfilling the Ingress, usually with a load balancer, though it may also configure your edge router or additional frontends to help handle the traffic.<br>    - An Ingress does not expose arbitrary ports or protocols. Exposing services other than HTTP and HTTPS to the internet typically uses a service of type Service.Type=NodePort or Service.Type=LoadBalancer.</p>
 </blockquote>
 <h2 id="Check-the-Service"><a href="#Check-the-Service" class="headerlink" title="Check the Service"></a>Check the Service</h2><ol>
 <li>Checks the “Endpoints” field in Service, which should match the “IP” of Pods.</li>
@@ -268,7 +276,7 @@
 </li>
 </ol>
 <h2 id="Check-the-Ingress-amp-Ingress-Controller-Logs-and-Resource-Events"><a href="#Check-the-Ingress-amp-Ingress-Controller-Logs-and-Resource-Events" class="headerlink" title="Check the Ingress &amp; Ingress Controller Logs and Resource Events"></a>Check the Ingress &amp; Ingress Controller Logs and Resource Events</h2><blockquote>
-<p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/">Ingress Controllers</a><br>    - In order for the Ingress resource to work, the cluster must have an ingress controller running.<br>    - Unlike other types of controllers which run as part of the kube-controller-manager binary, Ingress controllers are not started automatically with a cluster in public cloud like GKE, AKS…. You need to choose the ingress controller implementation that best fits your cluster.<br>    - Ingress Controller in AKS is AKS Application Gateway Ingress Controller ,which is ingress-appgw-deployment below. The ingress controller runs as a pod within the AKS cluster. It consumes Kubernetes Ingress Resources and converts them to an Azure Application Gateway configuration which allows the gateway to load-balance traffic to Kubernetes pods.</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/">Ingress Controllers</a><br>    - In order for the Ingress resource to work, the cluster must have an ingress controller running.<br>    - Unlike other types of controllers which run as part of the kube-controller-manager binary, Ingress controllers are not started automatically with a cluster in public cloud like GKE, AKS…. You need to choose the ingress controller implementation that best fits your cluster.<br>    - Ingress Controller in AKS is AKS Application Gateway Ingress Controller ,which is ingress-appgw-deployment below. The ingress controller runs as a pod within the AKS cluster. It consumes Kubernetes Ingress Resources and converts them to an Azure Application Gateway configuration which allows the gateway to load-balance traffic to Kubernetes pods.</p>
 </blockquote>
 <ol>
 <li><p>Checks your Ingress for any Event or error log</p>
@@ -285,7 +293,7 @@
 </li>
 </ol>
 <blockquote>
-<p>For AKS Application Gateway, check:<br>    - <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-probe-overview">Application Gateway health monitoring overview</a><br>    - <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-create-probe-portal">Create a custom probe for Application Gateway by using the portal</a></p>
+<p>For AKS Application Gateway, check:<br>    - <a target="_blank" rel="noopener external nofollow noreferrer" href="https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-probe-overview">Application Gateway health monitoring overview</a><br>    - <a target="_blank" rel="noopener external nofollow noreferrer" href="https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-create-probe-portal">Create a custom probe for Application Gateway by using the portal</a></p>
 </blockquote>
 <h2 id="Reason-for-Application-Gateway-failure"><a href="#Reason-for-Application-Gateway-failure" class="headerlink" title="Reason for Application Gateway failure"></a>Reason for Application Gateway failure</h2><p>The reasons that may cause Application Gateway fail to monitor and apply Ingress configuration.</p>
 <ol>
@@ -293,7 +301,7 @@
  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Secret</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">testsecret-tls</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br><span class="line"><span class="attr">data:</span></span><br><span class="line">  <span class="attr">tls.crt:</span> <span class="string">base64</span> <span class="string">encoded</span> <span class="string">cert</span></span><br><span class="line">  <span class="attr">tls.key:</span> <span class="string">base64</span> <span class="string">encoded</span> <span class="string">key</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">kubernetes.io/tls</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>redirecting problem</p>
-<p> <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/42101808/ingress-gives-502-error">Ingress gives 502 error</a></p>
+<p> <a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/42101808/ingress-gives-502-error">Ingress gives 502 error</a></p>
 <p> noticing that the application must return a 200 status code at ‘/’. if your application was returning a 302 (redirect to login), which would cause the health fail. When the health check fails, the ingress resource returns 502.</p>
 </li>
 <li><p>Backend path rule conflict.</p>
@@ -303,13 +311,13 @@
 
 <p> Ingress</p>
  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Ingress</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">networking.k8s.io/v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">ingress-payment</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">payment</span></span><br><span class="line">  <span class="attr">annotations:</span></span><br><span class="line">    <span class="attr">appgw.ingress.kubernetes.io/backend-path-prefix:</span> <span class="string">/payment_resource/</span></span><br><span class="line">    <span class="attr">appgw.ingress.kubernetes.io/connection-draining:</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    <span class="attr">appgw.ingress.kubernetes.io/connection-draining-timeout:</span> <span class="string">&#x27;30&#x27;</span></span><br><span class="line">    <span class="attr">appgw.ingress.kubernetes.io/cookie-based-affinity:</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    <span class="attr">appgw.ingress.kubernetes.io/ssl-redirect:</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">    <span class="attr">cert-manager.io/cluster-issuer:</span> <span class="string">letsencrypt-production</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.allow-http:</span> <span class="string">&#x27;false&#x27;</span></span><br><span class="line">    <span class="attr">kubernetes.io/ingress.class:</span> <span class="string">azure/application-gateway</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">tls:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">hosts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">xxx.xxx.xxx.azure.com</span></span><br><span class="line">      <span class="attr">secretName:</span> <span class="string">aks-ingress-cert</span></span><br><span class="line">  <span class="attr">rules:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">host:</span> <span class="string">xxx.xxx.xxx.azure.com</span></span><br><span class="line">      <span class="attr">http:</span></span><br><span class="line">        <span class="attr">paths:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">path:</span> <span class="string">/payment/*</span></span><br><span class="line">            <span class="attr">pathType:</span> <span class="string">ImplementationSpecific</span></span><br><span class="line">            <span class="attr">backend:</span></span><br><span class="line">              <span class="attr">service:</span></span><br><span class="line">                <span class="attr">name:</span> <span class="string">payment-svc</span></span><br><span class="line">                <span class="attr">port:</span></span><br><span class="line">                  <span class="attr">number:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
-<p> Visit <a target="_blank" rel="noopener" href="https://xxx.xxx.xxx.azure.com/payment/healthcheck.jsp">https://xxx.xxx.xxx.azure.com/payment/healthcheck.jsp</a> , which would redirect to backend resource endpoint <a target="_blank" rel="noopener" href="https://xxx.xxx.xxx.azure.com/payment_resource/healthcheck.jsp">https://xxx.xxx.xxx.azure.com/payment_resource/healthcheck.jsp</a> .</p>
+<p> Visit <a target="_blank" rel="noopener external nofollow noreferrer" href="https://xxx.xxx.xxx.azure.com/payment/healthcheck.jsp">https://xxx.xxx.xxx.azure.com/payment/healthcheck.jsp</a> , which would redirect to backend resource endpoint <a target="_blank" rel="noopener external nofollow noreferrer" href="https://xxx.xxx.xxx.azure.com/payment_resource/healthcheck.jsp">https://xxx.xxx.xxx.azure.com/payment_resource/healthcheck.jsp</a> .</p>
 </li>
 </ol>
 <blockquote>
-<p><a target="_blank" rel="noopener" href="https://azure.github.io/application-gateway-kubernetes-ingress/annotations/">Backend Path Prefix</a><br>This annotation allows the backend path specified in an ingress resource to be re-written with prefix specified in this annotation. This allows users to expose services whose endpoints are different than endpoint names used to expose a service in an ingress resource.</p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://azure.github.io/application-gateway-kubernetes-ingress/annotations/">Backend Path Prefix</a><br>This annotation allows the backend path specified in an ingress resource to be re-written with prefix specified in this annotation. This allows users to expose services whose endpoints are different than endpoint names used to expose a service in an ingress resource.</p>
 </blockquote>
-<p><a target="_blank" rel="noopener" href="https://stacksimplify.com/azure-aks/azure-kubernetes-service-ingress-context-path-routing/">Ingress — Context Path Based Routing</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stacksimplify.com/azure-aks/azure-kubernetes-service-ingress-context-path-routing/">Ingress — Context Path Based Routing</a></p>
 <img src="/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/2.png" width="80%" height="80%" alt="2">
     </div>
 
@@ -394,7 +402,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes-Ingress-and-Services-troubleshooting"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes Ingress and Services troubleshooting</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Deployment-amp-Pods"><span class="nav-number">1.1.</span> <span class="nav-text">Check the Deployment &amp; Pods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-port-mapping"><span class="nav-number">1.2.</span> <span class="nav-text">Check the port mapping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Service"><span class="nav-number">1.3.</span> <span class="nav-text">Check the Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Ingress-amp-Ingress-Controller-Logs-and-Resource-Events"><span class="nav-number">1.4.</span> <span class="nav-text">Check the Ingress &amp; Ingress Controller Logs and Resource Events</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reason-for-Application-Gateway-failure"><span class="nav-number">1.5.</span> <span class="nav-text">Reason for Application Gateway failure</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Deployment-amp-Pods"><span class="nav-number">1.</span> <span class="nav-text">Check the Deployment &amp; Pods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-port-mapping"><span class="nav-number">2.</span> <span class="nav-text">Check the port mapping</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Service"><span class="nav-number">3.</span> <span class="nav-text">Check the Service</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Check-the-Ingress-amp-Ingress-Controller-Logs-and-Resource-Events"><span class="nav-number">4.</span> <span class="nav-text">Check the Ingress &amp; Ingress Controller Logs and Resource Events</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reason-for-Application-Gateway-failure"><span class="nav-number">5.</span> <span class="nav-text">Reason for Application Gateway failure</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -415,7 +423,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -428,7 +436,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
@@ -462,7 +470,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Tina Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
   </div>
 
         

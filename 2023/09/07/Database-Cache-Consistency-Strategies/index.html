@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Database Cache Consistency* Strategies** Cache Aside Read&#x2F;Write Through Write Behind Caching  Cache Aside PatternEventually Database Cache Consistency  Cache miss: The application retrieves data from">
+  <meta name="description" content="Database Cache Consistency Strategies">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Database Cache Consistency Strategies">
 <meta property="og:url" content="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/index.html">
 <meta property="og:site_name" content="WongJY Blog">
-<meta property="og:description" content="Database Cache Consistency* Strategies** Cache Aside Read&#x2F;Write Through Write Behind Caching  Cache Aside PatternEventually Database Cache Consistency  Cache miss: The application retrieves data from">
+<meta property="og:description" content="Database Cache Consistency Strategies">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/1.png">
 <meta property="og:image" content="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png">
 <meta property="og:image" content="http://example.com/2023/09/07/Database-Cache-Consistency-Strategies/2.png">
 <meta property="article:published_time" content="2023-09-07T15:28:11.000Z">
-<meta property="article:modified_time" content="2023-09-07T15:47:11.519Z">
+<meta property="article:modified_time" content="2024-08-24T05:00:32.629Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="Database">
 <meta property="article:tag" content="Cache">
@@ -157,6 +157,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
   </ul>
 </nav>
 
@@ -208,10 +213,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2023-09-07 23:28:11 / Modified: 23:47:11" itemprop="dateCreated datePublished" datetime="2023-09-07T23:28:11+08:00">2023-09-07</time>
+              <time title="Created: 2023-09-07 23:28:11" itemprop="dateCreated datePublished" datetime="2023-09-07T23:28:11+08:00">2023-09-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-24 13:00:32" itemprop="dateModified" datetime="2024-08-24T13:00:32+08:00">2024-08-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -230,6 +241,7 @@
               <span class="post-meta-item-text">Views: </span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">Database Cache Consistency Strategies</div>
 
         </div>
       </header>
@@ -240,18 +252,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Database-Cache-Consistency-Strategies"><a href="#Database-Cache-Consistency-Strategies" class="headerlink" title="Database Cache Consistency* Strategies**"></a>Database Cache Consistency* Strategies**</h1><ul>
+        <p>Database cache consistency strategies include:</p>
+<ul>
 <li>Cache Aside</li>
 <li>Read/Write Through</li>
 <li>Write Behind Caching</li>
 </ul>
+<a id="more"></a>
 <h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
 <ul>
 <li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
 <li>Cache hit: The application retrieves data from the cache and returns.</li>
 <li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
 <p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
 <p>Consider the following situation.</p>
 <img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
@@ -268,18 +282,18 @@
 <li>if the cache is not hit, update the database directly, and then return.</li>
 <li>If the cache is hit, the cache is updated, and updates the data in database. Both operations happen in a single transaction(this is a synchronous operation)</li>
 </ul>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
 <p>It does create some extra latency on writes but at least it improves the data inconsistency problem greatly as the data in the cache and data storage is the same. Another advantage is, because application only talks to the cache, the code is much cleaner and simpler.</p>
 <h1 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a><strong>Write Behind Caching Pattern</strong></h1><p><em>Eventually Database Cache Consistency</em></p>
 <p>Write-behind(also call Write Back) caching Pattern is similar to the write-through cache in a way that application only communicates with the cache. The difference is that the data gets written to the cache first. And then, written to the underlying database asynchronously. The advantage of this design is that the I/O operation of the data is extremely fast. Also, due to asynchronous update in database, the writes can be collected and then does a batch write to the database.</p>
 <p>However, the problem with this is that the data is not strongly consistent and may be lost. To tackle the data inconsistency problem a system could combine the write-behind strategy with the read-through strategy. In this way up to date data is always to be read from the cache. In addition, the implementation logic of Write Back is more complicated, because it needs to track which data has been updated and needs to be stored in database.</p>
 <p>When we compare it to the write-through strategy, it fits more for systems with large write and read volume that tolerate some data inconsistency. Another useful case is that when execution order of data updated doesn’t matter, like the number of page views, every time the user clicks, this field in the database is incremented by one. Execution order of SQL/request would not cause thread safety problem in concurrently write and read, since each SQL/request does the same(page views field incremented by one).</p>
 <h1 id="Final"><a href="#Final" class="headerlink" title="Final"></a><strong>Final</strong></h1><p>We do not consider the transaction of the cache and under layer storage. For example, the cache is updated successfully, but the update of the database fails. Or the other way reverse. If you need strong consistency, you need to consider Transaction Processing in a Distributed System, like “two-phase commit protocol” — — prepare, commit/rollback.</p>
-<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><p><a target="_blank" rel="noopener" href="https://danielw.cn/cache-consistency-with-database#concepts">Cache Consistency with Database</a></p>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">Caching Strategies Overview</a></p>
-<p><a target="_blank" rel="noopener" href="https://catsincode.com/caching-strategy/">缓存更新的套路</a></p>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cache_(computing)">Cache (computing)</a></p>
-<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cache-aside">Cache-Aside pattern</a></p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a><strong>Reference</strong></h1><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://danielw.cn/cache-consistency-with-database#concepts">Cache Consistency with Database</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://catsincode.com/caching-strategy/">Caching Strategies Overview</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://catsincode.com/caching-strategy/">缓存更新的套路</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Cache_(computing)">Cache (computing)</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://docs.microsoft.com/en-us/azure/architecture/patterns/cache-aside">Cache-Aside pattern</a></p>
 
     </div>
 
@@ -365,7 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Database-Cache-Consistency-Strategies"><span class="nav-number">1.</span> <span class="nav-text">Database Cache Consistency* Strategies**</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache-Aside-Pattern"><span class="nav-number">2.</span> <span class="nav-text">Cache Aside Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Read-Write-Through-Pattern"><span class="nav-number">3.</span> <span class="nav-text">Read&#x2F;Write Through Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Write-Behind-Caching-Pattern"><span class="nav-number">4.</span> <span class="nav-text">Write Behind Caching Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Final"><span class="nav-number">5.</span> <span class="nav-text">Final</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cache-Aside-Pattern"><span class="nav-number">1.</span> <span class="nav-text">Cache Aside Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Read-Write-Through-Pattern"><span class="nav-number">2.</span> <span class="nav-text">Read&#x2F;Write Through Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Write-Behind-Caching-Pattern"><span class="nav-number">3.</span> <span class="nav-text">Write Behind Caching Pattern</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Final"><span class="nav-number">4.</span> <span class="nav-text">Final</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -386,7 +400,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -399,7 +413,7 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
         <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
@@ -433,7 +447,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Tina Wong</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
   </div>
 
         

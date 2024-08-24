@@ -3,7 +3,7 @@
   <entry>
     <title>Authentication and Authorization for SSO</title>
     <url>/2023/12/20/Authentication-and-Authorization-for-SSO/</url>
-    <content><![CDATA[<h1 id="Authentication-and-Authorization-for-SSO"><a href="#Authentication-and-Authorization-for-SSO" class="headerlink" title="Authentication and Authorization for SSO"></a>Authentication and Authorization for SSO</h1><h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
+    <content><![CDATA[<h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
 <ul>
 <li><p>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</p>
 </li>
@@ -11,6 +11,7 @@
 <p><a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></p>
 </li>
 </ul>
+<a id="more"></a>
 <h2 id="OpenID-Connect-OIDC"><a href="#OpenID-Connect-OIDC" class="headerlink" title="OpenID Connect (OIDC):"></a>OpenID Connect (OIDC):</h2><p>  OpenID Connect is an <strong>interoperable authentication protocol based on the OAuth 2.0 framework</strong> . It provides a standardized way for clients to obtain information about the end-user in order to authenticate them. OIDC is often used for single sign-on (SSO) scenarios, where a user can log in once and access multiple applications without needing to log in again. OIDC uses JSON Web Tokens (JWT), HTTP flows and avoids sharing user credentials with services.</p>
 <p>  What OpenID Connect adds</p>
 <ul>
@@ -404,11 +405,13 @@
   <entry>
     <title>Database Cache Consistency Strategies</title>
     <url>/2023/09/07/Database-Cache-Consistency-Strategies/</url>
-    <content><![CDATA[<h1 id="Database-Cache-Consistency-Strategies"><a href="#Database-Cache-Consistency-Strategies" class="headerlink" title="Database Cache Consistency* Strategies**"></a>Database Cache Consistency* Strategies**</h1><ul>
+    <content><![CDATA[<p>Database cache consistency strategies include:</p>
+<ul>
 <li>Cache Aside</li>
 <li>Read/Write Through</li>
 <li>Write Behind Caching</li>
 </ul>
+<a id="more"></a>
 <h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
 <ul>
 <li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
@@ -456,12 +459,14 @@
   <entry>
     <title>Debouncing Mechanism With Golang</title>
     <url>/2023/12/25/Debouncing-mechanism/</url>
-    <content><![CDATA[<p>Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window.</p>
+    <content><![CDATA[<p>Debouncing mechanism can be useful in scenarios where you want to handle events that may be triggered frequently but should only be processed once within a certain time window. It is particularly suitable for:</p>
 <ul>
 <li>Button Clicks</li>
 <li>Event Handling</li>
 <li>Throttling</li>
 </ul>
+<a id="more"></a>
+
 <h2 id="Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails"><a href="#Debouncing-to-ensure-that-only-the-final-input-registers-or-prevails" class="headerlink" title="Debouncing to ensure that only the final input registers or prevails"></a>Debouncing to ensure that only the final input registers or prevails</h2><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">--|--|--|--|--|--|--|--|-------------------|--|--|--|--|</span><br><span class="line">                       trigger                         trigger</span><br></pre></td></tr></table></figure>
 
 <p><a href="https://github.com/bep/debounce/blob/master/debounce.go">reference code</a><br>This code snippet provides a simpler and more lightweight debouncing mechanism. The debouncer function takes a callback function and ensures that it is called only after a specified time duration has passed since the last invocation.</p>
@@ -489,7 +494,7 @@
   <entry>
     <title>Docker volumes Problem onUbuntu on WSL2</title>
     <url>/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/</url>
-    <content><![CDATA[<h1 id="Docker-volumes-Problem-onUbuntu-on-WSL2"><a href="#Docker-volumes-Problem-onUbuntu-on-WSL2" class="headerlink" title="Docker volumes Problem onUbuntu on WSL2"></a>Docker volumes Problem onUbuntu on WSL2</h1><h2 id="Docker-Volume-type"><a href="#Docker-Volume-type" class="headerlink" title="Docker Volume type"></a>Docker Volume type</h2><p><a href="https://docs.docker.com/storage/">Manage data in Docker</a></p>
+    <content><![CDATA[<h2 id="Docker-Volume-type"><a href="#Docker-Volume-type" class="headerlink" title="Docker Volume type"></a>Docker Volume type</h2><p><a href="https://docs.docker.com/storage/">Manage data in Docker</a></p>
 <ul>
 <li><p>bind mounts :</p>
 <p>When you use a bind mount, a file or directory on the host machine is mounted into a container. They rely on the host machine’s filesystem having a specific directory structure available.</p>
@@ -499,6 +504,8 @@
 </ul>
 <p>  Volumes are stored in a part of the host filesystem which is managed by Docker (<code>/var/lib/docker/volumes/</code> on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.</p>
 <p>  When you create a volume, it is stored within a directory on the Docker host. When you mount the volume into a container, this directory is what is mounted into the container. This is similar to the way that bind mounts work, except that volumes are managed by Docker and are isolated from the core functionality of the host machine.</p>
+<a id="more"></a>
+
 <h2 id="File-permission-problem"><a href="#File-permission-problem" class="headerlink" title="File permission problem :"></a>File permission problem :</h2><img src="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/1.png" width="80%" height="80%" alt="inconsistency_between_database_and_cache">
 
 
@@ -566,7 +573,9 @@
   <entry>
     <title>Encoding: Character Encoding, URL Encoding and Base64 Encoding</title>
     <url>/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/</url>
-    <content><![CDATA[<h1 id="Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding"><a href="#Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding" class="headerlink" title="Encoding: Character Encoding, URL Encoding and Base64 Encoding"></a>Encoding: Character Encoding, URL Encoding and Base64 Encoding</h1><h1 id="Character-Encoding"><a href="#Character-Encoding" class="headerlink" title="Character Encoding"></a><strong>Character Encoding</strong></h1><p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
+    <content><![CDATA[<h1 id="Character-Encoding"><a href="#Character-Encoding" class="headerlink" title="Character Encoding"></a><strong>Character Encoding</strong></h1><p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
+<a id="more"></a>
+
 <h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a><strong>ASCII</strong></h2><p>In the early days of the internet, we didn’t need to worry about any characters other than english. We use <a href="https://en.wikipedia.org/wiki/ASCII">American Standard Code for Information Interchange (ASCII)</a> , one byte (eight bits), to map a-z, A-Z , 0–9 and some control characters.</p>
 <p>As you can imagine, there are hundreds of languages in the world. one byte is not enough for some language like Chinese or Japanese. Each country has its own standards, result in garbled characters displayed in multi-language mixed text.</p>
 <h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a><strong>Unicode</strong></h2><p>Unicode is sometimes called the <a href="https://en.wikipedia.org/wiki/Universal_Coded_Character_Set">Universal Coded Character Set</a> (UCS), or even ISO/IEC 10646. Unicode is made up of lots of code points (mapping lots of characters from around the world to a key that all computers can reference.) A collection of code points is called a character set, which is what Unicode is. Unicode unifies all languages into one set of codes, so that there will be no more garbled characters.</p>
@@ -610,7 +619,8 @@
   <entry>
     <title>Golang CSP: Channel And Gorutine</title>
     <url>/2023/12/20/Golang-CSP-Channel-And-Gorutine/</url>
-    <content><![CDATA[<h1 id="Golang-CSP-Channel-And-Gorutine"><a href="#Golang-CSP-Channel-And-Gorutine" class="headerlink" title="Golang CSP: Channel And Gorutine"></a>Golang CSP: Channel And Gorutine</h1><p>In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing patterns of interaction in concurrent systems. The main ideas of CSP include processes communicating by sending and receiving messages over channels, and synchronization through communication rather than through shared memory.<br>Channels in Go are a communication mechanism designed to allow one goroutine to safely send data to another goroutine in concurrent or multi-goroutine scenarios.</p>
+    <content><![CDATA[<p>In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing patterns of interaction in concurrent systems. The main ideas of CSP include processes communicating by sending and receiving messages over channels, and synchronization through communication rather than through shared memory.<br>Channels in Go are a communication mechanism designed to allow one goroutine to safely send data to another goroutine in concurrent or multi-goroutine scenarios.</p>
+<a id="more"></a>
 <blockquote>
 <p>Do not communicate by sharing memory; instead, share memory by communicating.</p>
 </blockquote>
@@ -703,6 +713,7 @@
     <title>How to deploy a Kubernetes Job by client-go in cluster</title>
     <url>/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/</url>
     <content><![CDATA[<h1 id="Kubernets-API-Server"><a href="#Kubernets-API-Server" class="headerlink" title="Kubernets API Server"></a><strong>Kubernets API Server</strong></h1><p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.</p>
+<a id="more"></a>
 <h1 id="Role-Based-Access-Control"><a href="#Role-Based-Access-Control" class="headerlink" title="Role-Based Access Control"></a><strong>Role-Based Access Control</strong></h1><p>In the Kubernetes cluster , the mechanism responsible for completing the authorization work is RBAC (Role-Based Access Control). RBAC defines policies for restricting and controlling user access to resources of a system by using roles attached to users. However, RBAC policies can also govern the behavior of software resources. A <em>service account</em> provides an identity for processes that run in a Pod, and maps to a ServiceAccount object. A secret with access token is generated when ServiceAccount object is deployed. After specify <code>serviceAccountName</code> with in a pod, the secret will mount into pod at <code>/var/run/secrets/kubernetes.io/serviceaccount</code> . The pod can access API Server with permissions defined in <code>serviceAccountName</code> .</p>
 <p>RBAC authorizations can define permissions/policies that can be limited within a namespace(Role) or the entire cluster(ClusterRule).</p>
 <img src="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/1.png" width="100%" height="100%" alt="1">
@@ -756,7 +767,9 @@
 <p><a href="https://stackoverflow.com/questions/7306316/b-tree-vs-hash-table">B-Tree vs Hash Table</a></p>
 <ul>
 <li>Hash Table: You can only access elements by their primary key <code>O(1)</code>. When you select ranges (<em>everything in between <code>x</code> and <code>y</code></em>) can result in a full table scan <code>O(n)</code> . There may be a point where your index exceeds a tolerable size compared to your hash sizes and your entire index needs to be re-built.</li>
-<li>Tree algorithms support ranges selecting in <em><code>log(n)</code></em> , elements accessing and inserting by their primary key in <em><code>log(n)</code></em> .</li>
+<li>Tree algorithms support ranges selecting in <em><code>log(n)</code></em> , elements accessing and inserting by their primary key in <em><code>log(n)</code></em> .<a id="more"></a>
+
+</li>
 </ul>
 <p><strong><em>Related topic:</em></strong></p>
 <ul>
@@ -862,12 +875,14 @@
   <entry>
     <title>Kubernetes Ingress and Services troubleshooting</title>
     <url>/2023/09/10/Kubernetes-Ingress-and-Services-troubleshooting/</url>
-    <content><![CDATA[<h1 id="Kubernetes-Ingress-and-Services-troubleshooting"><a href="#Kubernetes-Ingress-and-Services-troubleshooting" class="headerlink" title="Kubernetes Ingress and Services troubleshooting"></a>Kubernetes Ingress and Services troubleshooting</h1><ul>
+    <content><![CDATA[<ul>
 <li><p>Traffic flow: Internet → Ingress controller rule (according to your Ingress YAML) → Service → Pods</p>
 </li>
 <li><p>Debug flow: Pods → Service → Ingress → Ingress controller → Internet</p>
 </li>
 </ul>
+<a id="more"></a>
+
 <h2 id="Check-the-Deployment-amp-Pods"><a href="#Check-the-Deployment-amp-Pods" class="headerlink" title="Check the Deployment &amp; Pods"></a>Check the Deployment &amp; Pods</h2><ol>
 <li>Makes sure that the Pod is up and running (Pod’s “Status” is “Running”). If not, checks the Deployment/Pod Resource Events and log to fix the problem.</li>
 <li>If you are using HTTP GET livenessProbe, ensure your Service and Ingress are deployed beforehand.</li>
@@ -939,7 +954,9 @@
   <entry>
     <title>How to troubleshooting k8s pods and containers</title>
     <url>/2023/09/16/how-to-troubleshooting-k8s-pods-and-containers/</url>
-    <content><![CDATA[<h1 id="How-to-troubleshooting-k8s-pods-and-containers"><a href="#How-to-troubleshooting-k8s-pods-and-containers" class="headerlink" title="How to troubleshooting k8s pods and containers"></a>How to troubleshooting k8s pods and containers</h1><h2 id="hold-on-program-by-tail-f-dev-null"><a href="#hold-on-program-by-tail-f-dev-null" class="headerlink" title="hold on program by tail -f /dev/null"></a>hold on program by <code>tail -f /dev/null</code></h2><p>The command “tail -f /dev/null” is a Unix/Linux command that is often used as a placeholder or a trick to prevent a command or a script from exiting or terminating.</p>
+    <content><![CDATA[<h2 id="hold-on-program-by-tail-f-dev-null"><a href="#hold-on-program-by-tail-f-dev-null" class="headerlink" title="hold on program by tail -f /dev/null"></a>hold on program by <code>tail -f /dev/null</code></h2><p>The command “tail -f /dev/null” is a Unix/Linux command that is often used as a placeholder or a trick to prevent a command or a script from exiting or terminating.</p>
+<a id="more"></a>
+
 <p>The tail command is typically used to display the last few lines of a file. When used with the -f option, it enables “follow” mode, where tail will continuously display new lines appended to the file in real-time. However, when tail -f is used with /dev/null, which is a special file that discards all data written to it, the command essentially does nothing. /dev/null is commonly used as a bit bucket or a sink for unwanted output.</p>
 <p>So, in essence, running the command “tail -f /dev/null” will cause the tail command to start and keep running indefinitely, but it won’t display any output because /dev/null discards everything written to it. It’s often used as a placeholder command to prevent scripts or programs from exiting or to keep a terminal session open without any active output.</p>
 <h3 id="How-to-use"><a href="#How-to-use" class="headerlink" title="How to use"></a>How to use</h3><h4 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h4><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">command: [<span class="string">&quot;tail&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>]</span><br></pre></td></tr></table></figure>
@@ -1054,7 +1071,10 @@
   <entry>
     <title>Practical Experiences with Modern Databases</title>
     <url>/2024/06/12/Practical-Experiences-with-Modern-Databases/</url>
-    <content><![CDATA[<h1 id="Practical-Experiences-with-Modern-Databases"><a href="#Practical-Experiences-with-Modern-Databases" class="headerlink" title="Practical Experiences with Modern Databases"></a>Practical Experiences with Modern Databases</h1><h2 id="DeadLock-in-Transaction"><a href="#DeadLock-in-Transaction" class="headerlink" title="DeadLock in Transaction"></a>DeadLock in Transaction</h2><p>Prevention:</p>
+    <content><![CDATA[<p>In today’s rapidly evolving tech landscape, working with modern databases is crucial for designing scalable and efficient systems. This session explores practical experiences and real-world applications of various modern databases, including both SQL and NoSQL solutions.</p>
+<a id="more"></a>
+
+<h2 id="DeadLock-in-Transaction"><a href="#DeadLock-in-Transaction" class="headerlink" title="DeadLock in Transaction"></a>DeadLock in Transaction</h2><p>Prevention:</p>
 <ol>
 <li><p><strong>Order Resource Acquisition Consistently:</strong><br>Ensure that resources are acquired in a consistent order across transactions to avoid circular wait conditions.</p>
  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction 1 (T1):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br><span class="line"></span><br><span class="line">Transaction 2 (T2):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br></pre></td></tr></table></figure>
@@ -1153,6 +1173,9 @@
 </li>
 </ul>
 ]]></content>
+      <categories>
+        <category>Database</category>
+      </categories>
       <tags>
         <tag>Database</tag>
         <tag>PostgreSQL</tag>
@@ -1162,7 +1185,9 @@
   <entry>
     <title>How to Implement Custom GORM Logger</title>
     <url>/2024/06/13/How-to-Implement-Custom-GORM-Logger/</url>
-    <content><![CDATA[<h1 id="How-to-Implement-Custom-GORM-Logger"><a href="#How-to-Implement-Custom-GORM-Logger" class="headerlink" title="How to Implement Custom GORM Logger"></a>How to Implement Custom GORM Logger</h1><p>GORM is a powerful ORM library for Go, widely used for database interactions. While GORM provides default logging capabilities, there are scenarios where you might need more customized logging solutions to suit your application’s requirements.</p>
+    <content><![CDATA[<p>GORM is a powerful ORM library for Go, widely used for database interactions. While GORM provides default logging capabilities, there are scenarios where you might need more customized logging solutions to suit your application’s requirements.</p>
+<a id="more"></a>
+
 <ol>
 <li><p>Implement the interface</p>
  <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Interface <span class="keyword">interface</span> &#123;</span><br><span class="line">  LogMode(LogLevel) Interface</span><br><span class="line">  Info(context.Context, <span class="keyword">string</span>, ...<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">  Warn(context.Context, <span class="keyword">string</span>, ...<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">  Error(context.Context, <span class="keyword">string</span>, ...<span class="keyword">interface</span>&#123;&#125;)</span><br><span class="line">  Trace(ctx context.Context, begin time.Time, fc <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="params">(sql <span class="keyword">string</span>, rowsAffected <span class="keyword">int64</span>)</span>, <span class="title">err</span> <span class="title">error</span>)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1180,6 +1205,9 @@
 </li>
 </ol>
 ]]></content>
+      <categories>
+        <category>Database</category>
+      </categories>
       <tags>
         <tag>Database</tag>
         <tag>Golang</tag>
@@ -1190,6 +1218,8 @@
     <title>Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust</title>
     <url>/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/</url>
     <content><![CDATA[<p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
+<a id="more"></a>
+
 <ol>
 <li><p>TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.</p>
 </li>
@@ -1341,6 +1371,9 @@
 
 <p>The chain of trust is critical in ensuring the integrity and security of digital communications. By relying on CA-signed certificates and their associated chains, users can verify the legitimacy of a certificate without directly verifying the identity of the entity themselves. This process helps prevent various security threats, including man-in-the-middle attacks and unauthorized access.</p>
 ]]></content>
+      <categories>
+        <category>HTTPS</category>
+      </categories>
       <tags>
         <tag>HTTPS</tag>
         <tag>PKCS</tag>
@@ -1353,10 +1386,11 @@
   <entry>
     <title>Dig in WebSocket: Protocol, API Design, and Security</title>
     <url>/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/</url>
-    <content><![CDATA[<h1 id="Dig-in-WebSocket-Protocol-API-Design-and-Security"><a href="#Dig-in-WebSocket-Protocol-API-Design-and-Security" class="headerlink" title="Dig in WebSocket: Protocol, API Design, and  Security"></a>Dig in WebSocket: Protocol, API Design, and  Security</h1><h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>WebSocket operate at the Application layer in both the OSI(Layer 7) and TCP/IP(Layer 4) models.</p>
+    <content><![CDATA[<h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>WebSocket operate at the Application layer in both the OSI(Layer 7) and TCP/IP(Layer 4) models.</p>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"> HTTP       WebSocket</span><br><span class="line">--------------------</span><br><span class="line">        TCP</span><br><span class="line">--------------------</span><br><span class="line">        IP</span><br><span class="line">--------------------</span><br><span class="line">Network access Layer</span><br></pre></td></tr></table></figure>
 
 <p>The WebSocket protocol enables full-duplex communication, allowing data to be sent and received simultaneously over a single, persistent connection. This capability is ideal for real-time applications such as chat systems, live notifications, and online gaming.</p>
+<a id="more"></a>
 <h2 id="How-to-Establish-a-WebSocket-Connection"><a href="#How-to-Establish-a-WebSocket-Connection" class="headerlink" title="How to Establish a WebSocket Connection"></a>How to Establish a WebSocket Connection</h2><p>A WebSocket server is essentially an application that listens on any port of a TCP, following a designated protocol. A WebSocket connection starts with an HTTP handshake and then upgrades to a persistent TCP connection. Once this connection is established, it remains open for an extended period, allowing real-time communication between the client and server.</p>
 <ol>
 <li><p><strong>Client handshake request</strong></p>
