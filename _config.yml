@@ -4,16 +4,17 @@
 
 # Site
 title: WongJY Blog
-subtitle: ''
+subtitle: "A Backend Engineer's Journey"
+descriptions: "WongJY Blog"
 author: Tina Wong
 language: zh-tw
 timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
-url: http://example.com
+url: https://901abc26123bee.github.io
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :post_title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -104,3 +105,6 @@ deploy:
   type: git
   repository: https://github.com/901abc26123bee/901abc26123bee.github.io.git
   branch: master
+
+sitemap:
+  path: sitemap.xml
