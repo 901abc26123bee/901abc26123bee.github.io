@@ -1,7 +1,6 @@
 ---
 title: "Database Cache Consistency Strategies"
 date: 2023-09-07 23:28:11
-description: "Database Cache Consistency Strategies"
 categories: System Design
 tags:
 - Database
@@ -13,7 +12,6 @@ Database cache consistency strategies include:
 - Read/Write Through
 - Write Behind Caching
 
-<!--more-->
 # Cache Aside Pattern
 
 *Eventually Database Cache Consistency*
@@ -21,7 +19,7 @@ Database cache consistency strategies include:
 - Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.
 - Cache hit: The application retrieves data from the cache and returns.
 - Update data: Stores the data in the database first, and then invalidates the cache after success.
-
+<!--more-->
 [Cache-aside caching strategy](https://catsincode.com/caching-strategy/)
 <img src="./1.png" width="40%" height="40%" alt="1">
 

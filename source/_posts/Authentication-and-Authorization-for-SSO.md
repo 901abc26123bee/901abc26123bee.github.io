@@ -1,7 +1,8 @@
 ---
 title: Authentication and Authorization for SSO
 date: 2023-12-20 23:54:06
-categories: Authentication, Authorization
+categories:
+- Authentication, Authorization
 tags:
 - OAuth 2.0
 - OpenID
@@ -14,12 +15,11 @@ tags:
   If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:
   - Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.
   - Implicit (front channel only)
-
+<!--more-->
   [Which OAuth 2.0 Flow Should I Use?](https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use)
   [OAuth 2.0 and OpenID Connect (in plain English)](https://www.youtube.com/watch?v=996OiexHze0)
   [Is it secure to store a refresh token in the database?](https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke)
 
-<!--more-->
 ## OpenID Connect (OIDC):
   OpenID Connect is an <strong>interoperable authentication protocol based on the OAuth 2.0 framework</strong> . It provides a standardized way for clients to obtain information about the end-user in order to authenticate them. OIDC is often used for single sign-on (SSO) scenarios, where a user can log in once and access multiple applications without needing to log in again. OIDC uses JSON Web Tokens (JWT), HTTP flows and avoids sharing user credentials with services.
 

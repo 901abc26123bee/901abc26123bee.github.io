@@ -1,7 +1,6 @@
 ---
 title: How to deploy a Kubernetes Job by client-go in cluster
 date: 2023-09-07 23:47:47
-description: "The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth."
 categories: Kubernetes
 tags:
 - Kubernetes

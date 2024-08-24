@@ -1,7 +1,6 @@
 ---
 title: Docker volumes Problem onUbuntu on WSL2
 date: 2023-09-10 00:29:48
-description: "Docker volumes Problem onUbuntu on WSL2"
 categories: Docker
 tags:
  - Docker
@@ -22,12 +21,12 @@ tags:
   ```
 - volumes :
   [volumes](https://docs.docker.com/storage/)
+<!--more-->
 
 
   Volumes are stored in a part of the host filesystem which is managed by Docker (`/var/lib/docker/volumes/` on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.
 
   When you create a volume, it is stored within a directory on the Docker host. When you mount the volume into a container, this directory is what is mounted into the container. This is similar to the way that bind mounts work, except that volumes are managed by Docker and are isolated from the core functionality of the host machine.
-<!--more-->
 
 ## File permission problem :
 

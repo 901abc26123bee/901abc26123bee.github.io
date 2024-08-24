@@ -1,7 +1,6 @@
 ---
 title: Index Locking In MySQL8 with InnoDB
 date: 2023-09-07 23:26:30
-description: "Index Locking In MySQL8 with InnoDB"
 categories: MySQL
 tags:
 - MySQL

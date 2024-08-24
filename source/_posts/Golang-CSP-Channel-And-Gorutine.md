@@ -1,8 +1,6 @@
 ---
 title: 'Golang CSP: Channel And Gorutine'
 date: 2023-12-20 23:56:24
-description: "In Go (Golang), channels and goroutines are key components of the language's concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing patterns of interaction in concurrent systems. The main ideas of CSP include processes communicating by sending and receiving messages over channels, and synchronization through communication rather than through shared memory.
-Channels in Go are a communication mechanism designed to allow one goroutine to safely send data to another goroutine in concurrent or multi-goroutine scenarios. Do not communicate by sharing memory; instead, share memory by communicating."
 categories: Golang
 tags:
 - Golang

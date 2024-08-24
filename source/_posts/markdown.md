@@ -26,6 +26,7 @@ Using [Typora Editor](https://typora.io/)
 ```
 ###＋空格＋二級標題＋enter
 ```
+<!--more-->
 
 ## 字體
 

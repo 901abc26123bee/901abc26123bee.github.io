@@ -1,7 +1,6 @@
 ---
 title: Kubernetes Ingress and Services troubleshooting
 date: 2023-09-10 00:52:24
-description: "Kubernetes Ingress and Services troubleshooting"
 categories: Kubernetes
 tags: Kubernetes, debug
 ---
@@ -10,11 +9,11 @@ tags: Kubernetes, debug
 
 - Debug flow: Pods → Service → Ingress → Ingress controller → Internet
 
-<!--more-->
 
 ## Check the Deployment & Pods
 1. Makes sure that the Pod is up and running (Pod’s “Status” is “Running”). If not, checks the Deployment/Pod Resource Events and log to fix the problem.
 2. If you are using HTTP GET livenessProbe, ensure your Service and Ingress are deployed beforehand.
+<!--more-->
 
 ```sh
 $ kubectl get deployment -n <namespace>

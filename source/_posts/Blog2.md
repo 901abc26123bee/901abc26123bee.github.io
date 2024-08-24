@@ -20,6 +20,7 @@ $ hexo new page “pageName” # 新建頁面
 ```
 
 所有的文章都會在`source/_posts`裡面。一開始裡面就已經有一篇範例文章`hello-world.md`了。
+<!--more-->
 
 常用组合
 

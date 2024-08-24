@@ -10,6 +10,7 @@ tags:
 # 從零搭建Blog part1： Hexo+GitHub
 
 > Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。
+<!--more-->
 
 ## # For Mac --- strongly recommand
 

@@ -25,6 +25,7 @@ tags: Blog
 ```shell
 npm install hexo-asset-image@0.0.1 --save
 ```
+<!--more-->
 
 
 

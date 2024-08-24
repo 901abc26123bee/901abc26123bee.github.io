@@ -1,7 +1,6 @@
 ---
 title: Practical Experiences with Modern Databases
 date: 2024-06-12 22:57:40
-description: "Practical Experiences with Modern Databases include: DeadLock in Transaction, Time and Timezone In Database, Default Connection Limit, Using Shorter Keys in Indexes, Materialized-Views/Views for Frequently Used Join Queries, Database Parameter Limits, Composite Indexes to Avoid Bookmark Lookup, Using Indexes to Optimize Fuzzy Search Queries, Avoid Generating Temporary Tables for Small Joins"
 categories: Database
 tags:
 - Database

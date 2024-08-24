@@ -1,6 +1,5 @@
 ---
 title: 'Encoding: Character Encoding, URL Encoding and Base64 Encoding'
-description: "Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it."
 date: 2023-09-07 23:11:43
 categories: encoding
 tags: encoding
@@ -9,13 +8,13 @@ tags: encoding
 # **Character Encoding**
 
 Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.
-<!--more-->
 
 ## **ASCII**
 
 In the early days of the internet, we didn’t need to worry about any characters other than english. We use [American Standard Code for Information Interchange (ASCII)](https://en.wikipedia.org/wiki/ASCII) , one byte (eight bits), to map a-z, A-Z , 0–9 and some control characters.
 
 As you can imagine, there are hundreds of languages in the world. one byte is not enough for some language like Chinese or Japanese. Each country has its own standards, result in garbled characters displayed in multi-language mixed text.
+<!--more-->
 
 ## **Unicode**
 

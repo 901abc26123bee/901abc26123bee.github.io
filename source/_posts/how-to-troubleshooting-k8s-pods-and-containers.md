@@ -1,7 +1,6 @@
 ---
 title: How to troubleshooting k8s pods and containers
 date: 2023-09-16 17:00:06
-description: "How to troubleshooting k8s pods and containers"
 categories:
  - Kubernetes
 tags:
