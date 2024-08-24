@@ -1,15 +1,16 @@
 ---
 title: How to Implement Custom GORM Logger
 date: 2024-06-13 22:32:35
-categories:
+description: "GORM is a powerful ORM library for Go, widely used for database interactions. While GORM provides default logging capabilities, there are scenarios where you might need more customized logging solutions to suit your application's requirements."
+categories: Database
 tags:
 - Database
 - Golang
 - GORM
 ---
-# How to Implement Custom GORM Logger
 
 GORM is a powerful ORM library for Go, widely used for database interactions. While GORM provides default logging capabilities, there are scenarios where you might need more customized logging solutions to suit your application's requirements.
+<!--more-->
 
 1. Implement the interface
     ```go

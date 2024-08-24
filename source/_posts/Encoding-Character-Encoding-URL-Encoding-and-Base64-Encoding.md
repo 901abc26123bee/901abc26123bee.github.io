@@ -1,14 +1,15 @@
 ---
 title: 'Encoding: Character Encoding, URL Encoding and Base64 Encoding'
+description: "Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it."
 date: 2023-09-07 23:11:43
 categories: encoding
 tags: encoding
 ---
 
-# Encoding: Character Encoding, URL Encoding and Base64 Encoding
 # **Character Encoding**
 
 Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.
+<!--more-->
 
 ## **ASCII**
 

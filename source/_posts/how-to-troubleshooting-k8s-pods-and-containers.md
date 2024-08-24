@@ -1,15 +1,17 @@
 ---
 title: How to troubleshooting k8s pods and containers
 date: 2023-09-16 17:00:06
+description: "How to troubleshooting k8s pods and containers"
 categories:
  - Kubernetes
 tags:
  - Docker
  - Kubernetes
 ---
-# How to troubleshooting k8s pods and containers
+
 ## hold on program by `tail -f /dev/null`
 The command "tail -f /dev/null" is a Unix/Linux command that is often used as a placeholder or a trick to prevent a command or a script from exiting or terminating.
+<!--more-->
 
 The tail command is typically used to display the last few lines of a file. When used with the -f option, it enables "follow" mode, where tail will continuously display new lines appended to the file in real-time. However, when tail -f is used with /dev/null, which is a special file that discards all data written to it, the command essentially does nothing. /dev/null is commonly used as a bit bucket or a sink for unwanted output.
 

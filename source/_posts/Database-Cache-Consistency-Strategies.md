@@ -1,17 +1,19 @@
 ---
 title: "Database Cache Consistency Strategies"
 date: 2023-09-07 23:28:11
+description: "Database Cache Consistency Strategies"
 categories: System Design
 tags:
 - Database
 - Cache
 ---
-# Database Cache Consistency* Strategies**
 
+Database cache consistency strategies include:
 - Cache Aside
 - Read/Write Through
 - Write Behind Caching
 
+<!--more-->
 # Cache Aside Pattern
 
 *Eventually Database Cache Consistency*

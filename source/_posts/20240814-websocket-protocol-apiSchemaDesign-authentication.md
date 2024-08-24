@@ -6,9 +6,6 @@ tags:
 - WebSocket
 ---
 
-
-# Dig in WebSocket: Protocol, API Design, and  Security
-
 ## WebSocket
 
 WebSocket operate at the Application layer in both the OSI(Layer 7) and TCP/IP(Layer 4) models.
@@ -25,6 +22,7 @@ Network access Layer
 
 The WebSocket protocol enables full-duplex communication, allowing data to be sent and received simultaneously over a single, persistent connection. This capability is ideal for real-time applications such as chat systems, live notifications, and online gaming.
 
+<!--more-->
 ## How to Establish a WebSocket Connection
 
 A WebSocket server is essentially an application that listens on any port of a TCP, following a designated protocol. A WebSocket connection starts with an HTTP handshake and then upgrades to a persistent TCP connection. Once this connection is established, it remains open for an extended period, allowing real-time communication between the client and server.

@@ -1,6 +1,7 @@
 ---
 title: How to deploy a Kubernetes Job by client-go in cluster
 date: 2023-09-07 23:47:47
+description: "The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth."
 categories: Kubernetes
 tags:
 - Kubernetes
@@ -10,7 +11,7 @@ tags:
 # **Kubernets API Server**
 
 The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.
-
+<!--more-->
 # **Role-Based Access Control**
 
 In the Kubernetes cluster , the mechanism responsible for completing the authorization work is RBAC (Role-Based Access Control). RBAC defines policies for restricting and controlling user access to resources of a system by using roles attached to users. However, RBAC policies can also govern the behavior of software resources. A *service account* provides an identity for processes that run in a Pod, and maps to a ServiceAccount object. A secret with access token is generated when ServiceAccount object is deployed. After specify `serviceAccountName` with in a pod, the secret will mount into pod at `/var/run/secrets/kubernetes.io/serviceaccount` . The pod can access API Server with permissions defined in `serviceAccountName` .

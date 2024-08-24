@@ -1,6 +1,7 @@
 ---
 title: Index Locking In MySQL8 with InnoDB
 date: 2023-09-07 23:26:30
+description: "Index Locking In MySQL8 with InnoDB"
 categories: MySQL
 tags:
 - MySQL
@@ -15,6 +16,7 @@ tags:
 
 - Hash Table: You can only access elements by their primary key `O(1)`. When you select ranges (*everything in between `x` and `y`*) can result in a full table scan `O(n)` . There may be a point where your index exceeds a tolerable size compared to your hash sizes and your entire index needs to be re-built.
 - Tree algorithms support ranges selecting in *`log(n)`* , elements accessing and inserting by their primary key in *`log(n)`* .
+<!--more-->
 
 ***Related topic:***
 

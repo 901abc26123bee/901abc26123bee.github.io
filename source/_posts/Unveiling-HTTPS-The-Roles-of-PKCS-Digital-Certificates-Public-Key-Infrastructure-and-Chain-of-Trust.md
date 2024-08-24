@@ -3,7 +3,8 @@ title: >-
   Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key
   Infrastructure, and Chain of Trust
 date: 2024-06-26 22:00:11
-categories:
+description: "Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust"
+categories: HTTPS
 tags:
 - HTTPS
 - PKCS
@@ -14,6 +15,7 @@ tags:
 ---
 
 In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here's how it works:
+<!--more-->
 
 1. TCP Handshake: The initial connection between the client and server is established using TCP (Transmission Control Protocol). This handshake ensures a reliable connection.
 
