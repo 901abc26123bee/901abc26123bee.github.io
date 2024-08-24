@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"901abc26123bee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang CSP: Channel And Gorutine">
+<meta property="og:url" content="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/index.html">
+<meta property="og:site_name" content="WongJY Blog">
+<meta property="og:description" content="In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing p">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://901abc26123bee.github.io/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg">
+<meta property="article:published_time" content="2023-12-20T15:56:24.000Z">
+<meta property="article:modified_time" content="2024-08-24T05:19:57.595Z">
+<meta property="article:author" content="Tina Wong">
+<meta property="article:tag" content="Golang">
+<meta property="article:tag" content="CSP">
+<meta property="article:tag" content="Channel">
+<meta property="article:tag" content="Gorutine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://901abc26123bee.github.io/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg">
+
+<link rel="canonical" href="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>Golang CSP: Channel And Gorutine | WongJY Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LMFDSHYL3V');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMFDSHYL3V');
+</script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WongJY Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">WongJY Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Tina Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WongJY Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Golang CSP: Channel And Gorutine
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-20 23:56:24" itemprop="dateCreated datePublished" datetime="2023-12-20T23:56:24+08:00">2023-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-24 13:19:57" itemprop="dateModified" datetime="2024-08-24T13:19:57+08:00">2024-08-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Golang/" itemprop="url" rel="index"><span itemprop="name">Golang</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing patterns of interaction in concurrent systems. The main ideas of CSP include processes communicating by sending and receiving messages over channels, and synchronization through communication rather than through shared memory.<br>Channels in Go are a communication mechanism designed to allow one goroutine to safely send data to another goroutine in concurrent or multi-goroutine scenarios.</p>
+<a id="more"></a>
+<blockquote>
+<p>Do not communicate by sharing memory; instead, share memory by communicating.</p>
+</blockquote>
+<h2 id="Channels"><a href="#Channels" class="headerlink" title="Channels"></a>Channels</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/golang/go/blob/master/src/runtime/chan.go">chan.go</a></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> hchan <span class="keyword">struct</span> &#123;</span><br><span class="line">	qcount   <span class="keyword">uint</span>           <span class="comment">// total data in the queue</span></span><br><span class="line">	dataqsiz <span class="keyword">uint</span>           <span class="comment">// size of the circular queue</span></span><br><span class="line">	buf      unsafe.Pointer <span class="comment">// points to an array of dataqsiz elements</span></span><br><span class="line">	elemsize <span class="keyword">uint16</span></span><br><span class="line">	closed   <span class="keyword">uint32</span></span><br><span class="line">	elemtype *_type <span class="comment">// element type</span></span><br><span class="line">	sendx    <span class="keyword">uint</span>   <span class="comment">// send index</span></span><br><span class="line">	recvx    <span class="keyword">uint</span>   <span class="comment">// receive index</span></span><br><span class="line">	recvq    waitq  <span class="comment">// list of recv waiters</span></span><br><span class="line">	sendq    waitq  <span class="comment">// list of send waiters</span></span><br><span class="line">	lock mutex</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg" width="100%" height="100%" title="image" alt="channel_structure">
+
+
+<h3 id="UnBuffered-Channels"><a href="#UnBuffered-Channels" class="headerlink" title="UnBuffered Channels"></a>UnBuffered Channels</h3><p>By default channels are unbuffered, meaning that they will only accept sends (chan &lt;-) if there is a corresponding receive (&lt;- chan) ready to receive the sent value. It enforces a synchronous communication between the two goroutines involved in the communication</p>
+<ol>
+<li>The producers and consumers of a channel appear in pairs, but both within the same goroutine. <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  c := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">  c &lt;- <span class="string">&quot;hello&quot;</span> <span class="comment">// block for ever</span></span><br><span class="line">  msg := &lt;-c</span><br><span class="line">  fmt.Println(msg)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">fatal error: all goroutines are asleep - deadlock!</span></span><br><span class="line"><span class="comment">goroutine 1 [chan send]:</span></span><br><span class="line"><span class="comment">main.main()</span></span><br><span class="line"><span class="comment">  /tmp/sandbox3222265902/prog.go:9 +0x36</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>The producers and consumers of a channel operate in pairs but within different goroutines.</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  ms := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">string</span>)</span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">(c <span class="keyword">chan</span> <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">    c &lt;- <span class="string">&quot;hello&quot;</span></span><br><span class="line">  &#125;(ms)</span><br><span class="line">  msg := &lt;-ms</span><br><span class="line">  fmt.Println(msg)  <span class="comment">// hello</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Unbuffered channels are useful in scenarios where synchronization between two goroutines since it ensure that the sender and receiver are ready to communicate at the same time.</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">  dog  = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line">  cat  = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line">  fish = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line">  wg   sync.WaitGroup</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Dog</span><span class="params">()</span></span> &#123;</span><br><span class="line">  &lt;-dog</span><br><span class="line">  fmt.Println(<span class="string">&quot;dog&quot;</span>)</span><br><span class="line">  cat &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cat</span><span class="params">()</span></span> &#123;</span><br><span class="line">  &lt;-cat</span><br><span class="line">  fmt.Println(<span class="string">&quot;cat&quot;</span>)</span><br><span class="line">  fish &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Fish</span><span class="params">()</span></span> &#123;</span><br><span class="line">  &lt;-fish</span><br><span class="line">  fmt.Println(<span class="string">&quot;fish&quot;</span>)</span><br><span class="line">  dog &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">    wg.Add(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">defer</span> wg.Done()</span><br><span class="line">      Dog()</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">defer</span> wg.Done()</span><br><span class="line">      Cat()</span><br><span class="line">    &#125;()</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">defer</span> wg.Done()</span><br><span class="line">      Fish()</span><br><span class="line">    &#125;()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Start the cycle</span></span><br><span class="line">  dog &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line"></span><br><span class="line">  wg.Wait()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// A fatal error occurred at the end of the process due to the absence of any receiver for the last message sent on the unbuffered channel &#x27;fish&#x27;.</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">dog</span></span><br><span class="line"><span class="comment">cat</span></span><br><span class="line"><span class="comment">fish</span></span><br><span class="line"><span class="comment">...</span></span><br><span class="line"><span class="comment">dog</span></span><br><span class="line"><span class="comment">cat</span></span><br><span class="line"><span class="comment">fish</span></span><br><span class="line"><span class="comment">fatal error: all goroutines are asleep - deadlock!</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="4">
+<li>In some scenarios like timeout control, may lead to memory leak.<ul>
+<li>If there is no timeout, <code>doLongTask</code> signals the unbuffered channel <code>done</code>, and the <code>select</code> statement receives the signal. Consequently, <code>doLongTask</code> and the child coroutine can exit gracefully.</li>
+<li>When a timeout occurs, the <code>select</code> statement receives the timeout signal from <code>time.After</code> and returns. Since unbuffered channel <code>done</code> has no receiver at this point, and <code>doLongTask</code> sends a signal to channel <code>done</code> after 1 second of execution, the sender will be blocked indefinitely due to the lack of a receiver and no buffer, preventing the coroutine from exiting.<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doLongTask</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">  time.Sleep(time.Second) <span class="comment">// long task</span></span><br><span class="line">  done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeout</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span>) <span class="title">error</span></span> &#123;</span><br><span class="line">  done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>) <span class="comment">// unbuffered channel</span></span><br><span class="line">  <span class="keyword">go</span> f(done)</span><br><span class="line">  <span class="comment">// If there is no default statement in the select statement, it will block and wait for any of the case statements.</span></span><br><span class="line">  <span class="keyword">select</span> &#123;</span><br><span class="line">  <span class="keyword">case</span> &lt;-done:</span><br><span class="line">    fmt.Println(<span class="string">&quot;done&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">case</span> &lt;-time.After(time.Millisecond):</span><br><span class="line">    <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;timeout&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDoLongTask</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">    timeout(doLongTask)</span><br><span class="line">  &#125;</span><br><span class="line">  time.Sleep(time.Second * <span class="number">2</span>)</span><br><span class="line">  t.Log(runtime.NumGoroutine())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">=== RUN   TestDoLongTask</span></span><br><span class="line"><span class="comment">    prog_test.go:38: 1002</span></span><br><span class="line"><span class="comment">--- PASS: TestDoLongTask (3.00s)</span></span><br><span class="line"><span class="comment">PASS</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="Buffered-Channels"><a href="#Buffered-Channels" class="headerlink" title="Buffered Channels"></a>Buffered Channels</h3><p>Golang provides buffered channels, which allow you to specify a fixed length of buffer capacity so one can send that number of data values at once. These channels are only blocked when the buffer is full.</p>
+<ol>
+<li>To prevent memory leaks, utilize buffered channels to avoid the sender from being blocked, even in the absence of a receiver. <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doLongTask</span><span class="params">(done <span class="keyword">chan</span> <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">  time.Sleep(time.Second) <span class="comment">// long task</span></span><br><span class="line">  done &lt;- <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">timeout</span><span class="params">(f <span class="keyword">func</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>)</span>) <span class="title">error</span></span> &#123;</span><br><span class="line">  done := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">bool</span>, <span class="number">1</span>) <span class="comment">// buffered channel</span></span><br><span class="line">  <span class="keyword">go</span> f(done)</span><br><span class="line">  <span class="comment">// If there is no default statement in the select statement, it will block and wait for any of the case statements.</span></span><br><span class="line">  <span class="keyword">select</span> &#123;</span><br><span class="line">  <span class="keyword">case</span> &lt;-done:</span><br><span class="line">    fmt.Println(<span class="string">&quot;done&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">  <span class="keyword">case</span> &lt;-time.After(time.Millisecond):</span><br><span class="line">    <span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;timeout&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestDoLongTask</span><span class="params">(t *testing.T)</span></span> &#123;</span><br><span class="line">  <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++ &#123;</span><br><span class="line">    timeout(doLongTask)</span><br><span class="line">  &#125;</span><br><span class="line">  time.Sleep(time.Second * <span class="number">2</span>)</span><br><span class="line">  t.Log(runtime.NumGoroutine())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">=== RUN   TestBufferTimeout</span></span><br><span class="line"><span class="comment">    prog_test.go:34: 2</span></span><br><span class="line"><span class="comment">--- PASS: TestBufferTimeout (3.00s)</span></span><br><span class="line"><span class="comment">PASS</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h3 id="Select-Statement"><a href="#Select-Statement" class="headerlink" title="Select Statement"></a>Select Statement</h3><p><code>select</code> statement is used to deal with multiple communication operations. It allows a goroutine to wait on multiple communication operations and proceed as soon as one of them can proceed. This is particularly useful when working with channels to handle concurrent communication and synchronization.<br>  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">  taskCh := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;First stage started...&quot;</span>)</span><br><span class="line">    time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">    fmt.Println(<span class="string">&quot;First stage ending...&quot;</span>)</span><br><span class="line">    <span class="built_in">close</span>(taskCh)</span><br><span class="line">  &#125;()</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Wait for the first segment of a task to complete or timeout using the select statement</span></span><br><span class="line">  <span class="keyword">select</span> &#123;</span><br><span class="line">  <span class="keyword">case</span> &lt;-taskCh:</span><br><span class="line">    fmt.Println(<span class="string">&quot;First stage completed. Continuing with the next stages...&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> &lt;-time.After(<span class="number">1</span> * time.Second):</span><br><span class="line">    fmt.Println(<span class="string">&quot;Timeout occurred. Aborting further stages.&quot;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fmt.Println(<span class="string">&quot;Second stage started...&quot;</span>)</span><br><span class="line">  time.Sleep(<span class="number">2</span> * time.Second)</span><br><span class="line">  fmt.Println(<span class="string">&quot;Second stage ending...&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/golang/go/blob/master/src/runtime/select.go#L121">selectgo</a></p>
+<ol>
+<li>The select statement in Go is a specialized statement used exclusively for sending and receiving messages on channels. This statement is blocking during execution. When there is no case statement in the select, it will block the current goroutine.</li>
+<li>select is Go’s language-level mechanism for I/O multiplexing. It is specifically designed to detect whether multiple channels are ready: either for reading or writing.</li>
+<li>In the select statement, except for default, each case operates on a single channel, either for reading or writing.</li>
+<li>In the select statement, except for default, the execution order of each case is random.</li>
+<li>If there is no default statement in the select statement, it will block and wait for any of the case statements.</li>
+<li>In the select statement, when performing a read operation, it is necessary to check whether the read was successful. Closed channels can also be read in the select statement.</li>
+</ol>
+<h3 id="Channel-Operations"><a href="#Channel-Operations" class="headerlink" title="Channel Operations"></a>Channel Operations</h3><h4 id="1-Sending-Data-chan-lt"><a href="#1-Sending-Data-chan-lt" class="headerlink" title="1. Sending Data (chan &lt;-)"></a>1. Sending Data (chan &lt;-)</h4><ul>
+<li>If the receiving queue (recvq) is not empty, it signifies an absence of data in the buffer or the absence of a buffer. In such a scenario, retrieve a Goroutine (G) from recvq, write the data, awaken G, and conclude the sending process.</li>
+<li>If there is space available in the buffer, write the data into the buffer, concluding the sending process.</li>
+<li>If the buffer has no available space, write the data to be sent into G, add the current G to the sending queue (sendq), enter a sleep state, and await awakening by a reading</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">chansend</span><span class="params">(c *hchan, ep unsafe.Pointer, block <span class="keyword">bool</span>, callerpc <span class="keyword">uintptr</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  lock(&amp;c.lock)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Send to a closed channel cause panic **</span></span><br><span class="line">  <span class="keyword">if</span> c.closed != <span class="number">0</span> &#123;</span><br><span class="line">    unlock(&amp;c.lock)</span><br><span class="line">    <span class="built_in">panic</span>(plainError(<span class="string">&quot;send on closed channel&quot;</span>))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Dequeuing from Receiver Queue **</span></span><br><span class="line">  <span class="keyword">if</span> sg := c.recvq.dequeue(); sg != <span class="literal">nil</span> &#123;</span><br><span class="line">    <span class="comment">// Found a waiting receiver. We pass the value we want to send</span></span><br><span class="line">    <span class="comment">// directly to the receiver, bypassing the channel buffer (if any).</span></span><br><span class="line">    send(c, sg, ep, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; unlock(&amp;c.lock) &#125;, <span class="number">3</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Enqueuing to Channel Buffer **</span></span><br><span class="line">  <span class="keyword">if</span> c.qcount &lt; c.dataqsiz &#123;</span><br><span class="line">    <span class="comment">// Space is available in the channel buffer. Enqueue the element to send.</span></span><br><span class="line">    qp := chanbuf(c, c.sendx)</span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">      racenotify(c, c.sendx, <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    typedmemmove(c.elemtype, qp, ep)</span><br><span class="line">    c.sendx++</span><br><span class="line">    <span class="keyword">if</span> c.sendx == c.dataqsiz &#123;</span><br><span class="line">      c.sendx = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    c.qcount++</span><br><span class="line">    unlock(&amp;c.lock)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Block on the channel if is allowed, it then enqueues the current goroutine(mysg) to the send queue (c.sendq) and parks the goroutine (gopark). This means the goroutine will be put to sleep until a receiver completes the operation. **</span></span><br><span class="line">  gp := getg()</span><br><span class="line">  mysg := acquireSudog()</span><br><span class="line">  mysg.releasetime = <span class="number">0</span></span><br><span class="line">  <span class="keyword">if</span> t0 != <span class="number">0</span> &#123;</span><br><span class="line">    mysg.releasetime = <span class="number">-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  gp.waiting = mysg</span><br><span class="line">  gp.param = <span class="literal">nil</span></span><br><span class="line">  c.sendq.enqueue(mysg)</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// ** Ensure the value being sent is kept alive until the receiver copies it out. **</span></span><br><span class="line">  KeepAlive(ep)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// someone woke us up.</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-Receiving-Data-lt-chan"><a href="#2-Receiving-Data-lt-chan" class="headerlink" title="2. Receiving Data (&lt;- chan)"></a>2. Receiving Data (&lt;- chan)</h4><ul>
+<li>If the waiting sending queue (sendq) is not empty and there is no buffer, directly retrieve a Goroutine (G) from sendq,  wake up G, end the reading process.</li>
+<li>If the waiting sending queue (sendq) is not empty, indicating that the buffer is full, read data from the head of the buffer, write the data from G to the end of the buffer, wake up G, and  end the reading process.</li>
+<li>If there is data in the buffer, retrieve the data from the buffer and end the reading process</li>
+<li>If the waiting sending queue (sendq) and buffer are empty, add the current Goroutine to recvq, enter a sleep state, and await awakening by a writing Goroutine.</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">chanrecv</span><span class="params">(c *hchan, ep unsafe.Pointer, block <span class="keyword">bool</span>)</span> <span class="params">(selected, received <span class="keyword">bool</span>)</span></span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  lock(&amp;c.lock)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Read from a closed channel is allowed **</span></span><br><span class="line">  <span class="keyword">if</span> c.closed != <span class="number">0</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> c.qcount == <span class="number">0</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">        raceacquire(c.raceaddr())</span><br><span class="line">      &#125;</span><br><span class="line">      unlock(&amp;c.lock)</span><br><span class="line">      <span class="keyword">if</span> ep != <span class="literal">nil</span> &#123;</span><br><span class="line">        typedmemclr(c.elemtype, ep)</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>, <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// The channel has been closed, but the channel&#x27;s buffer have data.</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// Just found waiting sender with not closed.</span></span><br><span class="line">    <span class="keyword">if</span> sg := c.sendq.dequeue(); sg != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="comment">// Found a waiting sender. If buffer is size 0, receive value</span></span><br><span class="line">      <span class="comment">// directly from sender. Otherwise, receive from head of queue</span></span><br><span class="line">      <span class="comment">// and add sender&#x27;s value to the tail of the queue (both map to</span></span><br><span class="line">      <span class="comment">// the same buffer slot because the queue is full).</span></span><br><span class="line">      recv(c, sg, ep, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123; unlock(&amp;c.lock) &#125;, <span class="number">3</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>, <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ** Dequeuing from Channel Buffer **</span></span><br><span class="line">  <span class="keyword">if</span> c.qcount &gt; <span class="number">0</span> &#123;</span><br><span class="line">    <span class="comment">// Receive directly from queue</span></span><br><span class="line">    qp := chanbuf(c, c.recvx)</span><br><span class="line">    <span class="keyword">if</span> raceenabled &#123;</span><br><span class="line">      racenotify(c, c.recvx, <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ep != <span class="literal">nil</span> &#123;</span><br><span class="line">      typedmemmove(c.elemtype, ep, qp)</span><br><span class="line">    &#125;</span><br><span class="line">    typedmemclr(c.elemtype, qp)</span><br><span class="line">    c.recvx++</span><br><span class="line">    <span class="keyword">if</span> c.recvx == c.dataqsiz &#123;</span><br><span class="line">      c.recvx = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    c.qcount--</span><br><span class="line">    unlock(&amp;c.lock)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>, <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="comment">// no sender available: block on this channel.</span></span><br><span class="line">  gp := getg()</span><br><span class="line">  mysg := acquireSudog()</span><br><span class="line">  mysg.releasetime = <span class="number">0</span></span><br><span class="line">  <span class="keyword">if</span> t0 != <span class="number">0</span> &#123;</span><br><span class="line">    mysg.releasetime = <span class="number">-1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  gp.waiting = mysg</span><br><span class="line">  gp.param = <span class="literal">nil</span></span><br><span class="line">  c.recvq.enqueue(mysg)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// someone woke us up</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span>, success</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-Close-channel"><a href="#3-Close-channel" class="headerlink" title="3. Close channel"></a>3. Close channel</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">operation         | nil channel | closed channel     |</span><br><span class="line">------------------------------------------------------</span><br><span class="line">close(ch)         | panic       | panic              |</span><br><span class="line">------------------------------------------------------</span><br><span class="line">ch &lt;-             | blocking    | panic              |</span><br><span class="line">------------------------------------------------------</span><br><span class="line">v, ok := &lt;- ch    | blocking    | ok always be <span class="literal">false</span> |</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://go101.org/article/channel-closing.html">How to Gracefully Close Channels</a></p>
+<ol>
+<li>M receivers, one sender, the sender says “no more sends” by closing the data channel</li>
+<li>One receiver, N senders, the only receiver says “please stop sending more” by closing an additional signal channel</li>
+<li>M receivers, N senders, any one of them says “let’s end the game” by notifying a moderator to close an additional signal channel</li>
+</ol>
+<p>Solutions Which Close Channels Politely: Use sync.Once or a mutex (sync.Mutex) to ensure that the channel is closed only once</p>
+  <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> MyChannel <span class="keyword">struct</span> &#123;</span><br><span class="line">  C    <span class="keyword">chan</span> T</span><br><span class="line">  once sync.Once</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewMyChannel</span><span class="params">()</span> *<span class="title">MyChannel</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> &amp;MyChannel&#123;C: <span class="built_in">make</span>(<span class="keyword">chan</span> T)&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(mc *MyChannel)</span> <span class="title">SafeClose</span><span class="params">()</span></span> &#123;</span><br><span class="line">  mc.once.Do(<span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">close</span>(mc.C)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Golang/" rel="tag"># Golang</a>
+              <a href="/tags/CSP/" rel="tag"># CSP</a>
+              <a href="/tags/Channel/" rel="tag"># Channel</a>
+              <a href="/tags/Gorutine/" rel="tag"># Gorutine</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/authentication-and-authorization-for-sso/" rel="prev" title="Authentication and Authorization for SSO">
+      <i class="fa fa-chevron-left"></i> Authentication and Authorization for SSO
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/debouncing-mechanism-with-golang/" rel="next" title="Debouncing Mechanism With Golang">
+      Debouncing Mechanism With Golang <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Channels"><span class="nav-number">1.</span> <span class="nav-text">Channels</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UnBuffered-Channels"><span class="nav-number">1.1.</span> <span class="nav-text">UnBuffered Channels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffered-Channels"><span class="nav-number">1.2.</span> <span class="nav-text">Buffered Channels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Select-Statement"><span class="nav-number">1.3.</span> <span class="nav-text">Select Statement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Channel-Operations"><span class="nav-number">1.4.</span> <span class="nav-text">Channel Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Sending-Data-chan-lt"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. Sending Data (chan &lt;-)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Receiving-Data-lt-chan"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. Receiving Data (&lt;- chan)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Close-channel"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. Close channel</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Tina Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tina Wong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e6aa29d7b0f95f9e44b5',
+      clientSecret: 'be8f55231d3f2acd60346a56f0af6b4e8204f161',
+      repo        : '901abc26123bee.github.io',
+      owner       : '901abc26123bee',
+      admin       : ['901abc26123bee'],
+      id          : '47533df39c37d896f7b7aef097f0f3ef',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

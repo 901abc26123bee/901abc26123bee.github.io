@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"901abc26123bee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="WebSocketWebSocket operate at the Application layer in both the OSI(Layer 7) and TCP&#x2F;IP(Layer 4) models. 1234567 HTTP       WebSocket--------------------        TCP--------------------        IP------">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dig in WebSocket: Protocol, API Design, and Security">
+<meta property="og:url" content="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/index.html">
+<meta property="og:site_name" content="WongJY Blog">
+<meta property="og:description" content="WebSocketWebSocket operate at the Application layer in both the OSI(Layer 7) and TCP&#x2F;IP(Layer 4) models. 1234567 HTTP       WebSocket--------------------        TCP--------------------        IP------">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg">
+<meta property="og:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg">
+<meta property="article:published_time" content="2024-08-14T16:24:11.000Z">
+<meta property="article:modified_time" content="2024-08-24T04:52:03.927Z">
+<meta property="article:author" content="Tina Wong">
+<meta property="article:tag" content="WebSocket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg">
+
+<link rel="canonical" href="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>Dig in WebSocket: Protocol, API Design, and Security | WongJY Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LMFDSHYL3V');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMFDSHYL3V');
+</script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WongJY Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">WongJY Blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Tina Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WongJY Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dig in WebSocket: Protocol, API Design, and Security
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-15 00:24:11" itemprop="dateCreated datePublished" datetime="2024-08-15T00:24:11+08:00">2024-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-08-24 12:52:03" itemprop="dateModified" datetime="2024-08-24T12:52:03+08:00">2024-08-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/WebSocket/" itemprop="url" rel="index"><span itemprop="name">WebSocket</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>WebSocket operate at the Application layer in both the OSI(Layer 7) and TCP/IP(Layer 4) models.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> HTTP       WebSocket</span><br><span class="line">--------------------</span><br><span class="line">        TCP</span><br><span class="line">--------------------</span><br><span class="line">        IP</span><br><span class="line">--------------------</span><br><span class="line">Network access Layer</span><br></pre></td></tr></table></figure>
+
+<p>The WebSocket protocol enables full-duplex communication, allowing data to be sent and received simultaneously over a single, persistent connection. This capability is ideal for real-time applications such as chat systems, live notifications, and online gaming.</p>
+<a id="more"></a>
+<h2 id="How-to-Establish-a-WebSocket-Connection"><a href="#How-to-Establish-a-WebSocket-Connection" class="headerlink" title="How to Establish a WebSocket Connection"></a>How to Establish a WebSocket Connection</h2><p>A WebSocket server is essentially an application that listens on any port of a TCP, following a designated protocol. A WebSocket connection starts with an HTTP handshake and then upgrades to a persistent TCP connection. Once this connection is established, it remains open for an extended period, allowing real-time communication between the client and server.</p>
+<ol>
+<li><p><strong>Client handshake request</strong></p>
+<p> Client sent a HTTP request with method <code>GET</code> for upgrading the connection from HTTP to WebSocket.</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /chat HTTP/<span class="number">1.1</span></span><br><span class="line">Host: example.com:<span class="number">8000</span></span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==</span><br><span class="line">Sec-WebSocket-Version: <span class="number">13</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The <strong><code>Sec-WebSocket-Key</code></strong> header is used  to ensure that the client and server are speaking the WebSocket protocol.<br>  It is a base64 encoded value that is generated by randomly selecting 16-byte value as a nonce.</li>
+<li>The <strong><code>Sec-WebSocket-Version</code></strong> header indicates the version of the WebSocket protocol that the client supports.</li>
+<li>The HTTP version must be 1.1 or greater because earlier versions of HTTP do not support the necessary features for upgrading to WebSocket.</li>
+<li>Origin header is supplied if the client is a web browser, and CORS issues must also be addressed.</li>
+</ul>
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>Server handshake response</strong></p>
+<p> If the server supports WebSocket, it responds with an upgrade header, establishing a WebSocket connection. </p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">101</span> Switching Protocols</span><br><span class="line">Upgrade: websocket</span><br><span class="line">Connection: Upgrade</span><br><span class="line">Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p> <strong><code>Sec-WebSocket-Accept</code></strong> = concatenate the client’s <code>Sec-WebSocket-Key</code> and the string “<code>258EAFA5-E914-47DA-95CA-C5AB0DC85B11</code>“ together (it’s a “<a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Magic_string">magic string</a>“), take the SHA-1 hash of the result, and return the base64 encoding of that hash.</p>
+<p>The <code>Sec-WebSocket-Key</code> and <code>Sec-WebSocket-Accept</code> headers are part of the security mechanism to ensure that the WebSocket handshake is being conducted correctly and to prevent certain types of attacks.</p>
+<ul>
+<li>Protocol Upgrade Validation: confirms that the server has correctly understood the WebSocket handshake request(server indeed support WebSocket).</li>
+<li>Security and Authentication: This value is used to ensure that the handshake request is valid and is not replayed by a malicious entity.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>Exchanging data frames</strong></p>
+<p> Websockets have four states: <code>connecting</code>, <code>open</code>, <code>closing</code> and <code>closed</code>. All communication between clients and servers takes place though the use of the websocket <code>frame</code>.</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Frame format:</span><br><span class="line"></span><br><span class="line">      0                   1                   2                   3</span><br><span class="line">      0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1</span><br><span class="line">    +-+-+-+-+-------+-+-------------+-------------------------------+</span><br><span class="line">    |F|R|R|R| opcode|M| Payload len |    Extended payload length    |</span><br><span class="line">    |I|S|S|S|  (4)  |A|     (7)     |             (16/64)           |</span><br><span class="line">    |N|V|V|V|       |S|             |   (<span class="keyword">if</span> payload len==126/127)   |</span><br><span class="line">    | |1|2|3|       |K|             |                               |</span><br><span class="line">    +-+-+-+-+-------+-+-------------+ - - - - - - - - - - - - - - - +</span><br><span class="line">    |     Extended payload length continued, <span class="keyword">if</span> payload len == 127  |</span><br><span class="line">    + - - - - - - - - - - - - - - - +-------------------------------+</span><br><span class="line">    |                               |Masking-key, <span class="keyword">if</span> MASK <span class="built_in">set</span> to 1  |</span><br><span class="line">    +-------------------------------+-------------------------------+</span><br><span class="line">    | Masking-key (continued)       |          Payload Data         |</span><br><span class="line">    +-------------------------------- - - - - - - - - - - - - - - - +</span><br><span class="line">    :                     Payload Data continued ...                :</span><br><span class="line">    + - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - +</span><br><span class="line">    |                     Payload Data continued ...                |</span><br><span class="line">    +---------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p> For more detail about each field: <a target="_blank" rel="noopener external nofollow noreferrer" href="https://ably.com/topic/websockets#how-do-web-sockets-work">The WebSocket API and protocol explained</a>, <a target="_blank" rel="noopener external nofollow noreferrer" href="https://datatracker.ietf.org/doc/html/rfc6455#section-5.2">rfc6455</a></p>
+<ul>
+<li>FIN bit: webSocket protocol makes fragmentation possible via this field, which indicates whether the frame is the final fragment in a WebSocket message.</li>
+<li>Opcode: determines how to interpret the payload data.<ul>
+<li>0: continuation frame; continues the payload from the previous frame.</li>
+<li>1: text frame (UTF-8 text data).</li>
+<li>2: binary frame.</li>
+<li>8: connection close frame; leads to the connection being terminated.</li>
+<li>9: ping frame</li>
+<li>10: pong frame</li>
+</ul>
+</li>
+<li>Mask, Masking key, (Extended) payload length, Payload data: Masking is applied from the client to the server to protect against specific security risks associated with WebSocket communication, such as cross-protocol attacks and interference by intermediaries. The server does not need to mask its messages to the client because the client is considered to be in a more secure and controlled environment, and masking would only add unnecessary overhead.</li>
+</ul>
+</li>
+</ol>
+<h2 id="Life-Cycle-and-Data-Flow"><a href="#Life-Cycle-and-Data-Flow" class="headerlink" title="Life Cycle and Data Flow"></a>Life Cycle and Data Flow</h2><p>Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Image From python websockets library doc</a></p>
+<p>The WebSocket protocol uses PING/PONG messages to keep connections alive, even when operating behind proxies, firewalls, or load balancers. The server sends a PING message to the client, which responds with a PONG. If the client fails to respond, the server closes the connection.</p>
+<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+
+
+<p>The following diagram shows how data flows between an application built on top of websockets and a remote endpoint. It applies regardless of which side is the server or the client.</p>
+<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+
+<h2 id="Websocket-API-Design"><a href="#Websocket-API-Design" class="headerlink" title="Websocket API Design"></a>Websocket API Design</h2><p>The WebSocket protocol enables two-way communication between a client and server over a persistent connection without enforcing a specific message format. Messages can be sent in two primary formats:</p>
+<ul>
+<li>Text (String) Messages (Opcode 1): These are sent as UTF-8 encoded strings.</li>
+<li>Binary (Blob) Messages (Opcode 2): These consist of binary data.</li>
+</ul>
+<p>Still, there are several API specification formats and standards that can be used for WebSockets, although they are less standardized compared to REST APIs. Here are some of the most commonly used formats:</p>
+<ul>
+<li><strong>AsyncAPI</strong> is the most comprehensive and purpose-built specification for WebSocket and other asynchronous APIs.</li>
+<li><strong>OpenAPI (with Extensions)</strong> is useful if you want to keep WebSocket API documentation consistent with REST API documentation.</li>
+<li><strong>WAMP</strong> is more of a protocol but includes its own specifications for WebSocket communication.</li>
+<li><strong>RAML</strong> can be extended for WebSockets but is less common for this use case.</li>
+<li>Custom Documentation Formats, ex: <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">  &quot;type&quot;: &quot;message_type&quot;,</span></span><br><span class="line"><span class="comment">  &quot;payload&quot;: &#123;</span></span><br><span class="line"><span class="comment">      // payload</span></span><br><span class="line"><span class="comment">  &#125;,</span></span><br><span class="line"><span class="comment">  &quot;timestamp&quot;: &quot;2024-08-15T12:34:56Z&quot;,</span></span><br><span class="line"><span class="comment">  &quot;meta&quot;: &#123;</span></span><br><span class="line"><span class="comment">      &quot;source&quot;: &quot;client_id&quot;,</span></span><br><span class="line"><span class="comment">      &quot;destination&quot;: &quot;room_id&quot;</span></span><br><span class="line"><span class="comment">  &#125;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleWebSocketStreamConnectMessage</span><span class="params">(ctx context.Context, msgReq StreamWSMessageRequest)</span> <span class="title">error</span></span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> msgReq.Type &#123;</span><br><span class="line">  <span class="keyword">case</span> WSMessageTypeChatRoomAction:</span><br><span class="line">    <span class="keyword">var</span> actionPayload ChatRoomActionRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.Unmarshal(msgReq.Payload, &amp;actionPayload); err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// handling action</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> WSMessageTypeChat:</span><br><span class="line">    <span class="keyword">var</span> chatMsgPayload ChatRoomMessageRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.Unmarshal(msgReq.Payload, &amp;chatMsgPayload); err != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// handle message</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="WebSocket-Security"><a href="#WebSocket-Security" class="headerlink" title="WebSocket Security"></a>WebSocket Security</h2><h3 id="WSS"><a href="#WSS" class="headerlink" title="WSS"></a>WSS</h3><p>Use secure <code>wss://</code> protocol over the vulnerable <code>ws://</code> transport,  similar to the preference for <code>https://</code> over <code>http://</code>. WSS encrypts WebSocket connections, safeguarding against man-in-the-middle attacks.</p>
+<h3 id="Validate-Transported-message"><a href="#Validate-Transported-message" class="headerlink" title="Validate Transported message"></a>Validate Transported message</h3><p>Validate client message before processing it to avoid SQL injection, and validate server message to avoid unexpected errors.</p>
+<h3 id="Authentication-Authorization"><a href="#Authentication-Authorization" class="headerlink" title="Authentication/Authorization"></a>Authentication/Authorization</h3><ol>
+<li><p>Send Access Token in the Query Parameter</p>
+<p> Unlike HTTP, which mandates authentication credentials for each request, WebSockets establish a persistent connection. Authentication occurs during the initial HTTP handshake before the connection is upgraded to WebSocket, allowing subsequent communication without repeated credential checks.</p>
+   <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wss://website.com?token=your_token_here</span><br></pre></td></tr></table></figure>
+<p> If the token is valid, proceed with the WebSocket upgrade. Otherwise, send a standard 401 Unauthorized response and close the underlying socket.</p>
+</li>
+<li><p>Send Access Token Over WebSocket<br> Another way to authenticate a WebSocket connection is to send the access token in the first message after establishing the connection. The server should validate the token before allowing any client actions.<br> However, this approach has drawbacks:</p>
+<ul>
+<li><p>Increased Complexity: Implementing a custom stateful protocol adds complexity, requiring session management, synchronization across scales, and addressing inconsistencies. If issues arise, it could block logins or introduce security vulnerabilities.</p>
+</li>
+<li><p>Vulnerability to DoS Attacks: Attackers might open multiple WebSocket connections without authenticating, tying up server resources. This requires strict timeouts to prevent server overload, adding more complexity compared to HTTP-based methods.</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="Graceful-Degradation"><a href="#Graceful-Degradation" class="headerlink" title="Graceful Degradation"></a><strong>Graceful Degradation</strong></h2><ul>
+<li><strong>Fallback Mechanisms:</strong> In scenarios where maintaining a WebSocket connection is difficult (e.g., due to network issues or server overload) or not supported by client devices (<a target="_blank" rel="noopener external nofollow noreferrer" href="https://caniuse.com/websockets">Can I use WebSocket?</a>), applications often implement fallback mechanisms like HTTP long polling or Server-Sent Events (SSE). These alternatives can help maintain communication, albeit less efficiently, when WebSockets are not viable.</li>
+</ul>
+<h2 id="Sec-WebSocket-Extensions"><a href="#Sec-WebSocket-Extensions" class="headerlink" title="Sec-WebSocket-Extensions"></a>Sec-WebSocket-Extensions</h2><p>check <a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism">Protocol upgrade mechanism</a>for more detail</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h2><ul>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://ably.com/topic/websockets">The WebSocket API and protocol explained</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers">Writing WebSocket servers</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Design</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://datatracker.ietf.org/doc/html/rfc6455#section-5.2">rfc6455</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://noio-ws.readthedocs.io/en/latest/overview_of_websockets.html">overview_of_websockets</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://dev.to/idanarye/are-there-any-api-specification-formats-for-websockets-2mkk">Are there any API specification formats for WebSockets?</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications">Writing_WebSocket_client_applications</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://ably.com/blog/websocket-authentication">websocket-authentication</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/67487034/how-to-do-authentication-over-web-sockets">how-to-do-authentication-over-web-sockets</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://pages.ably.com/hubfs/the-websocket-handbook.pdf">the-websocket-handbook</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.geeksforgeeks.org/websockets-in-microservices-architecture/">websockets-in-microservices-architecture</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://devcenter.heroku.com/articles/websocket-security">WebSocket Security</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/31564432/websocket-security">Websocket Security</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://portswigger.net/web-security/web-cache-poisoning">web cache poisoning</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Protocol_upgrade_mechanism">Protocol upgrade mechanism</a></li>
+<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://caniuse.com/websockets">Can I use WebSocket?</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WebSocket/" rel="tag"># WebSocket</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/unveiling-https-the-roles-of-pkcs-digital-certificates-public-key-infrastructure-and-chain-of-trust/" rel="prev" title="Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust">
+      <i class="fa fa-chevron-left"></i> Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/websocket-usage-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/" rel="next" title="WebSocket Usage Pattern in Microservices Architecture and How to Horizontal Scaling">
+      WebSocket Usage Pattern in Microservices Architecture and How to Horizontal Scaling <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket"><span class="nav-number">1.</span> <span class="nav-text">WebSocket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-Establish-a-WebSocket-Connection"><span class="nav-number">2.</span> <span class="nav-text">How to Establish a WebSocket Connection</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Life-Cycle-and-Data-Flow"><span class="nav-number">3.</span> <span class="nav-text">Life Cycle and Data Flow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Websocket-API-Design"><span class="nav-number">4.</span> <span class="nav-text">Websocket API Design</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket-Security"><span class="nav-number">5.</span> <span class="nav-text">WebSocket Security</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WSS"><span class="nav-number">5.1.</span> <span class="nav-text">WSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Validate-Transported-message"><span class="nav-number">5.2.</span> <span class="nav-text">Validate Transported message</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Authentication-Authorization"><span class="nav-number">5.3.</span> <span class="nav-text">Authentication&#x2F;Authorization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Graceful-Degradation"><span class="nav-number">6.</span> <span class="nav-text">Graceful Degradation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sec-WebSocket-Extensions"><span class="nav-number">7.</span> <span class="nav-text">Sec-WebSocket-Extensions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">8.</span> <span class="nav-text">References:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Tina Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tina Wong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e6aa29d7b0f95f9e44b5',
+      clientSecret: 'be8f55231d3f2acd60346a56f0af6b4e8204f161',
+      repo        : '901abc26123bee.github.io',
+      owner       : '901abc26123bee',
+      admin       : ['901abc26123bee'],
+      id          : 'f0dc2b62184f034caa479afde4955d59',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
