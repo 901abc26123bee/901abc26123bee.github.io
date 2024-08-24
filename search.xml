@@ -5,13 +5,10 @@
     <url>/2023/12/20/Authentication-and-Authorization-for-SSO/</url>
     <content><![CDATA[<h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
 <ul>
-<li><p>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</p>
-</li>
-<li><p>Implicit (front channel only)</p>
-<p><a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></p>
-</li>
+<li>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</li>
+<li>Implicit (front channel only)<a id="more"></a>
+<a href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></li>
 </ul>
-<a id="more"></a>
 <h2 id="OpenID-Connect-OIDC"><a href="#OpenID-Connect-OIDC" class="headerlink" title="OpenID Connect (OIDC):"></a>OpenID Connect (OIDC):</h2><p>  OpenID Connect is an <strong>interoperable authentication protocol based on the OAuth 2.0 framework</strong> . It provides a standardized way for clients to obtain information about the end-user in order to authenticate them. OIDC is often used for single sign-on (SSO) scenarios, where a user can log in once and access multiple applications without needing to log in again. OIDC uses JSON Web Tokens (JWT), HTTP flows and avoids sharing user credentials with services.</p>
 <p>  What OpenID Connect adds</p>
 <ul>
@@ -60,6 +57,8 @@
     <content><![CDATA[<h1 id="從零搭建Blog-part1：-Hexo-GitHub"><a href="#從零搭建Blog-part1：-Hexo-GitHub" class="headerlink" title="從零搭建Blog part1： Hexo+GitHub"></a>從零搭建Blog part1： Hexo+GitHub</h1><blockquote>
 <p>Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。</p>
 </blockquote>
+<a id="more"></a>
+
 <h2 id="For-Mac-—-strongly-recommand"><a href="#For-Mac-—-strongly-recommand" class="headerlink" title="# For Mac — strongly recommand"></a># For Mac — strongly recommand</h2><p><a href="https://medium.com/nitas-learning-journey/mac%E7%B5%82%E7%AB%AF%E6%A9%9F-terminal-%E8%A8%AD%E5%AE%9A-iterm2-ba63efd0df6a">Mac終端機 (Terminal)設定： iTerm 2</a> —&gt; change your terminal </p>
 <h2 id="安裝-Node-js-git"><a href="#安裝-Node-js-git" class="headerlink" title="# 安裝 Node.js + git"></a># 安裝 Node.js + git</h2><p>Mac –&gt; homebrew</p>
 <p>去 <a href="https://nodejs.org/en/">Node.js</a> 官網下載安裝</p>
@@ -272,6 +271,8 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo new “postName” # 新建文章</span><br><span class="line">$ hexo new page “pageName” # 新建頁面</span><br></pre></td></tr></table></figure>
 
 <p>所有的文章都會在<code>source/_posts</code>裡面。一開始裡面就已經有一篇範例文章<code>hello-world.md</code>了。</p>
+<a id="more"></a>
+
 <p>常用组合</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ hexo d -g # 產生靜態檔後部署</span><br><span class="line">$ hexo s -g # 產生靜態檔後預覽</span><br></pre></td></tr></table></figure>
 
@@ -345,6 +346,7 @@
 </ul>
 <p>為了解決無法在主頁和文章中正常顯示的問題，需要安裝<a href="https://github.com/xcodebuild/hexo-asset-image">hexo-asset-image</a>插件：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image@0.0.1 --save</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
 
 
@@ -411,14 +413,16 @@
 <li>Read/Write Through</li>
 <li>Write Behind Caching</li>
 </ul>
-<a id="more"></a>
 <h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
 <ul>
 <li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
 <li>Cache hit: The application retrieves data from the cache and returns.</li>
-<li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li>
+<li>Update data: Stores the data in the database first, and then invalidates the cache after success.<a id="more"></a>
+<a href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1">
+
+
+</li>
 </ul>
-<p><a href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1"></p>
 <p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
 <p>Consider the following situation.</p>
 <img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
@@ -500,12 +504,13 @@
 <p>When you use a bind mount, a file or directory on the host machine is mounted into a container. They rely on the host machine’s filesystem having a specific directory structure available.</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">volumes:</span><br><span class="line">  — &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db:&#x2F;var&#x2F;lib&#x2F;mysql”</span><br><span class="line">--&gt; manipulate data in &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db on Ubuntu on WSL &#x3D;&#x3D; manipulate data &#x2F;var&#x2F;lib&#x2F;mysql in docker volume</span><br></pre></td></tr></table></figure></li>
 <li><p>volumes :<br><a href="https://docs.docker.com/storage/">volumes</a></p>
+<a id="more"></a>
+
+
 </li>
 </ul>
 <p>  Volumes are stored in a part of the host filesystem which is managed by Docker (<code>/var/lib/docker/volumes/</code> on Linux). Non-Docker processes should not modify this part of the filesystem. Volumes are the best way to persist data in Docker.</p>
 <p>  When you create a volume, it is stored within a directory on the Docker host. When you mount the volume into a container, this directory is what is mounted into the container. This is similar to the way that bind mounts work, except that volumes are managed by Docker and are isolated from the core functionality of the host machine.</p>
-<a id="more"></a>
-
 <h2 id="File-permission-problem"><a href="#File-permission-problem" class="headerlink" title="File permission problem :"></a>File permission problem :</h2><img src="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/1.png" width="80%" height="80%" alt="inconsistency_between_database_and_cache">
 
 
@@ -574,10 +579,10 @@
     <title>Encoding: Character Encoding, URL Encoding and Base64 Encoding</title>
     <url>/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/</url>
     <content><![CDATA[<h1 id="Character-Encoding"><a href="#Character-Encoding" class="headerlink" title="Character Encoding"></a><strong>Character Encoding</strong></h1><p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
-<a id="more"></a>
-
 <h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a><strong>ASCII</strong></h2><p>In the early days of the internet, we didn’t need to worry about any characters other than english. We use <a href="https://en.wikipedia.org/wiki/ASCII">American Standard Code for Information Interchange (ASCII)</a> , one byte (eight bits), to map a-z, A-Z , 0–9 and some control characters.</p>
 <p>As you can imagine, there are hundreds of languages in the world. one byte is not enough for some language like Chinese or Japanese. Each country has its own standards, result in garbled characters displayed in multi-language mixed text.</p>
+<a id="more"></a>
+
 <h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a><strong>Unicode</strong></h2><p>Unicode is sometimes called the <a href="https://en.wikipedia.org/wiki/Universal_Coded_Character_Set">Universal Coded Character Set</a> (UCS), or even ISO/IEC 10646. Unicode is made up of lots of code points (mapping lots of characters from around the world to a key that all computers can reference.) A collection of code points is called a character set, which is what Unicode is. Unicode unifies all languages into one set of codes, so that there will be no more garbled characters.</p>
 <h2 id="Unicode-Transform-Protocol-UTF"><a href="#Unicode-Transform-Protocol-UTF" class="headerlink" title="Unicode Transform Protocol (UTF)"></a><strong>Unicode Transform Protocol (UTF)</strong></h2><p>UTF is a way we encode Unicode code points. The UTF encodings are defined by the Unicode standard, and are able to encode every single Unicode code point we need.</p>
 <p>There are different types of UTF standards. They differ depending on the amount of bytes used to encode one code point. It also depends on whether you’re using UTF-8 (one byte per code point), UTF-16 (two bytes per code point) or UTF-32 (four bytes per code point).</p>
@@ -881,11 +886,11 @@
 <li><p>Debug flow: Pods → Service → Ingress → Ingress controller → Internet</p>
 </li>
 </ul>
-<a id="more"></a>
-
 <h2 id="Check-the-Deployment-amp-Pods"><a href="#Check-the-Deployment-amp-Pods" class="headerlink" title="Check the Deployment &amp; Pods"></a>Check the Deployment &amp; Pods</h2><ol>
 <li>Makes sure that the Pod is up and running (Pod’s “Status” is “Running”). If not, checks the Deployment/Pod Resource Events and log to fix the problem.</li>
-<li>If you are using HTTP GET livenessProbe, ensure your Service and Ingress are deployed beforehand.</li>
+<li>If you are using HTTP GET livenessProbe, ensure your Service and Ingress are deployed beforehand.<a id="more"></a>
+
+</li>
 </ol>
 <figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">$ kubectl get deployment -n &lt;namespace&gt;</span><br><span class="line"><span class="comment"># logs of deployment</span></span><br><span class="line">$ kubectl logs deployment/&lt;name-of-deployment&gt; -n &lt;namespace&gt;</span><br><span class="line"><span class="comment"># follow logs of deployment, ctrl+c to quit</span></span><br><span class="line">$ kubectl logs -f deployment/&lt;name-of-deployment&gt; -n &lt;namespace&gt;</span><br><span class="line"><span class="comment"># check &quot;Events&quot; at bottom of the output</span></span><br><span class="line">$ kubectl describe deployment &lt;name-of-deployment&gt; -n &lt;namespace&gt;</span><br><span class="line"></span><br><span class="line">$ kubectl get pods -n &lt;namespace&gt;</span><br><span class="line">$ kubectl logs pod/&lt;name-of-pod&gt; -n &lt;namespace&gt;</span><br><span class="line">$ kubectl describe pod &lt;name-of-pod&gt; -o wide -n &lt;namespace&gt;</span><br></pre></td></tr></table></figure>
 
@@ -983,6 +988,7 @@
 <h2 id="二級標題"><a href="#二級標題" class="headerlink" title="二級標題"></a>二級標題</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">##＋空格＋二級標題＋enter</span><br></pre></td></tr></table></figure>
 
 <h3 id="三級標題"><a href="#三級標題" class="headerlink" title="三級標題"></a>三級標題</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">###＋空格＋二級標題＋enter</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 
 <h2 id="字體"><a href="#字體" class="headerlink" title="字體"></a>字體</h2><p><strong>Hello World!</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">**Hello World!**  #粗體字	</span><br><span class="line">#(beware of that &#39;*&#39; must type in English)</span><br></pre></td></tr></table></figure>
@@ -1217,7 +1223,7 @@
   <entry>
     <title>Unveiling HTTPS: The Roles of PKCS, Digital Certificates, Public Key Infrastructure, and Chain of Trust</title>
     <url>/2024/06/26/Unveiling-HTTPS-The-Roles-of-PKCS-Digital-Certificates-Public-Key-Infrastructure-and-Chain-of-Trust/</url>
-    <content><![CDATA[<p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
+    <content><![CDATA[<h2 id="HTTPS-Handshake-Flow"><a href="#HTTPS-Handshake-Flow" class="headerlink" title="HTTPS Handshake Flow"></a>HTTPS Handshake Flow</h2><p>In network communications, we often need to protect the content of our messages, and this is done by hiding the original content through encryption. HTTPS (HyperText Transfer Protocol Secure) uses a combination of symmetric and asymmetric encryption to ensure secure communication over the internet. Here’s how it works:</p>
 <a id="more"></a>
 
 <ol>

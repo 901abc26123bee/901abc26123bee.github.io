@@ -28,7 +28,7 @@
 <meta property="og:description" content="OAuth 2.0 (Open Authorization 2.0):  OAuth 2.0 is an authorization framework that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their cred">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2023-12-20T15:54:06.000Z">
-<meta property="article:modified_time" content="2024-08-24T04:51:33.381Z">
+<meta property="article:modified_time" content="2024-08-24T05:21:08.122Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="OAuth 2.0">
 <meta property="article:tag" content="OpenID">
@@ -219,7 +219,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 12:51:33" itemprop="dateModified" datetime="2024-08-24T12:51:33+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:21:08" itemprop="dateModified" datetime="2024-08-24T13:21:08+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,13 +251,10 @@
       
         <h2 id="OAuth-2-0-Open-Authorization-2-0"><a href="#OAuth-2-0-Open-Authorization-2-0" class="headerlink" title="OAuth 2.0 (Open Authorization 2.0):"></a>OAuth 2.0 (Open Authorization 2.0):</h2><p>  OAuth 2.0 is an <strong>authorization framework</strong> that allows third-party applications to obtain limited access to a user’s resources on a server without exposing their credentials. It’s commonly used for delegated authorization scenarios, such as allowing a third-party application to access a user’s data on another service (e.g., social media data access).<br>  If the Client is a Single-Page App (SPA), an application running in a browser using a scripting language like JavaScript, there are two grant options:</p>
 <ul>
-<li><p>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</p>
-</li>
-<li><p>Implicit (front channel only)</p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></p>
-</li>
+<li>Authorization code (front channel + back channel): safer since the Access Token is not exposed on the client side, and this flow can return Refresh Tokens.</li>
+<li>Implicit (front channel only)<a id="more"></a>
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/which-oauth-2-0-flow-should-i-use">Which OAuth 2.0 Flow Should I Use?</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.youtube.com/watch?v=996OiexHze0">OAuth 2.0 and OpenID Connect (in plain English)</a><br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/59511628/is-it-secure-to-store-a-refresh-token-in-the-database-to-issue-new-access-toke">Is it secure to store a refresh token in the database?</a></li>
 </ul>
-<a id="more"></a>
 <h2 id="OpenID-Connect-OIDC"><a href="#OpenID-Connect-OIDC" class="headerlink" title="OpenID Connect (OIDC):"></a>OpenID Connect (OIDC):</h2><p>  OpenID Connect is an <strong>interoperable authentication protocol based on the OAuth 2.0 framework</strong> . It provides a standardized way for clients to obtain information about the end-user in order to authenticate them. OIDC is often used for single sign-on (SSO) scenarios, where a user can log in once and access multiple applications without needing to log in again. OIDC uses JSON Web Tokens (JWT), HTTP flows and avoids sharing user credentials with services.</p>
 <p>  What OpenID Connect adds</p>
 <ul>

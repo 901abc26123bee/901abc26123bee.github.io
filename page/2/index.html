@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 12:56:37" itemprop="dateModified" datetime="2024-08-24T12:56:37+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:20:04" itemprop="dateModified" datetime="2024-08-24T13:20:04+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -234,10 +234,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Docker volumes Problem onUbuntu on WSL2</p>
+          <h2 id="Docker-Volume-type"><a href="#Docker-Volume-type" class="headerlink" title="Docker Volume type"></a>Docker Volume type</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://docs.docker.com/storage/">Manage data in Docker</a></p>
+<ul>
+<li><p>bind mounts :</p>
+<p>When you use a bind mount, a file or directory on the host machine is mounted into a container. They rely on the host machine’s filesystem having a specific directory structure available.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">  — &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db:&#x2F;var&#x2F;lib&#x2F;mysql”</span><br><span class="line">--&gt; manipulate data in &#x2F;mnt&#x2F;c&#x2F;work&#x2F;db on Ubuntu on WSL &#x3D;&#x3D; manipulate data &#x2F;var&#x2F;lib&#x2F;mysql in docker volume</span><br></pre></td></tr></table></figure></li>
+<li><p>volumes :<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://docs.docker.com/storage/">volumes</a></p></li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/">
+              <a class="btn" href="/2023/09/10/Docker-volumes-Problem-onUbuntu-on-WSL2/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -292,7 +297,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 12:55:24" itemprop="dateModified" datetime="2024-08-24T12:55:24+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:19:51" itemprop="dateModified" datetime="2024-08-24T13:19:51+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -315,10 +320,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.</p>
+          <h1 id="Kubernets-API-Server"><a href="#Kubernets-API-Server" class="headerlink" title="Kubernets API Server"></a><strong>Kubernets API Server</strong></h1><p>The API server is a component of the Kubernetes control plane that exposes the Kubernetes API via HTTPS. It is the main management point of the entire cluster. To invoke this API, the client requests needs implement the correct auth(authentication and authorization). API server is also responsible for the authentication and authorization mechanism, processes REST operations, validates them, and updates the corresponding objects in Etcd. There are two main authentication mechanisms we can use handle the API Server auth, TLS/SSL Certificate-based auth(X509) and Token-based auth.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/">
+              <a class="btn" href="/2023/09/07/How-to-deploy-a-Kubernate-Job-by-client-go-in-cluster/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -373,7 +378,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 13:00:32" itemprop="dateModified" datetime="2024-08-24T13:00:32+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:20:19" itemprop="dateModified" datetime="2024-08-24T13:20:19+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -396,10 +401,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Database Cache Consistency Strategies</p>
+          <p>Database cache consistency strategies include:</p>
+<ul>
+<li>Cache Aside</li>
+<li>Read/Write Through</li>
+<li>Write Behind Caching</li>
+</ul>
+<h1 id="Cache-Aside-Pattern"><a href="#Cache-Aside-Pattern" class="headerlink" title="Cache Aside Pattern"></a>Cache Aside Pattern</h1><p><em>Eventually Database Cache Consistency</em></p>
+<ul>
+<li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
+<li>Cache hit: The application retrieves data from the cache and returns.</li>
+<li>Update data: Stores the data in the database first, and then invalidates the cache after success.</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/09/07/Database-Cache-Consistency-Strategies/">
+              <a class="btn" href="/2023/09/07/Database-Cache-Consistency-Strategies/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -454,7 +469,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 12:54:15" itemprop="dateModified" datetime="2024-08-24T12:54:15+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:19:38" itemprop="dateModified" datetime="2024-08-24T13:19:38+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -477,10 +492,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Index Locking In MySQL8 with InnoDB</p>
+          <h1 id="MySQL-data-structures-for-Index"><a href="#MySQL-data-structures-for-Index" class="headerlink" title="MySQL data structures for Index"></a><strong>MySQL data structures for Index</strong></h1><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://dev.mysql.com/doc/refman/8.0/en/index-btree-hash.html">8.3.9 Comparison of B-Tree and Hash Indexes</a></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/7306316/b-tree-vs-hash-table">B-Tree vs Hash Table</a></p>
+<ul>
+<li>Hash Table: You can only access elements by their primary key <code>O(1)</code>. When you select ranges (<em>everything in between <code>x</code> and <code>y</code></em>) can result in a full table scan <code>O(n)</code> . There may be a point where your index exceeds a tolerable size compared to your hash sizes and your entire index needs to be re-built.</li>
+<li>Tree algorithms support ranges selecting in <em><code>log(n)</code></em> , elements accessing and inserting by their primary key in <em><code>log(n)</code></em> .</li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/">
+              <a class="btn" href="/2023/09/07/Index-Locking-In-MySQL8-with-InnoDB/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -535,7 +554,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 12:56:34" itemprop="dateModified" datetime="2024-08-24T12:56:34+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-24 13:20:01" itemprop="dateModified" datetime="2024-08-24T13:20:01+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -558,10 +577,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
+          <h1 id="Character-Encoding"><a href="#Character-Encoding" class="headerlink" title="Character Encoding"></a><strong>Character Encoding</strong></h1><p>Computers only can understand binary. If we want to process text, we must first convert the text to binary before computers can process it.</p>
+<h2 id="ASCII"><a href="#ASCII" class="headerlink" title="ASCII"></a><strong>ASCII</strong></h2><p>In the early days of the internet, we didn’t need to worry about any characters other than english. We use <a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/ASCII">American Standard Code for Information Interchange (ASCII)</a> , one byte (eight bits), to map a-z, A-Z , 0–9 and some control characters.</p>
+<p>As you can imagine, there are hundreds of languages in the world. one byte is not enough for some language like Chinese or Japanese. Each country has its own standards, result in garbled characters displayed in multi-language mixed text.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/">
+              <a class="btn" href="/2023/09/07/Encoding-Character-Encoding-URL-Encoding-and-Base64-Encoding/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -616,7 +637,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-07 23:00:56" itemprop="dateModified" datetime="2023-09-07T23:00:56+08:00">2023-09-07</time>
+                <time title="Modified: 2024-08-24 13:11:06" itemprop="dateModified" datetime="2024-08-24T13:11:06+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -650,56 +671,14 @@
 </ul>
 <p>為了解決無法在主頁和文章中正常顯示的問題，需要安裝<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/xcodebuild/hexo-asset-image">hexo-asset-image</a>插件：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image@0.0.1 --save</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="相對路徑本地引用"><a href="#相對路徑本地引用" class="headerlink" title="# 相對路徑本地引用"></a># 相對路徑本地引用</h2><p>圖片除了可以放在統一的images文件夾中，還可以放在文章自己的目錄中。文章的目錄可以通過站點配置文件_config.yml來生成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#_config.yml</span><br><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
-
-<p>config.yml文件中的配置項<code>post_asset_folder</code>設為<code>true</code>後，執行命令<code>$ hexo new post_nam</code>e，在source/_posts中會生成文章<code>post_name.md</code>和<code>同名文件夾post_name</code>。將圖片資源放在<code>post_name文件夾</code>中，文章就可以使用相對路徑引用圖片資源了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](image.jpg)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>![example](example.png)</code></p>
-<p>Hexo 官方文檔關於 markdown 的示例寫法，圖片不能在主頁正常顯示，但在文章中能正常顯示。此外，這種相對引用寫法在絕大數markdown 編輯器的預覽視圖中都無法正常顯示圖片（Typora 通過設置<code>Use Image Root Path</code> 可以解決，它會在文件頭添加<code>typora-root-url: xxxx </code>）。</p>
-</li>
-</ul>
-<h2 id="標籤插件語法引用"><a href="#標籤插件語法引用" class="headerlink" title="# 標籤插件語法引用"></a># 標籤插件語法引用</h2><p>通過常規的MarkDown語法和相對路徑引用圖片或其它資源相對方便，但是這些包含相對位置引用資源的文章在首頁，或者存檔頁面不能正常顯示。 HEXO 3開始核心代碼中加入了相對路徑引用的標籤插件，用以解決這個問題。 （在HEXO 3之前許多開發者開發類似插件，現在被官方更新後核心代碼採用了）。</p>
-<p>並且需要安裝插件，安裝方法為:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install https:&#x2F;&#x2F;github.com&#x2F;7ym0n&#x2F;hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 本地圖片資源，不限製圖片尺寸</span><br><span class="line">&#123;% asset_img image.jpg This is an image %&#125;</span><br><span class="line"># 網絡圖片資源，限製圖片顯示尺寸</span><br><span class="line">&#123;% img http:&#x2F;&#x2F;www.viemu.com&#x2F;vi-vim-cheat-sheet.gif 200 400 vi-vim-cheat-sheet %&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p><code>&#123;% asset_img example.png example %&#125;</code></p>
-<p>Hexo 官方推薦使用標籤的寫法，圖片能在主頁和文章中正常顯示，但是不能在 markdown 編輯器的預覽視圖中預覽圖片。</p>
-</li>
-</ul>
-<h3 id="啟用fancybox：點擊查看圖片大圖"><a href="#啟用fancybox：點擊查看圖片大圖" class="headerlink" title="# 啟用fancybox：點擊查看圖片大圖"></a># 啟用fancybox：點擊查看圖片大圖</h3><p>我這裡使用的是Hexo的NexT主題，NexT主題中提供了fancybox的方便接口。</p>
-<p>Usage：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/theme-next/theme-next-fancybox3">https://github.com/theme-next/theme-next-fancybox3</a><br>markdown用法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% img http:&#x2F;&#x2F;www.viemu.com&#x2F;vi-vim-cheat-sheet.gif 600 600 &quot;點擊查看圖片大圖:vi&#x2F;vim-cheat-sheet&quot; %&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="HTML語法引用（最終手段，一定能成，推薦）"><a href="#HTML語法引用（最終手段，一定能成，推薦）" class="headerlink" title="# HTML語法引用（最終手段，一定能成，推薦）"></a># HTML語法引用（最終手段，一定能成，推薦）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src&#x3D;&quot;image.png&quot; width&#x3D;&quot;50%&quot; height&#x3D;&quot;50%&quot; title&#x3D;&quot;image&quot; alt&#x3D;&quot;image&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-
-<p><mark>使用此方法要注意路徑</mark></p>
-<p>config.yml文件中的配置項<code>post_asset_folder</code>設為<code>true</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ tree source&#x2F;_posts </span><br><span class="line">source&#x2F;_posts</span><br><span class="line">├── Blog1</span><br><span class="line">│   └── image1.png</span><br><span class="line">└── Blog1.md</span><br><span class="line"></span><br><span class="line"># Blog1.md 中的 HTML語法引用</span><br><span class="line">&lt;img src&#x3D;&quot;.&#x2F;image1.png&quot; width&#x3D;&quot;50%&quot; height&#x3D;&quot;50%&quot; title&#x3D;&quot;image&quot; alt&#x3D;&quot;image&quot;&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/8304172/tree-command-on-osx-bash">tree command on osx bash</a></p>
-<h2 id="—Problem—"><a href="#—Problem—" class="headerlink" title="# —Problem—"></a># —Problem—</h2><p>問題推測</p>
-<p>（一）本地圖片沒有有效上傳至github倉庫中，導致引用無效</p>
-<p>解決方案：安裝外掛（回看前文）</p>
-<p>（二）本地圖片沒有存放在同名資料夾中</p>
-<p>解決方案：將需要引用的本地圖片存放在與文章名相同的資料夾中</p>
-<p>（三）圖片路徑出錯</p>
-<h2 id="reference"><a href="#reference" class="headerlink" title="# reference"></a># reference</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-cn/docs/asset-folders.html">資源文件夾</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://fuhailin.github.io/Hexo-images/">在Hexo博客中插入图片的各种方式</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.itread01.com/content/1542264790.html">hexo引用本地圖片無法顯示</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/tag-plugins.html">標籤外掛（Tag Plugins）</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blog.csdn.net/qq_32767041/article/details/103283522">Hexo 搭建个人博客（五）Hexo 资源文件夹</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/Blog3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -749,7 +728,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-07 23:00:56" itemprop="dateModified" datetime="2023-09-07T23:00:56+08:00">2023-09-07</time>
+                <time title="Modified: 2024-08-24 13:11:51" itemprop="dateModified" datetime="2024-08-24T13:11:51+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -778,83 +757,14 @@
 <h2 id="二級標題"><a href="#二級標題" class="headerlink" title="二級標題"></a>二級標題</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">##＋空格＋二級標題＋enter</span><br></pre></td></tr></table></figure>
 
 <h3 id="三級標題"><a href="#三級標題" class="headerlink" title="三級標題"></a>三級標題</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">###＋空格＋二級標題＋enter</span><br></pre></td></tr></table></figure>
-
-<h2 id="字體"><a href="#字體" class="headerlink" title="字體"></a>字體</h2><p><strong>Hello World!</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**Hello World!**  #粗體字	</span><br><span class="line">#(beware of that &#39;*&#39; must type in English)</span><br></pre></td></tr></table></figure>
-
-<p><em>Hello World!</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Hello World!* 	#斜體字</span><br></pre></td></tr></table></figure>
-
-<p><strong><em>Hello World!</em></strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">***Hello World!*** 	#粗體＋斜體</span><br></pre></td></tr></table></figure>
-
-<p><del>Hello World!</del></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~~Hello World!~~	#刪除線</span><br></pre></td></tr></table></figure>
-
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><blockquote>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;＋空格		#引用</span><br></pre></td></tr></table></figure>
-
-<h2 id="分割線"><a href="#分割線" class="headerlink" title="分割線"></a>分割線</h2><hr>
-<hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---+Enter		#分割線</span><br><span class="line">#or</span><br><span class="line">***+Enter		#分割線</span><br></pre></td></tr></table></figure>
-
-<h2 id="連結、圖片"><a href="#連結、圖片" class="headerlink" title="連結、圖片"></a>連結、圖片</h2><p>image from online —<br>![圖片名稱](online path)</p>
-<p>image from Destop —<br>直接把圖檔拉到Typora中要放的位置，會顯示：<br>![image-name](image path from desktop)<br>建議修改成相對路徑</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">├── file for image</span><br><span class="line">│   └── imagename.png</span><br><span class="line">└── Markdown file</span><br><span class="line"></span><br><span class="line">---&gt; ![image-name](.&#x2F;image&#x2F;imagename.png)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;.&quot; 代表當前所在目錄，相對路徑</span><br><span class="line">&quot;..&quot; 代表上一層目錄，相對路徑。</span><br><span class="line">&quot;..&#x2F;..&#x2F;&quot; 代表的是上一層目錄的上一層目錄，相對路徑</span><br><span class="line">&quot;&#x2F;&quot; 代表根目錄,絕對路徑</span><br><span class="line"></span><br><span class="line">在使用相對路徑時，我們用符號“.”來表示當前目錄；用符號“..”來表示當前目錄的父目錄。</span><br></pre></td></tr></table></figure>
-
-<p><a href="%E6%96%87%E7%AB%A0%E8%B7%AF%E5%BE%91">文章名稱</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[文章名稱]((文章路徑)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="列表"><a href="#列表" class="headerlink" title="#列表"></a>#列表</h2><ol>
-<li>a</li>
-<li>b</li>
-<li>c</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">number+.+空格</span><br><span class="line">enter+enter &#x3D; finish列表	#only work when there is no word urder</span><br><span class="line"></span><br><span class="line">ex:</span><br><span class="line">	1. apple</span><br><span class="line">	2. orange</span><br><span class="line">		 enter+enter --&gt; has word urder this line --&gt; won&#39;t work	 </span><br><span class="line"></span><br><span class="line">		 I won&#39;t let you stop the list</span><br><span class="line">	3. enter+enter --&gt; no word urder --&gt; finish the list</span><br><span class="line">next line start here</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>a</li>
-<li>b</li>
-<li>c</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-+空格</span><br><span class="line">enter+enter &#x3D; finish列表	#only work when there is no word urder</span><br></pre></td></tr></table></figure>
-
-<h2 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h2><p>方法ㄧ：</p>
-<table>
-<thead>
-<tr>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>a</td>
-<td>b</td>
-<td>c</td>
-</tr>
-</tbody></table>
-<p>1|2|3|</p>
-<p>–|–|–|</p>
-<p>a|b|c|</p>
-<p>檢視 –&gt; 原始碼模式 –&gt; 刪除行內空格</p>
-<p>方法二：</p>
-<p>段落 —&gt; 插入表格</p>
-<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">···（最左上）＋程式語言+Enter</span><br></pre></td></tr></table></figure>
-
-<h2 id="文字調亮"><a href="#文字調亮" class="headerlink" title="文字調亮"></a>文字調亮</h2><p>Markdown不支持，採用HTML</p>
-<p><span style="color:red">some <strong>This is Red Bold.</strong> text</span></p>
-<p><span style="color:orange">some <em>This is Blue italic.</em> text</span></p>
-<p><mark>Marked text</mark></p>
-<p><span style="background-color: #FFFF00">Marked text</span></p>
-<p>HTML Color Names <a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.w3schools.com/colors/colors_names.asp">https://www.w3schools.com/colors/colors_names.asp</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/markdown/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -904,7 +814,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-07 23:00:56" itemprop="dateModified" datetime="2023-09-07T23:00:56+08:00">2023-09-07</time>
+                <time title="Modified: 2024-08-24 13:10:56" itemprop="dateModified" datetime="2024-08-24T13:10:56+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -930,200 +840,14 @@
           <h1 id="從零搭建Blog-part1：-Hexo-GitHub"><a href="#從零搭建Blog-part1：-Hexo-GitHub" class="headerlink" title="從零搭建Blog part1： Hexo+GitHub"></a>從零搭建Blog part1： Hexo+GitHub</h1><blockquote>
 <p>Hexo 是一個快速、簡單且強大的網誌框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在幾秒鐘內透過漂亮的主題產生靜態檔案。</p>
 </blockquote>
-<h2 id="For-Mac-—-strongly-recommand"><a href="#For-Mac-—-strongly-recommand" class="headerlink" title="# For Mac — strongly recommand"></a># For Mac — strongly recommand</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://medium.com/nitas-learning-journey/mac%E7%B5%82%E7%AB%AF%E6%A9%9F-terminal-%E8%A8%AD%E5%AE%9A-iterm2-ba63efd0df6a">Mac終端機 (Terminal)設定： iTerm 2</a> —&gt; change your terminal </p>
-<h2 id="安裝-Node-js-git"><a href="#安裝-Node-js-git" class="headerlink" title="# 安裝 Node.js + git"></a># 安裝 Node.js + git</h2><p>Mac –&gt; homebrew</p>
-<p>去 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://nodejs.org/en/">Node.js</a> 官網下載安裝</p>
-<ul>
-<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://nodejs.org/en/">Node.js</a> (Node.js 版本需不低於 8.6，建議使用 Node.js 10.0 及以上版本)</li>
-<li><a target="_blank" rel="noopener external nofollow noreferrer" href="https://git-scm.com/">Git</a></li>
-</ul>
-<h2 id="github新建一個項目"><a href="#github新建一個項目" class="headerlink" title="# github新建一個項目"></a># github新建一個項目</h2><p>新建一個項目，如下所示：<br><img src="/2020/10/09/Blog1/1.png" width="100%" height="100%" title="1" alt="1"></p>
-<p>然後如下圖所示，輸入自己的項目名字，後面一定要加.github.io後綴</p>
-<p>===作為Github Page的倉庫，一定要為<code>你Github的用戶名.github.io</code> ===</p>
-<img src="/2020/10/09/Blog1/2.png" title="2" alt="2">
-
-<p>然後項目就建成了，點擊Settings，向下拉到最後有個GitHub Pages，點擊————-Choose a theme選擇一個主題。然後等一會兒，再回到GitHub Pages，會變成下面這樣：</p>
-<img src="/2020/10/09/Blog1/3.png" title="3" alt="3">
-
-<blockquote>
-<p>選擇主題，此時不能訪問，需要選擇一個主題，才可以訪問</p>
-</blockquote>
-<p>點擊那個鏈接，就會出現自己的網頁</p>
-<h2 id="Hexo-–-gt-Blog"><a href="#Hexo-–-gt-Blog" class="headerlink" title="# Hexo –&gt; Blog"></a># Hexo –&gt; Blog</h2><h3 id="創造一個資料夾專門放-Blog-檔案"><a href="#創造一個資料夾專門放-Blog-檔案" class="headerlink" title="# 創造一個資料夾專門放 Blog 檔案"></a># 創造一個資料夾專門放 Blog 檔案</h3><p>創造一個資料夾專門放 Blog 檔案，以下操作都在這資料夾中。</p>
-<p>安裝 Hexo Git，Hexo 提供了快速方便的一鍵佈署功能，只需一個指令就能將網站佈署到伺服器上 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/one-command-deployment.html">佈署</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>接下來透過<code>npm</code>安裝<code>Hexo</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">#or</span><br><span class="line">$ npm i hexo-cli -g</span><br></pre></td></tr></table></figure>
-
-<p>安裝完後輸入<code>hexo -v</code>驗證是否安裝成功。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo version</span><br><span class="line">#or</span><br><span class="line">$ hexo -v</span><br></pre></td></tr></table></figure>
-
-<p>接下來就可以開始初始化部落格</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init  # 初始化專門放 Blog 檔案資料夾</span><br><span class="line">$ npm install # 安裝相關套件</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/09/Blog1/4.png" title="4" alt="4">
-
-<p><code>_config.yml</code>：網站 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/configuration">配置</a> 檔案，可以在此配置大部分的設定。<br><code>package.json</code>：套件版本控制<br><code>scaffolds</code>：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/writing.html#%E9%B7%B9%E6%9E%B6%EF%BC%88Scaffold%EF%BC%89">鷹架</a> 資料夾。建立新文章時，會根據 scaffold 來建立檔案。<br><code>source</code>：原始檔案資料夾是放置內容的地方。<br><code>themes</code>：<a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/themes">主題</a> 資料夾。Hexo 會根據主題來產生靜態檔案。</p>
-<p>再來到 blog 資料夾下找一個 _config.yml 的檔案，這是 Hexo 的全域配置文件</p>
-<p>開啟之後，拉到檔案最底部，可以看到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type:</span><br></pre></td></tr></table></figure>
-
-<p>將以下資訊對應輸入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: http:&#x2F;&#x2F;github.com&#x2F;yourname&#x2F;yourname.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>設定中的 “:” 後一定要有一個空格</p>
-<p>將上面的 yourname 改成 GitHub 帳號名稱</p>
-</blockquote>
-<h3 id="1-localhost"><a href="#1-localhost" class="headerlink" title="# 1. localhost"></a># 1. localhost</h3><p>接著執行下方兩行指令，就可以在 <a target="_blank" rel="noopener external nofollow noreferrer" href="http://localhost:4000/">http://localhost:4000/</a> 查看Blog 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br><span class="line">$ hexo s</span><br><span class="line">#or</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>Ctrl + c –&gt; stop</p>
-<h3 id="2-部署上-GitHub"><a href="#2-部署上-GitHub" class="headerlink" title="# 2. 部署上 GitHub"></a># 2. 部署上 GitHub</h3><p>產生靜態文件後，部署上 GitHub</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
-
-<p>等一段時間後就能到<code>https://yourname.github.io/</code>查看有沒有成功部署，接下來就可以開始寫文章哩。</p>
-<h4 id="—Problem-Solution—"><a href="#—Problem-Solution—" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p>執行<code>hexo d</code>報錯：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
-
-<p>解決方案<br>這是因為沒安裝 hexo-deployer-git 插件，在<code>站點目錄</code>下輸入下面的插件安裝就好了：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-
-<p>(如果不成功—&gt;連接Github與本地)</p>
-<h2 id="常用指令"><a href="#常用指令" class="headerlink" title="# 常用指令"></a># 常用指令</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/docs/commands.html">指令</a></p>
-<ol>
-<li><code>hexo generate (hexo g)</code> 產生靜態檔案，會在目錄下產生public 資料夾。</li>
-<li><code>hexo server (hexo s)</code> 啟動伺服器，預設是 <code>http://localhost:4000/</code>。</li>
-<li><code>hexo deploy (hexo d)</code> 部署網站。（ 比如 github, heroku 等平台 ）</li>
-<li><code>hexo clean (hexo cl)</code> 清除快取檔案 (db.json) 和已產生的靜態檔案 (public)，如過修改檔案沒有響應到頁面，使用這個指令再啟動伺服器</li>
-</ol>
-<h2 id="更換hexo主題"><a href="#更換hexo主題" class="headerlink" title="# 更換hexo主題"></a># 更換hexo主題</h2><h3 id="NexT"><a href="#NexT" class="headerlink" title="# NexT"></a># NexT</h3><p>Hexo 預設的主題是<a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/hexojs/hexo-theme-landscape">landscape</a>，而我們可以到 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/themes/">這裡</a> 來挑選我們想要的主題，而其中最多人用的應該就屬 <a target="_blank" rel="noopener external nofollow noreferrer" href="https://theme-next.org/">NexT</a> 了。</p>
-<p>安裝NexT</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git clone https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next.git themes&#x2F;next</span><br></pre></td></tr></table></figure>
-
-<p>接著修改網站設定<code>_config.yml</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: next</span><br></pre></td></tr></table></figure>
-
-<p>重新啟動server</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<h4 id="—Problem-Solution—-1"><a href="#—Problem-Solution—-1" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p>如果不成功，試著清除先前已生成的檔案</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
-
-<p>到<code>https://yourname.github.io/</code>查看有沒有成功部署</p>
-<h3 id="語言設定"><a href="#語言設定" class="headerlink" title="# 語言設定"></a># 語言設定</h3><p>在<code>_config.yml</code>中找到language，設定為zh-tw</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language: zh-tw</span><br></pre></td></tr></table></figure>
-
-<p>這樣就可已支援繁體中文。</p>
-<h3 id="Scheme-設定"><a href="#Scheme-設定" class="headerlink" title="# Scheme 設定"></a># Scheme 設定</h3><p>在NexT 中有多種Scheme 可選擇，其中的預設主題為Muse。大部份看到蠻多人選擇使用Pisces當主題。</p>
-<p>在主題設定<code>theme/next/_config.yml</code>裡找到schema，把註解去掉即可開啟。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">scheme: Pisces</span><br><span class="line">#scheme: Gemini</span><br></pre></td></tr></table></figure>
-
-<h3 id="代碼高亮"><a href="#代碼高亮" class="headerlink" title="# 代碼高亮"></a># 代碼高亮</h3><p>NexT 使用 Tomorrow Theme 當作代碼高亮，共有5款主題可以選擇。 NexT 預設使用的是 normal，可選的值有 normal、night、 night blue、 night bright、 night eighties</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">highlight_theme: normal</span><br></pre></td></tr></table></figure>
-
-<h3 id="背景特效"><a href="#背景特效" class="headerlink" title="# 背景特效"></a># 背景特效</h3><p>在主題設定<code>themes/next/_config.yml</code>裡還有另外的動畫效果，要打開就把值設定為true。</p>
-<h2 id="連接Github與本地倉庫"><a href="#連接Github與本地倉庫" class="headerlink" title="# 連接Github與本地倉庫"></a># 連接Github與本地倉庫</h2><h3 id="Git-setting"><a href="#Git-setting" class="headerlink" title="# Git setting"></a># Git setting</h3><p>在每一次的 Git commit (提交，我們稍後會提到) 都會記錄作者的訊息像是 name 及 email ，因此我們使用下面的指令來設定：</p>
-<p>加上 <code>--global</code> 表示是全域的設定。你可以使用 <code>git config --list</code> 這個指令來看你的 Git 設定內容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name &quot;username&quot;</span><br><span class="line">$ git config --global user.email &quot;GitHub 邮箱&quot;</span><br></pre></td></tr></table></figure>
-
-<p>用戶名和郵箱根據你註冊github的信息自行修改。</p>
-<blockquote>
-<p>使用<code>git config --list</code>可查看配置的相關信息 —&gt;  進入vim</p>
-<p><code>:q</code> —&gt; exit</p>
-<p><code>:w</code> —&gt; save</p>
-<p><code>:wq</code> —&gt;save and exit</p>
-<p>或是其實 Git 的設定檔是儲存在你的家目錄的.gitconfig 隱藏檔中，你可以使用編輯器將他打開</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~&#x2F;.gitconfig</span><br><span class="line">    [user]</span><br><span class="line">        name &#x3D; Jimmy Kuo</span><br><span class="line">        email &#x3D; jimmy@gogojimmy.net</span><br></pre></td></tr></table></figure>
-</blockquote>
-<h3 id="生成密鑰SSH-key"><a href="#生成密鑰SSH-key" class="headerlink" title="# 生成密鑰SSH key"></a># 生成密鑰SSH key</h3><p>為了讓GitHub可以識別文件是由GitHub用戶上傳的，我們需要創建ssh密鑰</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#生成密鑰SSH key：</span><br><span class="line">$ ssh-keygen -t rsa -C &quot;GitHub 邮箱&quot;</span><br></pre></td></tr></table></figure>
-
-<p>然後一路回車鍵</p>
-<img src="/2020/10/09/Blog1/5.png" title="5" alt="5">
-
-<blockquote>
-<p>Enter file in which to save the key: —&gt; Enter == save the private ssh key</p>
-<p>Enter passphrase (empty for no passphrase): —&gt; Enter == without setting password for private ssh key<br>Enter same passphrase again: —&gt;  Enter == without setting password for private ssh key</p>
-</blockquote>
-<p>接下來就會產生key到指定位置了</p>
-<p>會有兩個key 一個有副檔名 .pub 為公鑰，而沒有副檔名的為私鑰</p>
-<p><mark>注意私鑰要保存好 絕對不能被竊取</mark></p>
-<h3 id="Add-public-ssh-key-on-github"><a href="#Add-public-ssh-key-on-github" class="headerlink" title="# Add public ssh key on github"></a># Add public ssh key on github</h3><p>打開github，在頭像下麵點擊settings，再點擊SSH and GPG keys，新建一個SSH，名字隨便。</p>
-<img src="/2020/10/09/Blog1/6.png" alt="6" width="40%" height="40%">
-
-<img src="/2020/10/09/Blog1/7.png" alt="7">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#公鑰</span><br><span class="line">$ cat ~&#x2F;.ssh&#x2F;id_rsa.pub</span><br></pre></td></tr></table></figure>
-
-<p>將輸出的內容複製到 key 框中，點擊確定保存。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-
-<p>輸入<code>ssh -T git@github.com</code>，如果如下圖所示，出現你的用戶名，那就成功了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi github用戶名! You&#39;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
-
-<h3 id="把檔案交給-Git-控管"><a href="#把檔案交給-Git-控管" class="headerlink" title="# 把檔案交給 Git 控管"></a># 把檔案交給 Git 控管</h3><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://gitbook.tw/chapters/using-git/add-to-git.html">把檔案交給 Git 控管</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ git init</span><br><span class="line">$ git add .</span><br><span class="line">$ git commit -m &quot;change Theme to nexT&quot;</span><br></pre></td></tr></table></figure>
-
-<h4 id="—Problem-Solution—-2"><a href="#—Problem-Solution—-2" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.cnblogs.com/reboot777/p/11164193.html">Hexo + Github page博客 themes/next 文件夹因存在.git而无法提交到git的解决办法</a></p>
-<img src="/2020/10/09/Blog1/8.png" title="8" alt="8">
-
-<p>解決方法：</p>
-<p>1.剪切（刪除） Theme/next/.git文件夾到其他處</p>
-<p>打開一個Terminal終端窗口，輸入以下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#顯示文件夾</span><br><span class="line">$ defaults write com.apple.finder AppleShowAllFiles TRUE</span><br><span class="line"></span><br><span class="line">#最後重啟finder</span><br><span class="line">$ killall Finder</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#隱藏文件夾</span><br><span class="line">$ defaults write com.apple.finder AppleShowAllFiles FALSE</span><br><span class="line"></span><br><span class="line">#最後重啟finder</span><br><span class="line">$ killall Finder</span><br></pre></td></tr></table></figure>
-
-<img src="/2020/10/09/Blog1/9.png" title="9" alt="9">
-
-<p>2.從暫存區刪除該文件夾</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git rm --cached themes&#x2F;next</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="推上遠端的-Git-伺服器"><a href="#推上遠端的-Git-伺服器" class="headerlink" title="# 推上遠端的 Git 伺服器"></a># 推上遠端的 Git 伺服器</h3><p>在這之前，我們所有的操作都是在自己電腦上，接下來就是要準備把東西推上遠端的 Git 伺服器了。首先，需要設定一個端節的節點</p>
-<img src="/2020/10/09/Blog1/10.png" title="10" alt="10">
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#加入遠端節點：</span><br><span class="line">$ git remote add origin repositpry-link</span><br></pre></td></tr></table></figure>
-
-<p>origin 只是一個遠端的代名詞，會取這個名字是因為如果從 Server Clone 下來會是這個代稱。所以如果把上面那句指令翻成中文的話：「為目前所在本地端檔案庫增加一個叫做 origin 的遠端檔案庫」</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#將本地端檔案庫（local repo）推上一個叫做 origin 的遠端檔案庫（remote repo）master 分支：</span><br><span class="line">$ git push -u origin master</span><br><span class="line">＃可能需要輸入</span><br><span class="line">Username for &#39;https:&#x2F;&#x2F;github.com&#39;: 輸入 Github 上的 帳號</span><br><span class="line">Password for &#39;https:&#x2F;&#x2F;miahsu0330@github.com&#39;:輸入 Github 上的 密碼</span><br></pre></td></tr></table></figure>
-
-<p>定好每次要 Push 時就不用再次輸入「上游」的名稱，Git 就會知道要推往哪個遠端節點，反之如果沒設定，就要每次都輸入遠端節點的名稱。</p>
-<p><img src="/2020/10/09/Blog1/11.png" alt="11"></p>
-<h4 id="—Problem-Solution—-3"><a href="#—Problem-Solution—-3" class="headerlink" title="# —Problem+Solution—"></a># —Problem+Solution—</h4><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://gitbook.tw/chapters/github/fail-to-push.html">【狀況題】怎麼有時候推不上去…</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://exfast.me/2016/05/git-instructions-instructions/">Git 指令 – 常用指令</a></p>
-<p>Push</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin https:*&#x2F;&#x2F;[github.com&#x2F;XXX(username)&#x2F;YYYY(projectname).git]</span><br></pre></td></tr></table></figure>
-
-<p>加上一個remote的位址，名叫origin，位址是github上的地址（Create a new repo就會有）<br>因為Git是分散式的，所以可以有多個remote.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure>
-
-<p>將本地內容push到github上的那個位址上去。</p>
-<p><code>參數-u</code><br>用了參數-u之後，以後就可以直接用不帶參數的git pull從之前push到的分支來pull。</p>
-<p>此時如果origin的master分支上有一些本地沒有的提交,push會失敗.</p>
-<p>這是因為遠端的版本比你電腦裡的這份更新，因此 Git 不讓你推上去。</p>
-<p>所以解決的辦法是, 首先設定本地master的上游分支:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git branch --set-upstream-**to**&#x3D;origin&#x2F;master</span><br></pre></td></tr></table></figure>
-
-<p>然後pull:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git pull --rebase</span><br></pre></td></tr></table></figure>
-
-<p>最後再push:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push</span><br></pre></td></tr></table></figure>
-
-<p>如果還是不行push，砍掉重新來過</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="# Reference"></a># Reference</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://medium.com/@bebebobohaha/%E4%BD%BF%E7%94%A8-hexo-gitpage-%E6%90%AD%E5%BB%BA%E5%80%8B%E4%BA%BA-blog-5c6ed52f23db">如何搭建個人 Blog 使用 Hexo + Gitpage</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blackmaple.me/hexo-tutorial/">Hexo+GitHub，新手也可以快速建立部落格</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://musoucrow.github.io/2017/02/26/build_bolg/">在Mac平台使用GitHub和Hexo搭建博客</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://xenby.com/b/220-%E6%95%99%E5%AD%B8-%E7%94%A2%E7%94%9Fssh-key%E4%B8%A6%E4%B8%94%E9%80%8F%E9%81%8Ekey%E9%80%B2%E8%A1%8C%E5%85%8D%E5%AF%86%E7%A2%BC%E7%99%BB%E5%85%A5">[教學] 產生SSH Key並且透過KEY進行免密碼登入</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://www.itread01.com/content/1546966625.html">如何解決github+Hexo的部落格多終端同步問題</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://segmentfault.com/a/1190000007466317">git连接github总结</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://medium.com/@miahsuwork/%E7%AC%AC%E4%BA%8C%E9%80%B1-git-%E6%9C%AC%E5%9C%B0%E7%AB%AF%E8%88%87%E9%81%A0%E7%AB%AF%E6%93%8D%E4%BD%9C-github-78eec4537179">[第二週] Git 本地端連結遠端操作（GitHub）</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://git-scm.com/book/zh-tw/v2/Git-%E5%9F%BA%E7%A4%8E-%E8%88%87%E9%81%A0%E7%AB%AF%E5%8D%94%E5%90%8C%E5%B7%A5%E4%BD%9C">2.5 Git 基礎 - 與遠端協同工作</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/Blog1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1173,7 +897,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2023-09-07 23:00:56" itemprop="dateModified" datetime="2023-09-07T23:00:56+08:00">2023-09-07</time>
+                <time title="Modified: 2024-08-24 13:11:02" itemprop="dateModified" datetime="2024-08-24T13:11:02+08:00">2024-08-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1202,58 +926,14 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new “postName” # 新建文章</span><br><span class="line">$ hexo new page “pageName” # 新建頁面</span><br></pre></td></tr></table></figure>
 
 <p>所有的文章都會在<code>source/_posts</code>裡面。一開始裡面就已經有一篇範例文章<code>hello-world.md</code>了。</p>
-<p>常用组合</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g # 產生靜態檔後部署</span><br><span class="line">$ hexo s -g # 產生靜態檔後預覽</span><br></pre></td></tr></table></figure>
-
-<p>如果想在 <code>local</code> 端先確認內容，可以用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server #執行</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>如果想用線上編輯器，<a target="_blank" rel="noopener external nofollow noreferrer" href="https://hackmd.io/sHXhBDrtQh-nzU5oeVotGw">HackMD</a>、<a target="_blank" rel="noopener external nofollow noreferrer" href="https://markdown-editor.github.io/">markdown-editor</a></p>
-</li>
-<li><p>如果用的編輯器是<code>vscode</code>，可以看看<a target="_blank" rel="noopener external nofollow noreferrer" href="https://marketplace.visualstudio.com/items?itemName=mdickin.markdown-shortcuts">Markdown Shortcuts</a>跟<a target="_blank" rel="noopener external nofollow noreferrer" href="https://marketplace.visualstudio.com/items?itemName=bierner.markdown-preview-github-styles">Markdown Preview Github Styling</a></p>
-</li>
-</ul>
-<h2 id="刪除文章"><a href="#刪除文章" class="headerlink" title="# 刪除文章"></a># 刪除文章</h2><p>首先進入到 source /_post 資料夾中，找到 helloworld.md 文件，在本地直接執行刪除。</p>
-<p>刪除後執行以下指令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean    # 清除快取檔案和已產生的靜態檔案。</span><br><span class="line">$ hexo d -g     # d &#x3D; deploy, g &#x3D; generate</span><br></pre></td></tr></table></figure>
-
-<p>等一段時間，就會發現那篇文章已經消失</p>
-<h2 id="創建“分類”選項-Categories"><a href="#創建“分類”選項-Categories" class="headerlink" title="# 創建“分類”選項(Categories)"></a># 創建“分類”選項(Categories)</h2><h3 id="新增文章分類頁面，添加type屬性"><a href="#新增文章分類頁面，添加type屬性" class="headerlink" title="# 新增文章分類頁面，添加type屬性"></a># 新增文章分類頁面，添加type屬性</h3><p>新建一个頁面，命名为 categories。命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page categories</span><br></pre></td></tr></table></figure>
-
-<p>接著修改剛剛產生的 source/categories/inex.md ，添加<code>type: &quot;categories&quot;</code>到内容中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2020-10-09 16:22:14</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<h3 id="給文章添加categories属性"><a href="#給文章添加categories属性" class="headerlink" title="# 給文章添加categories属性"></a># 給文章添加categories属性</h3><p>讓文章增加分類，只要在 categories 後面加入類別就可以了，記得要空格！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">layout: building</span><br><span class="line">title: Blog</span><br><span class="line">date: 2020-10-09 16:17:51</span><br><span class="line">tags:</span><br><span class="line">categories: 分類名稱</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<p>至此，成功給文章添加分類，點擊首頁的“分類”可以看到該分類下的所有文章。當然，只有添加了categories: xxx的文章才會被收錄到首頁的“分類”中。</p>
-<p>注意：hexo一篇文章只能屬於一個分類，也就是說如果在“web”下方添加“java”，hexo不會產生兩個分類，而是把分類嵌套（即該文章屬於“ web”下的”java ”分類）。</p>
-<h2 id="創建“標籤”選項-tags"><a href="#創建“標籤”選項-tags" class="headerlink" title="# 創建“標籤”選項 (tags)"></a># 創建“標籤”選項 (tags)</h2><h3 id="生成“標籤”頁並添加tpye屬性"><a href="#生成“標籤”頁並添加tpye屬性" class="headerlink" title="# 生成“標籤”頁並添加tpye屬性"></a># 生成“標籤”頁並添加tpye屬性</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page tags</span><br></pre></td></tr></table></figure>
-
-<p>接著修改剛剛產生的 source/tags/inex.md ，添加<code>type: &quot;tags&quot;</code>到内容中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: categories</span><br><span class="line">date: 2019-04-01 22:55:41</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<h3 id="給文章添加“tags”屬性"><a href="#給文章添加“tags”屬性" class="headerlink" title="# 給文章添加“tags”屬性"></a># 給文章添加“tags”屬性</h3><p>讓文章增加分類，只要在 tags 後面加入標籤就可以了，一樣記得要空格！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 新的文章</span><br><span class="line">date: 2017-05-26 12:12:57</span><br><span class="line">categories: 文章類別</span><br><span class="line">tags:</span><br><span class="line">- 標籤1</span><br><span class="line">- 標籤2</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-
-<p>一篇文章只可以有一個類別，但是可以同時有很多個標籤，不同的標籤要用空格來分開。</p>
-<h2 id="新建頁面的模板"><a href="#新建頁面的模板" class="headerlink" title="# 新建頁面的模板"></a># 新建頁面的模板</h2><p>另外如果不想要每次新增文章都要輸入一次 “categories:” 與 “tags”，可以修改 scaffolds/post.md</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">title: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">categories: &#123;&#123; categories &#125;&#125;</span><br><span class="line">tags: &#123;&#123; tags &#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>scaffolds目錄下，是新建頁面的模板，執行新建命令時，是根據這裡的模板頁來完成的，所以可以在這裡根據你自己的需求添加一些默認值。</p>
-<p>這樣每次產生新的文章就會自動帶入 categories 跟 tags 了。</p>
-<h2 id="側欄配置"><a href="#側欄配置" class="headerlink" title="# 側欄配置"></a># 側欄配置</h2><p>以上修改完後，記得還要去主題配置的 menu 中把 categories 跟 tags 打開，這樣才能在側欄中看到！</p>
-<p>打開 主題配置文件 找到Menu Settings ，把 categories 和 tags 取消註釋。</p>
-<img src="/2020/10/09/Blog2/1.png" alt="1">
-
-<p>另外是如果原本就有寫好的文章的話，直接修改 .md 檔加入 categories 跟 tags，即使重新 clean, generate, deploy，Hexo 是不會理你的，要重新發一篇文章才會有文章分類或標籤。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="# Reference"></a># Reference</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://hexo.io/zh-tw/index.html">Hexo 官方網站</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="http://theme-next.iissnan.com/">NexT 官方網站</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://kemushi54.github.io/2019/04/01/%E7%AD%86%E8%A8%98-%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84-blog%EF%BC%8CHexo-Github-%E4%B9%8B%E4%BA%8C/">[筆記] 打造自己的 blog，Hexo + Github 之二</a></p>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://blackmaple.me/hexo-tutorial/">Hexo+GitHub，新手也可以快速建立部落格</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/09/Blog2/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
