@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="WongJY Blog">
 <meta property="og:description" content="In Go (Golang), channels and goroutines are key components of the language’s concurrency model, which is inspired by Communicating Sequential Processes (CSP). CSP is a formal language for describing p">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://901abc26123bee.github.io/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg">
+<meta property="og:image" content="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/channel_structure.jpg">
 <meta property="article:published_time" content="2023-12-20T15:56:24.000Z">
 <meta property="article:modified_time" content="2024-08-24T05:19:57.595Z">
 <meta property="article:author" content="Tina Wong">
@@ -36,7 +36,7 @@
 <meta property="article:tag" content="Channel">
 <meta property="article:tag" content="Gorutine">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://901abc26123bee.github.io/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg">
+<meta name="twitter:image" content="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/channel_structure.jpg">
 
 <link rel="canonical" href="https://901abc26123bee.github.io/golang-csp-channel-and-gorutine/">
 
@@ -124,7 +124,7 @@
       <h1 class="site-title">WongJY Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">WongJY Blog</p>
+      <p class="site-subtitle" itemprop="description">A Backend Engineer's Journey</p>
   </div>
 
   <div class="site-nav-right">
@@ -260,7 +260,7 @@
 <h2 id="Channels"><a href="#Channels" class="headerlink" title="Channels"></a>Channels</h2><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://github.com/golang/go/blob/master/src/runtime/chan.go">chan.go</a></p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> hchan <span class="keyword">struct</span> &#123;</span><br><span class="line">	qcount   <span class="keyword">uint</span>           <span class="comment">// total data in the queue</span></span><br><span class="line">	dataqsiz <span class="keyword">uint</span>           <span class="comment">// size of the circular queue</span></span><br><span class="line">	buf      unsafe.Pointer <span class="comment">// points to an array of dataqsiz elements</span></span><br><span class="line">	elemsize <span class="keyword">uint16</span></span><br><span class="line">	closed   <span class="keyword">uint32</span></span><br><span class="line">	elemtype *_type <span class="comment">// element type</span></span><br><span class="line">	sendx    <span class="keyword">uint</span>   <span class="comment">// send index</span></span><br><span class="line">	recvx    <span class="keyword">uint</span>   <span class="comment">// receive index</span></span><br><span class="line">	recvq    waitq  <span class="comment">// list of recv waiters</span></span><br><span class="line">	sendq    waitq  <span class="comment">// list of send waiters</span></span><br><span class="line">	lock mutex</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<img src="/2023/12/20/Golang-CSP-Channel-And-Gorutine/channel_structure.jpg" width="100%" height="100%" title="image" alt="channel_structure">
+<img src="/golang-csp-channel-and-gorutine/channel_structure.jpg" width="100%" height="100%" title="image" alt="channel_structure">
 
 
 <h3 id="UnBuffered-Channels"><a href="#UnBuffered-Channels" class="headerlink" title="UnBuffered Channels"></a>UnBuffered Channels</h3><p>By default channels are unbuffered, meaning that they will only accept sends (chan &lt;-) if there is a corresponding receive (&lt;- chan) ready to receive the sent value. It enforces a synchronous communication between the two goroutines involved in the communication</p>

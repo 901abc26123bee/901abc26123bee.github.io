@@ -27,16 +27,16 @@
 <meta property="og:site_name" content="WongJY Blog">
 <meta property="og:description" content="Database cache consistency strategies include:  Cache Aside Read&#x2F;Write Through Write Behind Caching  Cache Aside PatternEventually Database Cache Consistency  Cache miss: The application retrieves dat">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://901abc26123bee.github.io/2023/09/07/Database-Cache-Consistency-Strategies/1.png">
-<meta property="og:image" content="https://901abc26123bee.github.io/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png">
-<meta property="og:image" content="https://901abc26123bee.github.io/2023/09/07/Database-Cache-Consistency-Strategies/2.png">
+<meta property="og:image" content="https://901abc26123bee.github.io/database-cache-consistency-strategies/1.png">
+<meta property="og:image" content="https://901abc26123bee.github.io/database-cache-consistency-strategies/inconsistency_between_database_and_cache.png">
+<meta property="og:image" content="https://901abc26123bee.github.io/database-cache-consistency-strategies/2.png">
 <meta property="article:published_time" content="2023-09-07T15:28:11.000Z">
 <meta property="article:modified_time" content="2024-08-24T05:20:19.446Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="Database">
 <meta property="article:tag" content="Cache">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://901abc26123bee.github.io/2023/09/07/Database-Cache-Consistency-Strategies/1.png">
+<meta name="twitter:image" content="https://901abc26123bee.github.io/database-cache-consistency-strategies/1.png">
 
 <link rel="canonical" href="https://901abc26123bee.github.io/database-cache-consistency-strategies/">
 
@@ -124,7 +124,7 @@
       <h1 class="site-title">WongJY Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">WongJY Blog</p>
+      <p class="site-subtitle" itemprop="description">A Backend Engineer's Journey</p>
   </div>
 
   <div class="site-nav-right">
@@ -263,14 +263,14 @@
 <li>Cache miss: The application retrieves data from the cache. If data doesn’t exists in the cache, retrieves data from database and stores it in the cache. The requested data is returned from database.</li>
 <li>Cache hit: The application retrieves data from the cache and returns.</li>
 <li>Update data: Stores the data in the database first, and then invalidates the cache after success.<a id="more"></a>
-<a target="_blank" rel="noopener external nofollow noreferrer" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><img src="/2023/09/07/Database-Cache-Consistency-Strategies/1.png" width="40%" height="40%" alt="1">
+<a target="_blank" rel="noopener external nofollow noreferrer" href="https://catsincode.com/caching-strategy/">Cache-aside caching strategy</a><img src="/database-cache-consistency-strategies/1.png" width="40%" height="40%" alt="1">
 
 
 </li>
 </ul>
 <p>Cache-aside strategy fits well for data that is read often and not so often stored or updated. One downside of this strategy is possible data inconsistency between the cache and the database.</p>
 <p>Consider the following situation.</p>
-<img src="/2023/09/07/Database-Cache-Consistency-Strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
+<img src="/database-cache-consistency-strategies/inconsistency_between_database_and_cache.png" alt="inconsistency_between_database_and_cache">
 
 <p>inconsistency between the cache and the database</p>
 <p>However, the probability of occurrence may be very low in practice, because the write operation of the database is slower than the read operation. To avoid inconsistency of data, you can set a timeout on data in cache and it will automatically be deleted in a time period.</p>
@@ -284,7 +284,7 @@
 <li>if the cache is not hit, update the database directly, and then return.</li>
 <li>If the cache is hit, the cache is updated, and updates the data in database. Both operations happen in a single transaction(this is a synchronous operation)</li>
 </ul>
-<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/2023/09/07/Database-Cache-Consistency-Strategies/2.png" width="40%" height="40%" alt="2"></p>
+<p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://en.wikipedia.org/wiki/Cache_(computing)">A write-through cache with no-write allocation</a><br><img src="/database-cache-consistency-strategies/2.png" width="40%" height="40%" alt="2"></p>
 <p>It does create some extra latency on writes but at least it improves the data inconsistency problem greatly as the data in the cache and data storage is the same. Another advantage is, because application only talks to the cache, the code is much cleaner and simpler.</p>
 <h1 id="Write-Behind-Caching-Pattern"><a href="#Write-Behind-Caching-Pattern" class="headerlink" title="Write Behind Caching Pattern"></a><strong>Write Behind Caching Pattern</strong></h1><p><em>Eventually Database Cache Consistency</em></p>
 <p>Write-behind(also call Write Back) caching Pattern is similar to the write-through cache in a way that application only communicates with the cache. The difference is that the data gets written to the cache first. And then, written to the underlying database asynchronously. The advantage of this design is that the I/O operation of the data is extremely fast. Also, due to asynchronous update in database, the writes can be collected and then does a batch write to the database.</p>

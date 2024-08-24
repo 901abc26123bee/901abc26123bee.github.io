@@ -27,14 +27,14 @@
 <meta property="og:site_name" content="WongJY Blog">
 <meta property="og:description" content="WebSocketWebSocket operate at the Application layer in both the OSI(Layer 7) and TCP&#x2F;IP(Layer 4) models. 1234567 HTTP       WebSocket--------------------        TCP--------------------        IP------">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg">
-<meta property="og:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg">
+<meta property="og:image" content="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/lifecycle.svg">
+<meta property="og:image" content="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/protocol.svg">
 <meta property="article:published_time" content="2024-08-14T16:24:11.000Z">
 <meta property="article:modified_time" content="2024-08-24T04:52:03.927Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="WebSocket">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://901abc26123bee.github.io/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg">
+<meta name="twitter:image" content="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/lifecycle.svg">
 
 <link rel="canonical" href="https://901abc26123bee.github.io/dig-in-websocket-protocol-api-design-and-security/">
 
@@ -122,7 +122,7 @@
       <h1 class="site-title">WongJY Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">WongJY Blog</p>
+      <p class="site-subtitle" itemprop="description">A Backend Engineer's Journey</p>
   </div>
 
   <div class="site-nav-right">
@@ -308,11 +308,11 @@
 </ol>
 <h2 id="Life-Cycle-and-Data-Flow"><a href="#Life-Cycle-and-Data-Flow" class="headerlink" title="Life Cycle and Data Flow"></a>Life Cycle and Data Flow</h2><p>Find a diagram shows how data flows between an websockets application and a remote endpoint. It applies regardless of which side is the server or the client.<br><a target="_blank" rel="noopener external nofollow noreferrer" href="https://websockets.readthedocs.io/en/stable/topics/design.html">Image From python websockets library doc</a></p>
 <p>The WebSocket protocol uses PING/PONG messages to keep connections alive, even when operating behind proxies, firewalls, or load balancers. The server sends a PING message to the client, which responds with a PONG. If the client fails to respond, the server closes the connection.</p>
-<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/lifecycle.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+<img src="/dig-in-websocket-protocol-api-design-and-security/lifecycle.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
 
 
 <p>The following diagram shows how data flows between an application built on top of websockets and a remote endpoint. It applies regardless of which side is the server or the client.</p>
-<img src="/2024/08/15/20240814-websocket-protocol-apiSchemaDesign-authentication/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
+<img src="/dig-in-websocket-protocol-api-design-and-security/protocol.svg" title="Image from python websockets library doc" alt="Image from python websockets library doc">
 
 <h2 id="Websocket-API-Design"><a href="#Websocket-API-Design" class="headerlink" title="Websocket API Design"></a>Websocket API Design</h2><p>The WebSocket protocol enables two-way communication between a client and server over a persistent connection without enforcing a specific message format. Messages can be sent in two primary formats:</p>
 <ul>
