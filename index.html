@@ -181,7 +181,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/websocket-usage-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -195,7 +195,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/websocket-usage-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/" class="post-title-link" itemprop="url">WebSocket Usage Pattern in Microservices Architecture and How to Horizontal Scaling</a>
+            <a href="/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/" class="post-title-link" itemprop="url">WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling</a>
         </h2>
 
         <div class="post-meta">
@@ -212,7 +212,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-23 23:51:28" itemprop="dateModified" datetime="2024-08-23T23:51:28+08:00">2024-08-23</time>
+                <time title="Modified: 2024-08-25 19:58:26" itemprop="dateModified" datetime="2024-08-25T19:58:26+08:00">2024-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,8 +235,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>To Be Continue…</p>
-
+          <h1 id="WebSocket-Communication-pattern"><a href="#WebSocket-Communication-pattern" class="headerlink" title="WebSocket Communication pattern"></a>WebSocket Communication pattern</h1><p>WebSockets enable real-time, bi-directional communication between a client and server, making them ideal for scenarios that require instant updates. Depending on the use case, different communication patterns can be employed to optimize performance and scalability. Below are some common patterns when using WebSockets:</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -501,7 +508,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/practical-experiences-with-modern-databases/">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -515,7 +522,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/practical-experiences-with-modern-databases/" class="post-title-link" itemprop="url">Practical Experiences with Modern Databases</a>
+            <a href="/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/" class="post-title-link" itemprop="url">Practical Experiences with Databases:  Deadlocks, Time Zones, Connection Limits, Query Performance</a>
         </h2>
 
         <div class="post-meta">
@@ -532,7 +539,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-24 13:19:25" itemprop="dateModified" datetime="2024-08-24T13:19:25+08:00">2024-08-24</time>
+                <time title="Modified: 2024-08-25 19:51:13" itemprop="dateModified" datetime="2024-08-25T19:51:13+08:00">2024-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -555,10 +562,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>In today’s rapidly evolving tech landscape, working with modern databases is crucial for designing scalable and efficient systems. This session explores practical experiences and real-world applications of various modern databases, including both SQL and NoSQL solutions.</p>
+          <h2 id="DeadLock-in-Transaction"><a href="#DeadLock-in-Transaction" class="headerlink" title="DeadLock in Transaction"></a>DeadLock in Transaction</h2><p>Prevention:</p>
+<ol>
+<li><p><strong>Order Resource Acquisition Consistently:</strong><br>Ensure that resources are acquired in a consistent order across transactions to avoid circular wait conditions.</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Transaction 1 (T1):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br><span class="line"></span><br><span class="line">Transaction 2 (T2):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br></pre></td></tr></table></figure>
+<p> In this example, both T1 and T2 acquire Resource A first, ensuring there is no circular wait condition:</p>
+<ul>
+<li><p>T1 acquires Resource A and waits for Resource B.</p>
+</li>
+<li><p>T2 acquires Resource B and waits for Resource A.</p>
+<p>Execute table or row operations in a consistent order within transactions to avoid deadlocks between different transactions.</p>
+<p>For more information on PostgreSQL lock monitoring and handling lock waits, refer to:</p>
+</li>
+<li><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://pganalyze.com/blog/5mins-postgres-lock-monitoring-lwlock-log-lock-waits">5mins of Postgres E25: Postgres lock monitoring, LWLocks and the log_lock_waits setting</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener external nofollow noreferrer" href="https://stackoverflow.com/questions/35319597/how-to-stop-kill-a-query-in-postgresql">How to stop/kill a query in postgresql?</a></p>
+</li>
+</ul>
+</li>
+<li><p><strong>Implement a Timeout Mechanism:</strong><br>Use a timeout mechanism to abort transactions that have been waiting too long, preventing long waits and potential deadlocks. For example, set <code>context.WithTimeout</code> in Golang for the root context.</p>
+</li>
+<li><p><strong>Move Query Operations Outside of Transactions if Possible:</strong><br>Whenever possible, perform query operations outside of transactions to reduce the risk of deadlocks. Additionally, shorten the duration of transactions.</p>
+</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/practical-experiences-with-modern-databases/#more" rel="contents">
+              <a class="btn" href="/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

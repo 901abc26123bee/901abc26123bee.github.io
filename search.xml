@@ -132,9 +132,17 @@
       </tags>
   </entry>
   <entry>
-    <title>WebSocket Usage Pattern in Microservices Architecture and How to Horizontal Scaling</title>
-    <url>/websocket-usage-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/</url>
-    <content><![CDATA[<p>To Be Continue…</p>
+    <title>WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling</title>
+    <url>/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/</url>
+    <content><![CDATA[<h1 id="WebSocket-Communication-pattern"><a href="#WebSocket-Communication-pattern" class="headerlink" title="WebSocket Communication pattern"></a>WebSocket Communication pattern</h1><p>WebSockets enable real-time, bi-directional communication between a client and server, making them ideal for scenarios that require instant updates. Depending on the use case, different communication patterns can be employed to optimize performance and scalability. Below are some common patterns when using WebSockets:</p>
+<a id="more"></a>
+
+<h3 id="1-Push-Based-Updates-Triggers-Only"><a href="#1-Push-Based-Updates-Triggers-Only" class="headerlink" title="1. Push-Based Updates (Triggers Only)"></a>1. Push-Based Updates (Triggers Only)</h3><p>In the push-based update pattern, the server sends notifications to the client only when new data is available, without sending the data itself. For example, in an e-commerce dashboard monitoring system, the server might send a notification like “You have one new order” when a new order is placed. The client can then fetch the detailed data via an HTTP request. This method is less resource-intensive than sending full data payloads over WebSockets, as smaller messages are transmitted. The WebSocket connection remains active but is only used for sending trigger notifications, making it an efficient way to manage real-time updates.</p>
+<h3 id="2-Direct-Message-Transmission"><a href="#2-Direct-Message-Transmission" class="headerlink" title="2. Direct Message Transmission"></a>2. Direct Message Transmission</h3><p>Keeping the connection open and directly sending messages/information over the connection is typical when implementing WebSockets.  This is common in messaging applications, when a message sent by one user is instantly received by another. This pattern ensures that communication happens in real-time, enabling immediate message exchange between clients.</p>
+<h3 id="2-Broadcast"><a href="#2-Broadcast" class="headerlink" title="2. Broadcast"></a>2. Broadcast</h3><p>In a broadcast pattern, the publisher sends the same message to all connected clients(subscribers) expecting to receive updates. This is useful in scenarios where all users need to receive the same update simultaneously, such as in live event streaming, online gaming leaderboards.</p>
+<h3 id="4-Topic-Based-Messaging"><a href="#4-Topic-Based-Messaging" class="headerlink" title="4. Topic-Based Messaging"></a>4. Topic-Based Messaging</h3><p>Clients subscribe to specific topics or channels, and the server only sends messages to clients that have subscribed to a particular topic. Each topic or channel can have multiple publishers pushing messages to it. This approach is often used in chat rooms, where each room can be a separate topic, and only users in that room receive the messages. This pattern decouples the sender from the receiver, allowing for more scalable and efficient message distribution. However, it introduces more complexity compared to simple broadcast pattern, as it necessitates careful management of subscriptions and accurate message routing to the intended clients.</p>
+<h3 id="WebSocket-Horizontal-Scaling"><a href="#WebSocket-Horizontal-Scaling" class="headerlink" title="WebSocket Horizontal Scaling"></a>WebSocket Horizontal Scaling</h3><p>We don’t discuss vertical scaling as it always presents a single point of failure.</p>
+<p>Continue…</p>
 ]]></content>
       <categories>
         <category>WebSocket</category>
@@ -1134,12 +1142,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Practical Experiences with Modern Databases</title>
-    <url>/practical-experiences-with-modern-databases/</url>
-    <content><![CDATA[<p>In today’s rapidly evolving tech landscape, working with modern databases is crucial for designing scalable and efficient systems. This session explores practical experiences and real-world applications of various modern databases, including both SQL and NoSQL solutions.</p>
-<a id="more"></a>
-
-<h2 id="DeadLock-in-Transaction"><a href="#DeadLock-in-Transaction" class="headerlink" title="DeadLock in Transaction"></a>DeadLock in Transaction</h2><p>Prevention:</p>
+    <title>Practical Experiences with Databases:  Deadlocks, Time Zones, Connection Limits, Query Performance</title>
+    <url>/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/</url>
+    <content><![CDATA[<h2 id="DeadLock-in-Transaction"><a href="#DeadLock-in-Transaction" class="headerlink" title="DeadLock in Transaction"></a>DeadLock in Transaction</h2><p>Prevention:</p>
 <ol>
 <li><p><strong>Order Resource Acquisition Consistently:</strong><br>Ensure that resources are acquired in a consistent order across transactions to avoid circular wait conditions.</p>
  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Transaction 1 (T1):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br><span class="line"></span><br><span class="line">Transaction 2 (T2):</span><br><span class="line">update(Resource A)</span><br><span class="line">update(Resource B)</span><br></pre></td></tr></table></figure>
@@ -1161,8 +1166,11 @@
 </li>
 <li><p><strong>Move Query Operations Outside of Transactions if Possible:</strong><br>Whenever possible, perform query operations outside of transactions to reduce the risk of deadlocks. Additionally, shorten the duration of transactions.</p>
 </li>
-<li><p><strong>Avoid Long Transaction</strong></p>
-</li>
+</ol>
+<a id="more"></a>
+
+<ol start="4">
+<li><strong>Avoid Long Transaction</strong></li>
 </ol>
 <h2 id="Time-and-Timezone-In-Database"><a href="#Time-and-Timezone-In-Database" class="headerlink" title="Time and Timezone In Database"></a>Time and Timezone In Database</h2><p><strong>Timestamp Format</strong></p>
 <ul>
@@ -1230,11 +1238,11 @@
 <ul>
 <li><p><strong>generate temporary tables</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">ON</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Your query here</span></span><br><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">    users.*, </span><br><span class="line">    a.auth_id, </span><br><span class="line">    a.auth_deleted, </span><br><span class="line">    a.auth_create_user, </span><br><span class="line">    a.auth_create_time, </span><br><span class="line">    a.auth_belong_to</span><br><span class="line"><span class="keyword">FROM</span> </span><br><span class="line">    <span class="keyword">users</span></span><br><span class="line"><span class="keyword">LEFT</span> <span class="keyword">JOIN</span> (</span><br><span class="line">    <span class="keyword">SELECT</span> </span><br><span class="line">        a.id <span class="keyword">AS</span> auth_id,</span><br><span class="line">        a.plan_id <span class="keyword">AS</span> auth_plan_id,</span><br><span class="line">        a.user_id <span class="keyword">AS</span> auth_user_id,</span><br><span class="line">        a.role <span class="keyword">AS</span> auth_role,</span><br><span class="line">        a.belong_to <span class="keyword">AS</span> auth_belong_to,</span><br><span class="line">        a.deleted <span class="keyword">AS</span> auth_deleted,</span><br><span class="line">        a.create_user <span class="keyword">AS</span> auth_create_user,</span><br><span class="line">        a.create_time <span class="keyword">AS</span> auth_create_time</span><br><span class="line">    <span class="keyword">FROM</span> </span><br><span class="line">        auths a</span><br><span class="line">    <span class="keyword">WHERE</span> </span><br><span class="line">        a.plan_id = <span class="number">3</span> </span><br><span class="line">        <span class="keyword">AND</span> a.role = <span class="number">6</span> </span><br><span class="line">        <span class="keyword">AND</span> a.deleted = <span class="number">0</span> </span><br><span class="line">        <span class="keyword">AND</span> a.belong_to = <span class="number">3794</span></span><br><span class="line">) <span class="keyword">AS</span> a </span><br><span class="line"><span class="keyword">ON</span> </span><br><span class="line">    a.auth_user_id = users.id</span><br><span class="line"><span class="keyword">WHERE</span>  </span><br><span class="line">    users.role = <span class="number">6</span> </span><br><span class="line">    <span class="keyword">AND</span> users.school_code = <span class="string">&#x27;014666&#x27;</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">OFF</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<img src="/practical-experiences-with-modern-databases/join_table_1.png" width="100%" height="100%" title="join_table_1" alt="join_table_1">
+<img src="/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/join_table_1.png" width="100%" height="100%" title="join_table_1" alt="join_table_1">
 </li>
 <li><p><strong>no temporary tables are generated</strong></p>
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">ON</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="comment">-- Your query here</span></span><br><span class="line"><span class="keyword">select</span> u.id, u.name, u.email, a.*</span><br><span class="line">        <span class="keyword">from</span> <span class="keyword">users</span> u</span><br><span class="line">        <span class="keyword">left</span> <span class="keyword">join</span> auths a <span class="keyword">ON</span> a.user_id=u.id <span class="keyword">and</span> a.plan_id=<span class="number">3</span> <span class="keyword">and</span> a.role=u.role <span class="keyword">and</span> a.deleted=<span class="number">0</span> <span class="keyword">and</span> a.belong_to=<span class="number">3794</span></span><br><span class="line">        <span class="keyword">where</span> u.role=<span class="number">6</span> <span class="keyword">and</span> u.school_code=<span class="string">&#x27;014666&#x27;</span>;</span><br><span class="line">GO</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> SHOWPLAN_XML <span class="keyword">OFF</span>;</span><br><span class="line">GO</span><br></pre></td></tr></table></figure>
-<img src="/practical-experiences-with-modern-databases/join_table_2.png" width="100%" height="100%" title="join_table_2" alt="join_table_2">
+<img src="/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/join_table_2.png" width="100%" height="100%" title="join_table_2" alt="join_table_2">
 </li>
 </ul>
 ]]></content>
