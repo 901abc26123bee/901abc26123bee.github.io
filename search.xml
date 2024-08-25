@@ -1425,8 +1425,8 @@
       </tags>
   </entry>
   <entry>
-    <title>How to troubleshooting k8s pods and containers</title>
-    <url>/how-to-troubleshooting-k8s-pods-and-containers/</url>
+    <title>How to Hold on Kubernetes Pods and Containers</title>
+    <url>/how-to-hold-on-kubernetes-pods-and-containers/</url>
     <content><![CDATA[<h2 id="hold-on-program-by-tail-f-dev-null"><a href="#hold-on-program-by-tail-f-dev-null" class="headerlink" title="hold on program by tail -f /dev/null"></a>hold on program by <code>tail -f /dev/null</code></h2><p>The command “tail -f /dev/null” is a Unix/Linux command that is often used as a placeholder or a trick to prevent a command or a script from exiting or terminating.</p>
 <a id="more"></a>
 

@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://901abc26123bee.github.io/how-to-hold-on-kubernetes-pods-and-containers/</loc>
+    
+    <lastmod>2024-08-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://901abc26123bee.github.io/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/</loc>
     
     <lastmod>2024-08-25</lastmod>
@@ -84,15 +93,6 @@
   
   <url>
     <loc>https://901abc26123bee.github.io/how-to-implement-custom-gorm-logger/</loc>
-    
-    <lastmod>2024-08-24</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://901abc26123bee.github.io/how-to-troubleshooting-k8s-pods-and-containers/</loc>
     
     <lastmod>2024-08-24</lastmod>
     
