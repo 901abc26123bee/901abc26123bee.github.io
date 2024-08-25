@@ -22,20 +22,20 @@
 
   <meta name="description" content="WebSocket Communication patternWebSockets enable real-time, bi-directional communication between a client and server, making them ideal for scenarios that require instant updates. Depending on the use">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling">
-<meta property="og:url" content="https://901abc26123bee.github.io/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/index.html">
+<meta property="og:title" content="WebSocket Communication Pattern">
+<meta property="og:url" content="https://901abc26123bee.github.io/websocket-communication-pattern/index.html">
 <meta property="og:site_name" content="WongJY Blog">
 <meta property="og:description" content="WebSocket Communication patternWebSockets enable real-time, bi-directional communication between a client and server, making them ideal for scenarios that require instant updates. Depending on the use">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2024-08-20T14:01:01.000Z">
-<meta property="article:modified_time" content="2024-08-25T12:10:03.043Z">
+<meta property="article:modified_time" content="2024-08-25T12:12:23.516Z">
 <meta property="article:author" content="Tina Wong">
 <meta property="article:tag" content="WebSocket">
 <meta property="article:tag" content="Microservices">
 <meta property="article:tag" content="System Design">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://901abc26123bee.github.io/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/">
+<link rel="canonical" href="https://901abc26123bee.github.io/websocket-communication-pattern/">
 
 
 <script id="page-configurations">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling | WongJY Blog</title>
+  <title>WebSocket Communication Pattern | WongJY Blog</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
     <script>
@@ -189,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/websocket-communication-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling
+          WebSocket Communication Pattern
         </h1>
 
         <div class="post-meta">
@@ -219,7 +219,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-08-25 20:10:03" itemprop="dateModified" datetime="2024-08-25T20:10:03+08:00">2024-08-25</time>
+                <time title="Modified: 2024-08-25 20:12:23" itemprop="dateModified" datetime="2024-08-25T20:12:23+08:00">2024-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,8 +256,6 @@
 <h3 id="2-Direct-Message-Transmission"><a href="#2-Direct-Message-Transmission" class="headerlink" title="2. Direct Message Transmission"></a>2. Direct Message Transmission</h3><p>Keeping the connection open and directly sending messages/information over the connection is typical when implementing WebSockets.  This is common in messaging applications, when a message sent by one user is instantly received by another. This pattern ensures that communication happens in real-time, enabling immediate message exchange between clients.</p>
 <h3 id="2-Broadcast"><a href="#2-Broadcast" class="headerlink" title="2. Broadcast"></a>2. Broadcast</h3><p>In a broadcast pattern, the publisher sends the same message to all connected clients(subscribers) expecting to receive updates. This is useful in scenarios where all users need to receive the same update simultaneously, such as in live event streaming, online gaming leaderboards.</p>
 <h3 id="4-Topic-Based-Messaging"><a href="#4-Topic-Based-Messaging" class="headerlink" title="4. Topic-Based Messaging"></a>4. Topic-Based Messaging</h3><p>Clients subscribe to specific topics or channels, and the server only sends messages to clients that have subscribed to a particular topic. Each topic or channel can have multiple publishers pushing messages to it. This approach is often used in chat rooms, where each room can be a separate topic, and only users in that room receive the messages. This pattern decouples the sender from the receiver, allowing for more scalable and efficient message distribution. However, it introduces more complexity compared to simple broadcast pattern, as it necessitates careful management of subscriptions and accurate message routing to the intended clients.</p>
-<h3 id="WebSocket-Horizontal-Scaling"><a href="#WebSocket-Horizontal-Scaling" class="headerlink" title="WebSocket Horizontal Scaling"></a>WebSocket Horizontal Scaling</h3><p>We don’t discuss vertical scaling as it always presents a single point of failure.</p>
-<p>Continue…</p>
 
     </div>
 
@@ -341,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WebSocket-Communication-pattern"><span class="nav-number">1.</span> <span class="nav-text">WebSocket Communication pattern</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Push-Based-Updates-Triggers-Only"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. Push-Based Updates (Triggers Only)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Direct-Message-Transmission"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. Direct Message Transmission</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Broadcast"><span class="nav-number">1.0.3.</span> <span class="nav-text">2. Broadcast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Topic-Based-Messaging"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. Topic-Based Messaging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebSocket-Horizontal-Scaling"><span class="nav-number">1.0.5.</span> <span class="nav-text">WebSocket Horizontal Scaling</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#WebSocket-Communication-pattern"><span class="nav-number">1.</span> <span class="nav-text">WebSocket Communication pattern</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Push-Based-Updates-Triggers-Only"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. Push-Based Updates (Triggers Only)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Direct-Message-Transmission"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. Direct Message Transmission</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Broadcast"><span class="nav-number">1.0.3.</span> <span class="nav-text">2. Broadcast</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Topic-Based-Messaging"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. Topic-Based Messaging</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -494,7 +492,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : '901abc26123bee.github.io',
       owner       : '901abc26123bee',
       admin       : ['901abc26123bee'],
-      id          : 'd5f18b8da964f61074b14791c77e0b6c',
+      id          : 'bdf44f11a7f17380dc788cc3533b3f1b',
         language: 'en',
       distractionFreeMode: true
     });

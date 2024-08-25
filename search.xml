@@ -132,8 +132,8 @@
       </tags>
   </entry>
   <entry>
-    <title>WebSocket Communication Pattern in Microservices Architecture and How to Horizontal Scaling</title>
-    <url>/websocket-communication-pattern-in-microservices-architecture-and-how-to-horizontal-scaling/</url>
+    <title>WebSocket Communication Pattern</title>
+    <url>/websocket-communication-pattern/</url>
     <content><![CDATA[<h1 id="WebSocket-Communication-pattern"><a href="#WebSocket-Communication-pattern" class="headerlink" title="WebSocket Communication pattern"></a>WebSocket Communication pattern</h1><p>WebSockets enable real-time, bi-directional communication between a client and server, making them ideal for scenarios that require instant updates. Depending on the use case, different communication patterns can be employed to optimize performance and scalability. Below are some common patterns when using WebSockets:</p>
 <a id="more"></a>
 
@@ -141,8 +141,6 @@
 <h3 id="2-Direct-Message-Transmission"><a href="#2-Direct-Message-Transmission" class="headerlink" title="2. Direct Message Transmission"></a>2. Direct Message Transmission</h3><p>Keeping the connection open and directly sending messages/information over the connection is typical when implementing WebSockets.  This is common in messaging applications, when a message sent by one user is instantly received by another. This pattern ensures that communication happens in real-time, enabling immediate message exchange between clients.</p>
 <h3 id="2-Broadcast"><a href="#2-Broadcast" class="headerlink" title="2. Broadcast"></a>2. Broadcast</h3><p>In a broadcast pattern, the publisher sends the same message to all connected clients(subscribers) expecting to receive updates. This is useful in scenarios where all users need to receive the same update simultaneously, such as in live event streaming, online gaming leaderboards.</p>
 <h3 id="4-Topic-Based-Messaging"><a href="#4-Topic-Based-Messaging" class="headerlink" title="4. Topic-Based Messaging"></a>4. Topic-Based Messaging</h3><p>Clients subscribe to specific topics or channels, and the server only sends messages to clients that have subscribed to a particular topic. Each topic or channel can have multiple publishers pushing messages to it. This approach is often used in chat rooms, where each room can be a separate topic, and only users in that room receive the messages. This pattern decouples the sender from the receiver, allowing for more scalable and efficient message distribution. However, it introduces more complexity compared to simple broadcast pattern, as it necessitates careful management of subscriptions and accurate message routing to the intended clients.</p>
-<h3 id="WebSocket-Horizontal-Scaling"><a href="#WebSocket-Horizontal-Scaling" class="headerlink" title="WebSocket Horizontal Scaling"></a>WebSocket Horizontal Scaling</h3><p>We don’t discuss vertical scaling as it always presents a single point of failure.</p>
-<p>Continue…</p>
 ]]></content>
       <categories>
         <category>WebSocket</category>
