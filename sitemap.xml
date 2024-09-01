@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://901abc26123bee.github.io/how-to-debug-your-shell-script/</loc>
+    
+    <lastmod>2024-09-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://901abc26123bee.github.io/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/</loc>
+    
+    <lastmod>2024-08-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://901abc26123bee.github.io/websocket-communication-pattern/</loc>
     
     <lastmod>2024-08-25</lastmod>
@@ -12,15 +30,6 @@
   
   <url>
     <loc>https://901abc26123bee.github.io/how-to-hold-on-kubernetes-pods-and-containers/</loc>
-    
-    <lastmod>2024-08-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://901abc26123bee.github.io/practical-experiences-with-databases-deadlocks-time-zones-connection-limits-query-performance/</loc>
     
     <lastmod>2024-08-25</lastmod>
     
@@ -193,7 +202,7 @@
 
   <url>
     <loc>https://901abc26123bee.github.io/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -201,238 +210,252 @@
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/WebSocket/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Microservices/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/System-Design/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://901abc26123bee.github.io/tags/Debug/</loc>
+    <lastmod>2024-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://901abc26123bee.github.io/tags/Script/</loc>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/OAuth-2-0/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/OpenID/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/JWT/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/SSO/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Blog/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/git/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/ssh/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Database/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Cache/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Golang/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Debounce/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Docker/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/WSL2/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/encoding/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/CSP/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Channel/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Gorutine/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/GORM/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Kubernetes/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/ServiceAccount/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/MySQL/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Kubernetes-debug/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/PostgreSQL/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/MSSQL/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/HTTPS/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/PKCS/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Digital-Certificates/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Public-Key-Infrastructure/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/PKI/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Chain-of-Trust/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/tags/Markdown/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -441,84 +464,91 @@
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/WebSocket/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://901abc26123bee.github.io/categories/Shell-Script/</loc>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Authentication-Authorization/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Blog/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/System-Design/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Debounce/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Docker/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/encoding/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Golang/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Database/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/Kubernetes/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/MySQL/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://901abc26123bee.github.io/categories/HTTPS/</loc>
-    <lastmod>2024-08-25</lastmod>
+    <lastmod>2024-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Helvetica Neue:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"901abc26123bee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Common Debugging Flags in BashThe set command is a built-in shell command used to change the shell’s environment or behavior by enabling or disabling certain options. You can use set to configure how">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to Debug Your Shell Script">
+<meta property="og:url" content="https://901abc26123bee.github.io/how-to-debug-your-shell-script/index.html">
+<meta property="og:site_name" content="WongJY Blog">
+<meta property="og:description" content="Common Debugging Flags in BashThe set command is a built-in shell command used to change the shell’s environment or behavior by enabling or disabling certain options. You can use set to configure how">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2024-09-01T06:29:25.000Z">
+<meta property="article:modified_time" content="2024-09-01T07:01:59.617Z">
+<meta property="article:author" content="Tina Wong">
+<meta property="article:tag" content="Debug">
+<meta property="article:tag" content="Script">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://901abc26123bee.github.io/how-to-debug-your-shell-script/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>How to Debug Your Shell Script | WongJY Blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LMFDSHYL3V');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LMFDSHYL3V"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LMFDSHYL3V');
+</script>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">WongJY Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">A Backend Engineer's Journey</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://901abc26123bee.github.io/how-to-debug-your-shell-script/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Tina Wong">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WongJY Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          How to Debug Your Shell Script
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-09-01 14:29:25 / Modified: 15:01:59" itemprop="dateCreated datePublished" datetime="2024-09-01T14:29:25+08:00">2024-09-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Shell-Script/" itemprop="url" rel="index"><span itemprop="name">Shell Script</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Common-Debugging-Flags-in-Bash"><a href="#Common-Debugging-Flags-in-Bash" class="headerlink" title="Common Debugging Flags in Bash"></a>Common Debugging Flags in Bash</h2><p>The <code>set</code> command is a built-in shell command used to change the shell’s environment or behavior by enabling or disabling certain options. You can use <code>set</code> to configure how the shell handles errors, output, and more. There are several built-in options (flags) for debugging purposes:</p>
+<h3 id="xtrace"><a href="#xtrace" class="headerlink" title="xtrace"></a>xtrace</h3><p><strong><code>x</code> (xtrace):</strong> This flag prints each command (with its arguments) before it gets executed. It helps in understanding the flow of the script and is particularly useful for debugging issues.</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -x  <span class="comment"># Enable xtrace</span></span><br><span class="line"><span class="built_in">set</span> -o xtrace <span class="comment"># Enable xtrace</span></span><br><span class="line"><span class="comment"># Your commands here</span></span><br><span class="line"><span class="built_in">set</span> +x  <span class="comment"># Disable xtrace</span></span><br><span class="line">--------------------------------------------------</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># set -o xtrace</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">deploy</span></span>()&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment"># read the RSA public key from the specified path and encode it in base64.</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Current working directory: <span class="subst">$(pwd)</span>&quot;</span></span><br><span class="line">  <span class="built_in">local</span> sessionRsaPublicKeyPath=<span class="string">&quot;<span class="subst">$(pwd)</span>/helm/secrets/files/default/shared/<span class="variable">$&#123;flavor&#125;</span>/session-rsa-public-key.pem&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Read session publickey from given path: <span class="variable">$&#123;sessionRsaPublicKeyPath&#125;</span>&quot;</span></span><br><span class="line">  <span class="built_in">local</span> sessionRsaPublicKeyContent=$(cat <span class="string">&quot;<span class="variable">$&#123;sessionRsaPublicKeyPath&#125;</span>&quot;</span> | base64 -w 0)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Start to deploy...&quot;</span></span><br><span class="line">  sed -e <span class="string">&#x27;s/$&#123;HOST&#125;/&#x27;</span><span class="variable">$&#123;host&#125;</span><span class="string">&#x27;/g&#x27;</span> \</span><br><span class="line">      -e <span class="string">&#x27;s#$&#123;REGISTRY&#125;#&#x27;</span><span class="variable">$&#123;registry&#125;</span><span class="string">&#x27;#g&#x27;</span> \</span><br><span class="line">      -e <span class="string">&#x27;s/$&#123;KUBECONTEXT&#125;/&#x27;</span><span class="variable">$&#123;kubecontext&#125;</span><span class="string">&#x27;/g&#x27;</span> \</span><br><span class="line">      -e <span class="string">&#x27;s/$&#123;TLS&#125;/&#x27;</span><span class="variable">$&#123;tls&#125;</span><span class="string">&#x27;/g&#x27;</span> \</span><br><span class="line">      -e <span class="string">&#x27;s|$&#123;RSA_PUBLIC_KEY&#125;|&#x27;</span><span class="variable">$&#123;sessionRsaPublicKeyContent&#125;</span><span class="string">&#x27;|g&#x27;</span> skaffold-template.yaml &gt; skaffold.yaml</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You can now see the exact commands being executed, as shown below.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">+ <span class="built_in">echo</span> <span class="string">&#x27; Start to deploy... &#x27;</span></span><br><span class="line">  Start to deploy...</span><br><span class="line">+ sed -e <span class="string">&#x27;s/$&#123;HOST&#125;/localhost:8080/g&#x27;</span> -e <span class="string">&#x27;s#$&#123;REGISTRY&#125;#gcr.io/test-dev#g&#x27;</span> -e <span class="string">&#x27;s/$&#123;KUBECONTEXT&#125;/test_dev/g&#x27;</span>  -e <span class="string">&#x27;s/$&#123;TLS&#125;/test/g&#x27;</span> -e <span class="string">&#x27;s|$&#123;RSA_PUBLIC_KEY&#125;|LS0tLS1CRUdJTi...S0tLS0tCg==|g&#x27;</span> skaffold-template.yaml</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>In my experience, when encoding data with <code>base64</code> without additional options, it introduces newline characters every 76 characters to make the output more readable. This behavior can cause issues when embedding the output in <code>sed -e</code> commands.</p>
+<h3 id="verbose"><a href="#verbose" class="headerlink" title="verbose"></a>verbose</h3><p><strong><code>v</code> (verbose):</strong> This flag prints each line of the script as it is read. It is useful for seeing the script’s content as it is being processed.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -v  <span class="comment"># Enable verbose mode</span></span><br><span class="line"><span class="comment"># Your commands here</span></span><br><span class="line"><span class="built_in">set</span> +v  <span class="comment"># Disable verbose mode</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="errexit"><a href="#errexit" class="headerlink" title="errexit"></a>errexit</h3><p><strong><code>e</code> (errexit):</strong> This flag causes the script to exit immediately if a command exits with a non-zero status. It can help identify points of failure in a script.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -e  <span class="comment"># Exit on error</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nounset"><a href="#nounset" class="headerlink" title="nounset"></a>nounset</h3><p><strong><code>u</code> (nounset):</strong> In Bash, using an undefined variable won’t cause the script to fail or show an error message such as “variable undefined.” Instead, it will output an empty string. This flag treats unset variables as an error and exits immediately. This can help catch typos and undefined variables.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -u  <span class="comment"># Treat unset variables as errors</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="pipefail"><a href="#pipefail" class="headerlink" title="pipefail"></a>pipefail</h3><p><strong><code>o pipefail</code>:</strong> This flag ensures that a pipeline’s return status is the value of the last (rightmost) command to exit with a non-zero status, or zero if all commands exit successfully. It is useful for debugging complex pipelines.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -o pipefail  <span class="comment"># Exit if any command in a pipeline fails</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">run_go_lint</span></span>() &#123;</span><br><span class="line">  golint_cmd=<span class="string">&quot;golangci-lint run --timeout=5m -D errcheck ./...&quot;</span></span><br><span class="line">  <span class="keyword">if</span> [[ ! <span class="variable">$&#123;quiet&#125;</span> ]]; <span class="keyword">then</span></span><br><span class="line">      golint_cmd=<span class="string">&quot;<span class="variable">$&#123;golint_cmd&#125;</span> -v 2&gt;&amp;1 | tee <span class="variable">$&#123;outputdir&#125;</span>/<span class="variable">$&#123;lint_file&#125;</span>&quot;</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">eval</span> <span class="variable">$&#123;golint_cmd&#125;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run_go_lint</span><br></pre></td></tr></table></figure>
+
+<p>If <code>golangci-lint run ./...</code> fails but the <code>tee</code> command succeeds (by capturing the  combined empty output, both stdout and stderr, to a file), the script might incorrectly consider the entire command successful if <code>set -o pipefail</code> is not used. With <code>set -o pipefail</code>, the script will correctly fail if <code>golangci-lint</code> encounters an error.</p>
+<h2 id="Alway-validate-your-params-and-command"><a href="#Alway-validate-your-params-and-command" class="headerlink" title="Alway validate your params and command"></a>Alway validate your params and command</h2><h3 id="Validate-command"><a href="#Validate-command" class="headerlink" title="Validate command"></a>Validate command</h3><p>Check if the command is available (installed) in the system PATH before exec.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ! <span class="built_in">command</span> -v golangci-lint &amp;&gt; /dev/null; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;golangci-lint is not installed. Installing...&quot;</span></span><br><span class="line">  <span class="comment"># Add installation command here</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Validate-your-input-params-as-expect"><a href="#Validate-your-input-params-as-expect" class="headerlink" title="Validate your input params as expect"></a>Validate your input params as expect</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"></span><br><span class="line"><span class="comment"># function to display usage</span></span><br><span class="line"><span class="function"><span class="title">usage</span></span>() &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Usage: <span class="variable">$0</span> -o &#123;build|run|deploy&#125;&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Current working directory: <span class="subst">$(pwd)</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># parse the flag option</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">getopts</span> <span class="string">&quot;:o:&quot;</span> opt; <span class="keyword">do</span></span><br><span class="line">  <span class="keyword">case</span> <span class="variable">$&#123;opt&#125;</span> <span class="keyword">in</span></span><br><span class="line">    o)</span><br><span class="line">      <span class="comment"># Get the option argument</span></span><br><span class="line">      option=<span class="variable">$OPTARG</span></span><br><span class="line">      ;;</span><br><span class="line">    \?)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Invalid option: -<span class="variable">$OPTARG</span>&quot;</span> &gt;&amp;2</span><br><span class="line">      usage</span><br><span class="line">      ;;</span><br><span class="line">    :)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Option -<span class="variable">$OPTARG</span> requires an argument.&quot;</span> &gt;&amp;2</span><br><span class="line">      usage</span><br><span class="line">      ;;</span><br><span class="line">  <span class="keyword">esac</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># function to check arguments</span></span><br><span class="line"><span class="function"><span class="title">checkArgs</span></span>() &#123;</span><br><span class="line">  <span class="comment"># Check if option is provided</span></span><br><span class="line">  <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$option</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Error: -o option is required.&quot;</span></span><br><span class="line">    usage</span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># function to handle different operations</span></span><br><span class="line"><span class="function"><span class="title">deploy</span></span>() &#123;</span><br><span class="line">  <span class="comment"># Handle different options</span></span><br><span class="line">  <span class="keyword">case</span> <span class="variable">$&#123;option&#125;</span> <span class="keyword">in</span></span><br><span class="line">    build)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Building the project...&quot;</span></span><br><span class="line">      <span class="comment"># Add build commands here</span></span><br><span class="line">      ;;</span><br><span class="line">    run)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Running the project...&quot;</span></span><br><span class="line">      <span class="comment"># Add run commands here</span></span><br><span class="line">      ;;</span><br><span class="line">    deploy)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Deploying the project...&quot;</span></span><br><span class="line">      <span class="comment"># Add deploy commands here</span></span><br><span class="line">      ;;</span><br><span class="line">    *)</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;Error: Invalid option &#x27;<span class="variable">$&#123;option&#125;</span>&#x27;. Valid options are: build, run, deploy.&quot;</span></span><br><span class="line">      usage</span><br><span class="line">      ;;</span><br><span class="line">  <span class="keyword">esac</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># check arguments and execute the appropriate command</span></span><br><span class="line">checkArgs</span><br><span class="line">deploy</span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Prompt-user-input"><a href="#Prompt-user-input" class="headerlink" title="Prompt user input"></a>Prompt user input</h3><p>The <code>read -p</code> command in a shell script is used to prompt the user for input and store the input in a variable. The <code>-p</code> option allows you to display a prompt message to the user before they enter their input.</p>
+<h4 id="Other-Useful-Options-with-read"><a href="#Other-Useful-Options-with-read" class="headerlink" title="Other Useful Options with read"></a>Other Useful Options with <code>read</code></h4><ul>
+<li><p><strong><code>s</code></strong>: Silent mode. Do not echo input. Useful for passwords.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -s -p <span class="string">&quot;Enter your password: &quot;</span> password</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Password entered.&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>t</code></strong>: Timeout. Specifies a time in seconds to wait for input.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -t 5 -p <span class="string">&quot;Enter your name within 5 seconds: &quot;</span> name</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>n</code></strong>: Number of characters. Reads only a specified number of characters.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -n 1 -p <span class="string">&quot;Press any key to continue...&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>r</code></strong>: Raw input. Does not allow backslashes to escape characters.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -r -p <span class="string">&quot;Enter a raw string (with backslashes): &quot;</span> raw_input</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Trap-certain-signals"><a href="#Trap-certain-signals" class="headerlink" title="Trap certain signals"></a>Trap certain signals</h2><p>In Bash, the <code>trap</code> command allows you to specify commands that will be executed when certain signals or events occur. This can be useful for handling cleanup tasks, catching errors, or responding to user interruptions.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">trap</span> <span class="string">&#x27;commands&#x27;</span> SIGNAL</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Debug/" rel="tag"># Debug</a>
+              <a href="/tags/Script/" rel="tag"># Script</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/websocket-communication-pattern/" rel="prev" title="WebSocket Communication Pattern">
+      <i class="fa fa-chevron-left"></i> WebSocket Communication Pattern
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Common-Debugging-Flags-in-Bash"><span class="nav-number">1.</span> <span class="nav-text">Common Debugging Flags in Bash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xtrace"><span class="nav-number">1.1.</span> <span class="nav-text">xtrace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#verbose"><span class="nav-number">1.2.</span> <span class="nav-text">verbose</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#errexit"><span class="nav-number">1.3.</span> <span class="nav-text">errexit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nounset"><span class="nav-number">1.4.</span> <span class="nav-text">nounset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pipefail"><span class="nav-number">1.5.</span> <span class="nav-text">pipefail</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alway-validate-your-params-and-command"><span class="nav-number">2.</span> <span class="nav-text">Alway validate your params and command</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Validate-command"><span class="nav-number">2.1.</span> <span class="nav-text">Validate command</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Validate-your-input-params-as-expect"><span class="nav-number">2.2.</span> <span class="nav-text">Validate your input params as expect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Prompt-user-input"><span class="nav-number">2.3.</span> <span class="nav-text">Prompt user input</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Other-Useful-Options-with-read"><span class="nav-number">2.3.1.</span> <span class="nav-text">Other Useful Options with read</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Trap-certain-signals"><span class="nav-number">3.</span> <span class="nav-text">Trap certain signals</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Tina Wong</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/901abc26123bee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;901abc26123bee" rel="noopener external nofollow noreferrer" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/tina168wong@gmail.com" title="E-Mail → tina168wong@gmail.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Tina Wong</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener external nofollow noreferrer" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'e6aa29d7b0f95f9e44b5',
+      clientSecret: 'be8f55231d3f2acd60346a56f0af6b4e8204f161',
+      repo        : '901abc26123bee.github.io',
+      owner       : '901abc26123bee',
+      admin       : ['901abc26123bee'],
+      id          : 'edb8aa3ab04af826cbbd8e07f646fc70',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
